@@ -1,3 +1,4 @@
+// TODO: rewrite source code to handle datatable
 $(document).ready(async function () {
     var data = await persiapan_data();
     add_eventlistener(data);
