@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 $currentUrl;
+$menuWithCurrentUrl;
 class PersiapanHalaman {
     public function __construct() {
         $this->currentUrl = str_replace(base_url('index.php/'), '', current_url());
@@ -7,17 +8,20 @@ class PersiapanHalaman {
     function handleMenu(){
         /** @var CI_Controller $ci */
         $ci =& get_instance();
-        if(!$this->isWebService()){
-            $allMenu = $ci->db->select('menu.*, menu_permission.permission')
+       // Cek apakah user sudah login dan sesuai hak akses
+       $userdata = $ci->session->userdata('login');
+       $allMenu = $ci->db->select('menu.*, menu_permission.permission')
                 ->join('menu_permission',  'menu_permission.menu= menu.id')
                 ->where('aktif', 1)
                 ->get('menu')
                 ->result();
 
-            $menuWithCurrentUrl = array_filter($allMenu, function($menu){
-                return $this->currentUrl == $menu->url;
-            });
-            list($harusLogin, $perm)= $this->mustLogin($menuWithCurrentUrl);
+        $menuWithCurrentUrl = array_filter($allMenu, function($menu){
+            return $this->currentUrl == $menu->url;
+        });
+        $this->menuWithCurrentUrl = $menuWithCurrentUrl;
+        list($harusLogin, $perm)= $this->mustLogin($menuWithCurrentUrl);
+        if(!$this->isWebService()){
             if(is_null($perm)){
                 $ci->load->view('errors/html/error_404', ['heading' => '404 Page Not Found', 'message' => 'The page you requested was not found.']);
             }
@@ -28,9 +32,7 @@ class PersiapanHalaman {
                 'menus' => []
             );
 
-            if($harusLogin){
-                // Cek apakah user sudah login dan sesuai hak akses
-                $userdata = $ci->session->userdata('login');
+            if($harusLogin){    
                 if(is_null($userdata))
                     $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
 
@@ -52,7 +54,8 @@ class PersiapanHalaman {
                 if($tidakAdaSama)
                     $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
                     
-            }
+            }else if($this->dontLogin())
+                $ci->load->view('errors/html/error_404', ['heading' => 'Denied', 'message' => 'Please logout before access this page']);
 
             $m = array();
             foreach($allMenu as $menu){
@@ -69,6 +72,8 @@ class PersiapanHalaman {
                 }
 
             }
+        }else{
+            // TODO: handle webservice path
         }
 
     }
@@ -88,12 +93,22 @@ class PersiapanHalaman {
             $p = [];
             foreach($array as $v){
                 $p[] = $v->permission;
-                if(in_array($v->permission, [0, 3])) $harusLogin = false;
+                if(in_array($v->permission, [5, 3])) $harusLogin = false;
             }
             return [$harusLogin, $p];
         }else{
             return [false, null];
         }
 
+    }
+
+    private function dontLogin(){
+       $ci =& get_instance();
+       $userdata = $ci->session->userdata('login');
+       foreach($this->menuWithCurrentUrl as $m){
+            if($m->permission == 5 && !empty($userdata)) 
+                return true;
+        }
+        return false;
     }
 }

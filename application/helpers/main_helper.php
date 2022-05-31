@@ -131,7 +131,7 @@ if (!method_exists($this, 'random')) {
     }
 }
 if (!method_exists($this, 'is_login')) {
-    function is_login($role = null, $user = null)
+    function is_login($role = null, $user = null, $callback = null)
     {
         /** @var CI_Controller $ci */
         $ci =& get_instance();
@@ -156,6 +156,8 @@ if (!method_exists($this, 'is_login')) {
 
             $userdata = $ci->session->userdata('login');
         }
+        if(!empty($callback) && is_callable($callback))
+           return $callback($role, $user, $userdata);
 
         if (empty($role) && empty($user)) {
             if (JWT_AUTH)
@@ -266,5 +268,22 @@ if (!method_exists($this, 'rupiah_format')) {
     {
         $hasil_rupiah = "Rp. " . number_format($angka, 2, ',', '.');
         return $hasil_rupiah;
+    }
+}
+
+// Get CSRF Token like Laravel
+if(!method_exists($this, 'csrf_token')){
+    function csrf_token($jsonEncode = true){
+        /** @var CI_Controller $ci  */
+        $ci =& get_instance();
+
+        $ci->load->config('config');
+        $isCSRFAktif = $ci->config->item('csrf_protection');
+        if(!$isCSRFAktif) return null;
+        $csrf = array(
+            'name' => $ci->security->get_csrf_token_name(),
+            'hash' => $ci->security->get_csrf_hash()
+        );
+        return $jsonEncode ? json_encode($csrf) : $csrf;
     }
 }
