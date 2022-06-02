@@ -259,7 +259,7 @@ if (!method_exists($this, 'include_view')) {
     {
         if (is_array($data))
             extract($data);
-        include APPPATH . 'views/' . $path . '.php';
+        include get_path(APPPATH . 'views/' . $path . '.php');
     }
 }
 
@@ -285,5 +285,13 @@ if(!method_exists($this, 'csrf_token')){
             'hash' => $ci->security->get_csrf_hash()
         );
         return $jsonEncode ? json_encode($csrf) : $csrf;
+    }
+}
+
+// CONVERT PATH
+if(!method_exists($this, 'get_path')){
+    function get_path($path){
+        return DIRECTORY_SEPARATOR == '/' ? str_replace('\\', '/', $path) : str_replace('/', '\\', $path);
+
     }
 }

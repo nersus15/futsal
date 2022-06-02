@@ -147,7 +147,7 @@ class CI_Controller {
                 if (!empty($data))
                     extract($data);
 
-                include_once ASSETS_PATH . 'js/' . $js . '.js';
+                include_once get_path(ASSETS_PATH . 'js/' . $js . '.js');
             }
             $params = array(
                 'script' => $type == 'file' ? ob_get_contents() : $js,
@@ -169,7 +169,7 @@ class CI_Controller {
             if (!empty($data))
                 extract($data);
             try {
-                include_once ASSETS_PATH . 'css/' . $css . '.css';
+                include_once get_path(ASSETS_PATH . 'css/' . $css . '.css');
             } catch (\Throwable $th) {
                 print_r($th);
             }
