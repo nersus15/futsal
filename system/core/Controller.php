@@ -127,13 +127,23 @@ class CI_Controller {
 			
 		
 	}
-	function add_javascript($js){
-		if(isset($js['pos'])){
-			$this->params['extra_js'][] = $js;
-		}else{
-			foreach($js as $j){
-				$this->params['extra_js'][] = $j;
+	/**
+	 * fungsi ini digunakan untuk menambahkan file JS ke halaman yang akan diload
+	 * @param String $posisi Opsi untuk nilai $posisi ['head'|'body:end'] default 'body:end'
+	 * @param String $tipe Opsi untuk nilai $tipe ['file'|'cdn'] default 'file'
+	 * @return void
+	 */
+	function add_javascript($js, $posisi = 'body:end', $tipe = 'file'){
+		if(is_array($js)){
+			foreach($js as $c){
+				$this->params['extra_js'][] = $c;
 			}
+		}else{
+			$this->params['extra_js'][] = array(
+				'src' => $js,
+				'pos' => $posisi,
+				'type' => $tipe
+			);
 		}
 	}
 	function error_page($file, $params, $type = 'html'){
@@ -184,13 +194,23 @@ class CI_Controller {
         if ($type == 'file')
             ob_end_clean();
     }
-	function add_stylesheet($css){
-		if(isset($css['pos'])){
-			$this->params['extra_css'][] = $css;
-		}else{
+	/**
+	 * fungsi ini digunakan untuk menambahkan file CSS ke halaman yang akan diload
+	 * @param String $posisi Opsi untuk nilai $posisi ['head'|'body:end'] default 'head'
+	 * @param String $tipe Opsi untuk nilai $tipe ['file'|'cdn'] default 'file'
+	 * @return void
+	 */
+	function add_stylesheet($css, $posisi = 'head', $tipe = 'file'){
+		if(is_array($css)){
 			foreach($css as $c){
 				$this->params['extra_css'][] = $c;
 			}
+		}else{
+			$this->params['extra_css'][] = array(
+				'src' => $css,
+				'pos' => $posisi,
+				'type' => $tipe
+			);
 		}
 	}
 	public function render(){

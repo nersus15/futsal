@@ -24,7 +24,6 @@ class Auth extends CI_Controller
             'resource' => array('main', 'softui'),
             'content' => array('pages/softui/login'),
         );
-
         $this->add_cachedJavascript('pages/auth', 'file', 'body:end', array(
             'formid' => '#form-login',
             'submitSukses' => "function(data){
