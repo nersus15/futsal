@@ -68,7 +68,7 @@
     }
     ?>
     <script>
-        var path = location.origin + '/';
+        var path = "<?= base_url() ?>";
         var data_dari_siswa = ['4101', '4102', '4103'];
         var kas_kecil = ['K01', 'K02', 'K03', 'K04', 'K05'];
     </script>
