@@ -458,7 +458,15 @@ if ( ! is_php('5.4'))
 
 	if ($e404)
 	{
-		// if( $is_post)
+		if( $is_post){
+			http_response_code(404);
+			$responsse = array(
+				'message' =>  "Halaman " . $RTR->directory.$class . "/" . $method . ", Tidak ada method ". $method ." didalam File ". $RTR->directory.$class. ".php" . " tidak ditemukan",
+				'type' => 'Error - Not Found',
+			);				
+			echo json_encode($responsse);
+			die;
+		}
 		
 		if ( ! empty($RTR->routes['404_override']))
 		{
