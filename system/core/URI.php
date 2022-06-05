@@ -55,6 +55,13 @@ class CI_URI {
 	 *
 	 * @var	array
 	 */
+
+	public $routes = array(
+		'class' => null,
+		'method' => null,
+		'params' => array(),
+	);
+
 	public $keyval = array();
 
 	/**

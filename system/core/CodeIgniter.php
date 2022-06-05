@@ -401,7 +401,8 @@ if ( ! is_php('5.4'))
 	$e404 = FALSE;
 	$class = ucfirst($RTR->class);
 	$method = $RTR->method;
-
+	log_message("DEBUG", "============ FIX Controller FilePath =======> " . APPPATH.'controllers/'.$RTR->directory.$class.'.php  ==> Exist: ' . file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'));
+	
 	if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
 	{
 		$e404 = TRUE;
@@ -409,7 +410,7 @@ if ( ! is_php('5.4'))
 	else
 	{
 		require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
-
+		log_message("DEBUG", 'FIX Method ====> ' . print_r($method, true));
 		if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 		{
 			$e404 = TRUE;

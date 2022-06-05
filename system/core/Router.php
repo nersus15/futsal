@@ -131,7 +131,6 @@ class CI_Router {
 		// If a directory override is configured, it has to be set before any dynamic routing logic
 		is_array($routing) && isset($routing['directory']) && $this->set_directory($routing['directory']);
 		$this->_set_routing();
-
 		// Set any routing overrides that may exist in the main index file
 		if (is_array($routing))
 		{
@@ -175,7 +174,6 @@ class CI_Router {
 			unset($route['default_controller'], $route['translate_uri_dashes']);
 			$this->routes = $route;
 		}
-
 		// Are query strings enabled in the config file? Normally CI doesn't utilize query strings
 		// since URI segments are more search-engine friendly, but they can optionally be used.
 		// If this feature is enabled, we will gather the directory/class/method a little differently
@@ -195,6 +193,8 @@ class CI_Router {
 			}
 
 			$_c = trim($this->config->item('controller_trigger'));
+			log_message("DEBUG", "================= Rewrite SetRouting => Routing ============> " . print_r($_c, true));
+
 			if ( ! empty($_GET[$_c]))
 			{
 				$this->uri->filter_uri($_GET[$_c]);
@@ -255,7 +255,7 @@ class CI_Router {
 			$this->_set_default_controller();
 			return;
 		}
-
+		log_message("DEBUG", "============ Segments ======> " . print_r($segments, true));
 		if ($this->translate_uri_dashes === TRUE)
 		{
 			$segments[0] = str_replace('-', '_', $segments[0]);
@@ -264,20 +264,47 @@ class CI_Router {
 				$segments[1] = str_replace('-', '_', $segments[1]);
 			}
 		}
+		// Rewrite Routing Segments
+		$isSubDir = file_exists(CONTROLLER_PATH . ucfirst($segments[0]));
+		log_message("DEBUG", "============ IS DIR ". CONTROLLER_PATH . ucfirst($segments[0]) ." ======> " . $isSubDir);
+		
+		if($isSubDir){
+			$this->set_directory(ucfirst($segments[0]));
+			$this->set_class(ucfirst($segments[1]));
+			if (isset($segments[2]))
+			{
+				$this->set_method($segments[2]);
+			}
+			else
+			{
+				$segments[2] = 'index';
+			}
 
-		$this->set_class($segments[0]);
-		if (isset($segments[1]))
-		{
-			$this->set_method($segments[1]);
-		}
-		else
-		{
-			$segments[1] = 'index';
+			array_unshift($segments, NULL);
+			unset($segments[0]);
+			$this->uri->rsegments = $segments;
+			$this->uri->routes = array(
+				'dir' => $segments[1], 
+				'class' => $segments[2],
+				'method' => $segments[3],
+			);
+		}else{
+			$this->set_class($segments[0]);
+			if (isset($segments[1]))
+			{
+				$this->set_method($segments[1]);
+			}
+			else
+			{
+				$segments[1] = 'index';
+			}
+
+			array_unshift($segments, NULL);
+			unset($segments[0]);
+			$this->uri->rsegments = $segments;
 		}
 
-		array_unshift($segments, NULL);
-		unset($segments[0]);
-		$this->uri->rsegments = $segments;
+		
 	}
 
 	// --------------------------------------------------------------------
@@ -431,9 +458,11 @@ class CI_Router {
 	 * @param	string	$class	Class name
 	 * @return	void
 	 */
-	public function set_class($class)
+	public function set_class($class, $isSubDir = false)
 	{
-		$this->class = str_replace(array('/', '.'), '', $class);
+		log_message("DEBUG", "============ Rewrite SetClass Routing ==========>  class: " . print_r($class, true));
+		
+		$this->class = $isSubDir ? str_replace('.', '', $class) : str_replace(array('/', '.'), '', $class);
 	}
 
 	// --------------------------------------------------------------------
