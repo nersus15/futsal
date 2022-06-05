@@ -354,6 +354,8 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  *
  */
+
+
 	// Load the base controller class
 	require_once BASEPATH.'core/Controller.php';
 
@@ -411,6 +413,14 @@ if ( ! is_php('5.4'))
 	{
 		require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
 		log_message("DEBUG", 'FIX Method ====> ' . print_r($method, true));
+		// deteksi http method yang digunakan
+		$httpMethod = $_SERVER['REQUEST_METHOD'];
+		$is_post = $_SERVER['REQUEST_METHOD'] == 'POST';
+		$method_and_http = $method . "_" . strtolower($httpMethod);
+		if((!(! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method_and_http))) && method_exists($class, $method_and_http)){
+			$method = $method_and_http;
+		}
+
 		if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 		{
 			$e404 = TRUE;
@@ -424,6 +434,7 @@ if ( ! is_php('5.4'))
 		{
 			$e404 = TRUE;
 		}
+
 		/**
 		 * DO NOT CHANGE THIS, NOTHING ELSE WORKS!
 		 *
@@ -447,6 +458,8 @@ if ( ! is_php('5.4'))
 
 	if ($e404)
 	{
+		// if( $is_post)
+		
 		if ( ! empty($RTR->routes['404_override']))
 		{
 			if (sscanf($RTR->routes['404_override'], '%[^/]/%s', $error_class, $error_method) !== 2)
@@ -515,7 +528,6 @@ if ( ! is_php('5.4'))
  */
 	// Mark a start point so we can benchmark the controller
 	$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_start');
-
 	$CI = new $class();
 
 /*
