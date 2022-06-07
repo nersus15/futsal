@@ -53,7 +53,7 @@
                   <h3 class="font-weight-bolder text-info text-gradient">Selamat Datang Kembali</h3>
                 </div>
                 <div class="card-body">
-                  <form id="form-login" method="POST" action="<?= base_url('ws/login')?>" role="form">
+                  <form id="form-login" method="POST" action="<?= base_url('ws/user/login')?>" role="form">
                     <label>Email atau Username</label>
                     <div class="mb-3">
                       <input id="user" name="user" data-rule-required="true"  type="text" class="form-control" placeholder="user" aria-label="user" aria-describedby="user-addon">

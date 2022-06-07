@@ -302,6 +302,10 @@ class CI_Router {
 			array_unshift($segments, NULL);
 			unset($segments[0]);
 			$this->uri->rsegments = $segments;
+			$this->uri->routes = array(
+				'class' => $segments[1],
+				'method' => $segments[2],
+			);
 		}
 
 		

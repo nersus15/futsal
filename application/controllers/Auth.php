@@ -27,7 +27,7 @@ class Auth extends CI_Controller
         $this->add_cachedJavascript('pages/auth', 'file', 'body:end', array(
             'formid' => '#form-login',
             'submitSukses' => "function(data){
-               
+               window.location.href = path + 'dashboard';
             }"
         ));
 

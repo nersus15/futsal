@@ -27,3 +27,6 @@
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
   }
+  .card-no-border{
+    padding: 1.75rem 0 !important;
+  }

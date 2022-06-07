@@ -68,13 +68,13 @@ $config['themes'] = array(
     'form' => array(
         'js' => array(
             array('pos' => 'head', 'src' => 'vendor/select2/dist/js/select2.min.js'),
-            array('pos' => 'head', 'src' => 'vendor/daterangepicker/daterangepicker.js'),
+            array('pos' => 'head', 'src' => 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', 'type' => 'cdn'),
             array('pos' => 'head', 'src' => 'vendor/datepicker/js/bootstrap-datepicker.js'),
             array('pos' => 'head', 'src' => 'js/utils/main.init.js'),
         ),
         'css' => array(
             array('pos' => 'head', 'src' => 'vendor/select2/dist/css/select2.css'),
-            array('pos' => 'head', 'src' => 'vendor/daterangepicker/daterangepicker.css'),
+            array('pos' => 'head', 'src' => 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', 'type' => 'cdn'),
             array('pos' => 'head', 'src' => 'vendor/datepicker/css/datepicker.css'),
         )
     ),
@@ -85,17 +85,20 @@ $config['themes'] = array(
             array('src' => 'vendor/datatables/datatables.responsive.bootstrap4.min.css', 'pos' => 'head'),
             // array('src' => 'vendor/datatables/jquery.dataTables.min.css', 'pos' => 'head'),
             array('src' => 'vendor/datatables/select.dataTables.css', 'pos' => 'head'),
+            array('pos' => 'head', 'src' => 'vendor/dt-checkbox/css/dataTables.checkboxes.css'),
+
         ),
         'js' => array(
             array('pos' => 'head', 'src' => 'vendor/datatables/datatables.min.js'),
             array('pos' => 'head', 'src' => 'vendor/datatables/buttons.datatables.js'),
             array('pos' => 'head', 'src' => 'vendor/datatables/dt.select.js'),
             array('pos' => 'head', 'src' => 'vendor/datatables/btn.zip.js'),
-            array('pos' => 'head', 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js', 'external' => true),
+            array('pos' => 'head', 'src' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js', 'type' => 'cdn'),
             array('pos' => 'head', 'src' => 'vendor/datatables/btn.pfs.js'),
             array('pos' => 'head', 'src' => 'vendor/datatables/btn.html-buttons.js'),
             array('pos' => 'head', 'src' => 'vendor/datatables/btn.print.js'),
-            array('pos' => 'head', 'src' => 'https://cdn.datatables.net/fixedcolumns/4.0.0/js/dataTables.fixedColumns.min.js', 'external' => true),
+            array('pos' => 'head', 'src' => 'vendor/dt-checkbox/js/dataTables.checkboxes.min.js'),
+            array('pos' => 'head', 'src' => 'https://cdn.datatables.net/fixedcolumns/4.0.0/js/dataTables.fixedColumns.min.js', 'type' => 'cdn'),
             // array('pos' => 'head', 'src' => 'vendor/datatables/jquery.dataTables.min.js'),
             // array('pos' => 'head', 'src' => 'vendor/datatables/dataTables.select.min.js'),
         )
@@ -111,13 +114,13 @@ $config['themes'] = array(
 
     'heremap' => array(
         'js' => [
-            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-core.js', 'external' => true),
-            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-service.js', 'external' => true),
-            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-ui.js', 'external' => true),
-            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-mapevents.js', 'external' => true),
+            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-core.js', 'type' => 'cdn'),
+            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-service.js', 'type' => 'cdn'),
+            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-ui.js', 'type' => 'cdn'),
+            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-mapevents.js', 'type' => 'cdn'),
         ],
         'css' => [
-            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-ui.css', 'external' => true)
+            array('pos' => 'head', 'src' => 'https://js.api.here.com/v3/3.1/mapsjs-ui.css', 'type' => 'cdn')
         ]
     ),
 );

@@ -8,16 +8,23 @@ class PersiapanHalaman {
     function handleMenu(){
         /** @var CI_Controller $ci */
         $ci =& get_instance();
-       // Cek apakah user sudah login dan sesuai hak akses
-       $userdata = $ci->session->userdata('login');
-       $allMenu = $ci->db->select('menu.*, menu_permission.permission')
-                ->join('menu_permission',  'menu_permission.menu= menu.id')
-                ->where('aktif', 1)
-                ->get('menu')
-                ->result();
+        // Cek apakah user sudah login dan sesuai hak akses
+        $userdata = $ci->session->userdata('login');
+        $allMenu = $ci->db->select('menu.*, menu_permission.permission')
+                    ->join('menu_permission',  'menu_permission.menu= menu.id')
+                    ->where('aktif', 1)
+                    ->order_by('menu.bobot', 'ASC')
+                    ->get('menu')
+                    ->result();
 
-        $menuWithCurrentUrl = array_filter($allMenu, function($menu){
-            return $this->currentUrl == $menu->url;
+        $current_routes = [];
+        if(isset($ci->uri->routes['dir']) && !empty( $ci->uri->routes['dir'])) $current_routes[] = $ci->uri->routes['dir'];
+
+        $current_routes[] = $ci->uri->routes['class'];
+        $current_routes[] = $ci->uri->routes['method'];
+        
+        $menuWithCurrentUrl = array_filter($allMenu, function($menu) use ($current_routes){
+            return $this->currentUrl == $menu->url || join('/', $current_routes) == $menu->url;
         });
         $this->menuWithCurrentUrl = $menuWithCurrentUrl;
         list($harusLogin, $perm)= $this->mustLogin($menuWithCurrentUrl);
@@ -31,7 +38,6 @@ class PersiapanHalaman {
                 'harusLogin' => $harusLogin,
                 'menus' => []
             );
-
             if($harusLogin){    
                 if(is_null($userdata))
                     $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
@@ -49,6 +55,8 @@ class PersiapanHalaman {
                     if(in_array($p, $userdata['permission'])){
                         $tidakAdaSama = false;
                         break;
+                    }elseif($p == 6){ // permission 6 = login (bisa diakses semua asal sudah login)
+                        $tidakAdaSama = false;
                     }
                 }
                 if($tidakAdaSama)
@@ -93,7 +101,7 @@ class PersiapanHalaman {
             $p = [];
             foreach($array as $v){
                 $p[] = $v->permission;
-                if(in_array($v->permission, [5, 3])) $harusLogin = false;
+                if(in_array($v->permission, [5, 3])) $harusLogin = false; //permission 5 = without login (bisa diakses jika tidak login), 3 = default (bisa diakses dengan atau tanpa login)
             }
             return [$harusLogin, $p];
         }else{

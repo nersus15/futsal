@@ -1,27 +1,26 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Home extends CI_Controller
+class Dashboard extends CI_Controller
 {
     function index()
     {
         $data = [
             'resource' => array('main', 'dore'),
-            'content' => array('pages/client.index'),
+            'content' => array(),
             'navbar' => 'component/navbar/navbar.dore',
             'adaThemeSelector' => true,
-            'sidebar' => 'component/sidebar.dore',
-            'sidebarConf' => config_sidebar('comp', 'publik', 0),
+            'sidebar' => 'component/sidebar/sidebar.dore',
+            'pageName' => 'Dashboard',
+            'sidebarConf' => $this->session_info,
             'navbarConf' => array(
-                'adaUserMenu' => false,
+                'adaUserMenu' => true,
                 'adaNotif' => true,
-                'pencarian' => true,
+                'pencarian' => false,
                 'adaSidebar' => true,
                 'homePath' => base_url()
             )
         ];
-
-        $this->add_cachedJavascript('js/pages/client.index.js');
         $this->addViews('template/dore', $data);
         $this->render();
     }

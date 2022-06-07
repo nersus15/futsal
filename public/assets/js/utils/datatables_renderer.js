@@ -1,4 +1,3 @@
-// TODO: rewrite source code to handle datatable
 $(document).ready(async function () {
     var data = await persiapan_data();
     add_eventlistener(data);
@@ -251,9 +250,16 @@ async function persiapan_data() {
 
             var rows = '';
             var data = res.data;
-            data.forEach((d, i) => {
-                rows += rowScript(d, i);
-            });
+            if(data.forEach == undefined){
+                Object.keys(data).forEach((key, i) => {
+                    rows += rowScript(data[key], i);
+                });
+            }else{
+                 data.forEach((d, i) => {
+                    rows += rowScript(d, i);
+                });
+            }
+           
             $('#' + tableid + ' tbody').html(rows);
             endLoading();
             return res.data;

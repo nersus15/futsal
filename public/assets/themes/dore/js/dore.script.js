@@ -2796,34 +2796,7 @@ $.fn.addCommas = function(nStr) {
       }
   
       /* 03.11. Datatable */
-      if ($().DataTable) {
-        // $(".data-table").DataTable({
-        //   searching: true,
-        //   lengthchange: true,
-        //   destroy: true,
-        //   info: true,
-        //   ordering: true,
-        //   sDom:
-        //     '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
-        //   pageLength: 6,
-        //   language: {
-        //     paginate: {
-        //       previous: "<i class='simple-icon-arrow-left'></i>",
-        //       next: "<i class='simple-icon-arrow-right'></i>"
-        //     }
-        //   },
-  
-        //   drawCallback: function() {
-        //     $($(".dataTables_wrapper .pagination li:first-of-type"))
-        //       .find("a")
-        //       .addClass("prev");
-        //     $($(".dataTables_wrapper .pagination li:last-of-type"))
-        //       .find("a")
-        //       .addClass("next");
-  
-        //     $(".dataTables_wrapper .pagination").addClass("pagination-sm");
-        //   }
-        // });
+      if ($().DataTable) {  
       }
   
       /* 03.12. Notification */

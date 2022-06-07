@@ -132,7 +132,7 @@ class Authentication
                 if (JWT_AUTH)
                     $token = JWT::encode($user, 'BQNIT');
                 else
-                    $ci->session->set_userdata(['login' => $user]);
+                    $ci->session->set_userdata('login', $user);
 
 
                 if (JWT_AUTH)

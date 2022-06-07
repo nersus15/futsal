@@ -1,5 +1,6 @@
 uihelper = function () {
     var _generatedModal = {};
+    this.configTabel = {};
     var _ajaxSubmit = {};
     this.storeModal = function (params) {
         _generatedModal[params.key.toString().replaceAll('-', '_')] = {
@@ -23,18 +24,24 @@ uihelper = function () {
         } else
             return _generatedModal;
     }
-    this.instance = {
+    var instance = {
         validator: {},
         dropzone: {},
         dataTables: {}
     };
 
 
-    this.getInstance = function () {
-        return this.instance;
+    this.getInstance = function (ins, key) {
+        return instance[ins][key];
+    }
+    this.getAllInstance = function (ins, key) {
+        return instance;
+    }
+    this.removeInstance = function(ins, key){
+        delete instance[ins][key];
     }
     this.setInstance = function (ins, key, val) {
-        this.instance[ins][key] = val;
+        instance[ins][key] = val;
     }
     this.tambahkanBody = function (type, opt) {
         var bodyEl = '';
@@ -115,7 +122,7 @@ uihelper = function () {
             bodyEl += inputEl + opt.modalBody.extra;
 
 
-        } else if (type == 'custom')
+        } else if (type == 'custom' || 'form-custom')
             bodyEl = opt.modalBody.customBody;
 
         return bodyEl;
@@ -416,7 +423,9 @@ uihelper = function () {
         var body = "";
         var foot = "";
         var stored = null;
-        opt.clickToClose = opt.clickToClose == 'undefined' ? true : opt.clickToClose;
+        if(!opt.clickToClose)
+            opt.clickToClose = true;
+            
         var kembalian = null;
         if (!opt.type)
             opt.type = "nonForm";
@@ -523,14 +532,14 @@ uihelper = function () {
             $("#" + modalId).on('hidden.bs.modal', (e) => {
                 e.preventDefault();
                 $("#" + e.target.id).remove();
-                if (this.instance.validator[modalId.replaceAll('-', '_')]) {
-                    this.instance.validator[modalId.replaceAll('-', '_')].destroy();
-                    delete (this.instance.validator[modalId.replaceAll('-', '_')]);
+                var oldInstance = this.getInstance('validator', modalId.replaceAll('-', '_'))
+                if (oldInstance) {
+                    this.removeInstance('validator', modalId.replaceAll('-', '_'));
                 }
 
             });
         }
-        if (opt.type == 'form') {
+        if (opt.type == 'form' || opt.type == 'form-custom') {
             stored = { key: modalId, modal: modalTemplate, modalid: modalId, formid: opt.formOpt.formId },
                 kembalian = { 'modalId': modalId, 'formId': opt.formOpt.formId, 'modal': modalTemplate }
             if (opt.ajax) {
@@ -558,13 +567,15 @@ uihelper = function () {
                         })
                     }
                     window.formOpt = options
-                    this.instance.validator[modalId.replaceAll('-', '_')] = $("#" + formid).validate({
+                    var instance_validator =  $("#" + formid).validate({
                         rules: rules,
                         submitHandler: function (form) {
                             $('#' + formid + ' #alert_danger, #alert_success').html('').hide();
                             $(form).ajaxSubmit(options);
                         }
                     });
+                    
+                    this.setInstance('validator', modalId.replaceAll('-', '_'), instance_validator);
                 }
                 this.storeAjaxSubmit({ key: opt.formOpt.formId, callback: ajaxSubmit });
                 ajaxSubmit();
@@ -584,7 +595,9 @@ uihelper = function () {
 
 
         $("#" + modalId).on('hidden.bs.modal', opt.saatTutup);
-        $("#" + modalId).on('shown.bs.modal', opt.saatBuka);
+        $("#" + modalId).on('shown.bs.modal', () => {
+            opt.saatBuka(opt);
+        });
 
         if (opt.modalclick) {
             $("#" + modalId).on('shown.bs.modal', function () {
@@ -674,7 +687,7 @@ uihelper = function () {
                     $(cb.el).on(cb.evt, { tabel: table }, cb.func);
             });
         }
-        this.instance.dataTables[el.replaceAll("#", '')] = table;
+        this.setInstance('dataTables', el.replaceAll("#", ''), table);
         return table;
     }
     this.endLoading = function () {
@@ -920,13 +933,14 @@ uihelper = function () {
 
                     })
                 }
-                this.instance.validator[formid.replaceAll('-', '_')] = $("#" + formid).validate({
+                var instance_validator = $("#" + formid).validate({
                     rules: rules,
                     submitHandler: function (form) {
                         $('#' + formid + ' #alert_danger, #alert_success').html('').hide();
                         $(form).ajaxSubmit(options);
                     }
                 });
+                this.setInstance('validator', formid.replaceAll('-', '_'), instance_validator);
             }
             this.storeAjaxSubmit({ key: form.formId, callback: ajaxSubmit });
             ajaxSubmit();
@@ -955,6 +969,78 @@ uihelper = function () {
         } else if (document.msExitFullscreen) { /* IE11 */
             document.msExitFullscreen();
         }
+    }
+    $.fn.initDatatable = async function (opt = {}) {
+        var attribut = this.data();
+        var id = this.attr('id');
+        var file_skrip_dtconfig = attribut.skrip;
+        var skrip_dtconfig = null;
+
+        if(!configTabel[id]){
+            alert("Config Tabel " + id + " tidak ditemukan");
+        }
+    
+        var columnDefs = [];
+        if(attribut.checkbox){
+            columnDefs = [
+                {
+                    'targets': 0,
+                    'checkboxes': {
+                       'selectRow': true
+                    }
+                 }
+            ];
+        }
+
+        var options = {
+            processing: true,
+            serverSide: true,
+            ajax: path + attribut.source,
+            dom: attribut.dom == undefined ? 'lfrtip' : attribut.dorm,
+            bSearch: attribut.search == undefined ? true : attribut.search,
+            bLengthChange: attribut.change == undefined ? true : attribut.change,
+            responsive: attribut.responsive == undefined ? true : attribut.responsive,
+            select: attribut.select == undefined ? true : attribut.select,
+            order: attribut.order == undefined ? [[1, 'asc']] : [[attribut.order, 'asc']],
+            columnDefs: columnDefs,
+            columns: configTabel[id],
+        };
+        var dt_instance = $("#" + id).DataTable(options);
+        var panel = $("#displayOptions-dt-navigasi");
+        if(panel.length > 0){
+            var searchBar = panel.find('.table-search input');
+            var lengthMenu = panel.find('.length-menu a');
+            searchBar.keyup(function(){
+                var val = $(this).val();
+                console.log(val)
+                dt_instance.search(val).draw();
+            });
+
+            lengthMenu.click(function(e){
+                e.preventDefault();
+                var length = $(this).text();
+                dt_instance.page.len(length).draw();
+            });
+        }
+        setInstance('dataTables', id, dt_instance);
+
+    }
+    $(document).ready(function(){
+        if(!$().dataTable && ! $().DataTable) return;
+
+        $('.dataTable').initDatatable();
+    });
+
+    async function load_skrip(path_skrip){
+        await fetch(path + 'ws/uihelper/scriptloader?path=' + path_skrip, { method: 'GET' }).then(res => res.json()).then(res => {
+            if (!res.data) {
+                endLoading();
+                return;
+            }
+
+            $('body').append(res.data)
+            endLoading();
+        }).catch(err => { endLoading() });
     }
     return this;
 }();

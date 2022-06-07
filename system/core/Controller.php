@@ -59,6 +59,31 @@ class CI_Controller {
 	private static $instance;
 
 	/**
+	 * CI_Loader
+	 *
+	 * @var	CI_Loader
+	 */
+	public $load;
+	/**
+	 * CI_Loader
+	 *
+	 * @var	CI_DB_query_builder
+	 */
+	public $db;
+	/**
+	 * CI_Loader
+	 *
+	 * @var	CI_Session
+	 */
+	public $session;
+	/**
+	 * CI_Loader
+	 *
+	 * @var	Datatables
+	 */
+	public $datatables;
+
+	/**
 	 * Class constructor
 	 *
 	 * @return	void
@@ -152,22 +177,13 @@ class CI_Controller {
 	function add_cachedJavascript($js, $type = 'file', $pos = "body:end", $data = array())
     {
         try {
-            if ($type == 'file') {
-                ob_start();
-                if (!empty($data))
-                    extract($data);
-
-                include_once get_path(ASSETS_PATH . 'js/' . $js . '.js');
-            }
             $params = array(
-                'script' => $type == 'file' ? ob_get_contents() : $js,
+                'script' => $type == 'file' ? $this->load->js($js, $data, true) : $js,
                 'type' => 'inline',
                 'pos' => 'body:end'
             );
             $this->params['extra_js'][] = $params;
-            if ($type == 'file')
-                ob_end_clean();
-
+			
         } catch (\Throwable $th) {
             print_r($th);
         }
@@ -212,6 +228,14 @@ class CI_Controller {
 				'type' => $tipe
 			);
 		}
+	}
+
+	function getContentView ($path, $data = [], $return = false){
+		$html = $this->load->view(get_path( $path . '.php'), $data, true);
+		if($return)
+			return $html;
+		else
+			echo $html;
 	}
 	public function render(){
 		foreach($this->views as $view){

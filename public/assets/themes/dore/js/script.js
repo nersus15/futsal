@@ -44,9 +44,7 @@ function loadStyle(href, callback) {
   
     $(".theme-color[data-theme='" + theme + "']").addClass("active");
     
-    var baseurl = location.hostname == 'localhost' ? location.origin + location.pathname : location.origin;
-    console.log(baseurl);
-    loadStyle(baseurl + '/public/assets/vendor/dore/css/' + theme, onStyleComplete);
+    loadStyle(path + '/public/assets/themes/dore/css/' + theme, onStyleComplete);
     function onStyleComplete() {
       setTimeout(onStyleCompleteDelayed, 300);
     }

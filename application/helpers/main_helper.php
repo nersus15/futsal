@@ -6,18 +6,20 @@ use \Firebase\JWT\JWT;
 
 
 if (!method_exists($this, 'response')) {
-    function response($message = '', $code = 200, $type = 'succes', $format = 'json')
+    function response($message = '', $code = 200, $type = 'success', $format = 'json')
     {
         http_response_code($code);
         $responsse = array();
         if ($code != 200)
             $type = 'Error';
-    
-        if (is_string($message))
+
+        if(is_object($message))
+            $message = (array) $message;
+        if (is_string($message) || is_int($message) || is_bool($message))
             $responsse['message'] = $message;
         else
             $responsse = $message;
-    
+
         if (!isset($message['type']))
             $responsse['type'] = $type;
         else
@@ -28,7 +30,7 @@ if (!method_exists($this, 'response')) {
             echo '<script> var path = "' . base_url() . '"</script>';
             echo $responsse['message'];
         }
-        die;
+        exit();
     }
 }
 
@@ -205,7 +207,7 @@ if (!method_exists($this, 'verify_token')) {
 }
 
 if (!method_exists($this, 'addResourceGroup')) {
-    function addResourceGroup($name, $type = null, $pos = null)
+    function addResourceGroup($name, $type = null, $pos = null, $return = true)
     {
         $type = empty($type) ? 'semua' : $type;
         $pos = empty($pos) ? 'head' : $pos;
@@ -250,16 +252,21 @@ if (!method_exists($this, 'addResourceGroup')) {
                 }
             }
         }
-        return $resourceText;
+        if($return)
+            return $resourceText;
+        else
+            echo $resourceText;
     }
 }
 
 if (!method_exists($this, 'include_view')) {
     function include_view($path, $data = null)
     {
-        if (is_array($data))
-            extract($data);
-        include get_path(APPPATH . 'views/' . $path . '.php');
+        // if (is_array($data))
+        //     extract($data);
+        // include get_path(APPPATH . 'views/' . $path . '.php');
+        $ci =& get_instance();
+        echo $ci->load->view(get_path($path) .".php", $data, true);
     }
 }
 
@@ -293,5 +300,74 @@ if(!method_exists($this, 'get_path')){
     function get_path($path){
         return DIRECTORY_SEPARATOR == '/' ? str_replace('\\', '/', $path) : str_replace('/', '\\', $path);
 
+    }
+}
+
+if ( ! function_exists('attribut_ke_str'))
+{
+	function attribut_ke_str($attribute, $delimiter = ' ', $dg_quote = true)
+	{
+		$str = '';
+		if (is_array($attribute)) {
+			foreach ($attribute as $key => $value) {
+				if ($value !== '0' && empty($value))
+					$str .= $key;
+				else {
+					$str .= $key . '=';
+					if (is_array($value))
+						$value = implode(' ', $value);
+					$str .= $dg_quote ? '"' . $value . '"' : $value;
+				}
+				$str .= $delimiter;
+			}
+			
+			$str = substr($str, 0, strlen($str) - strlen($delimiter));
+		}
+		return $str;
+	}
+}
+
+if ( ! function_exists('str_ke_attribut'))
+{
+	function str_ke_attribut($str, $delimiter = '/[=\n]/')
+	{
+		$attribute = array();
+		
+		$a = preg_split($delimiter, $str, -1, PREG_SPLIT_NO_EMPTY);
+		for ($i = 0; $i < count($a); $i+=2) {
+			$attribute[$a[$i]] = $a[$i+1];
+		}
+		return $attribute;
+	}
+}
+
+if (!function_exists('toolbar_items')) {
+    function toolbar_items($toolbar, &$items = array()) {
+        if ((isset($toolbar['tipe']) && ($toolbar['tipe'] == 'link' || $toolbar['tipe'] == 'dropdown')) || isset($toolbar['href'])) {
+            $items[] = $toolbar;
+            return;
+        }
+        if(!is_array($toolbar))
+            return;
+        
+        foreach ($toolbar as $t) {
+            if (!is_array($t))
+                continue;
+            
+            foreach ($t as $n) {
+                toolbar_items($n, $items);
+            }
+        }
+    }
+}
+
+if(!function_exists('load_script')){
+    function load_script($script, $data = array(), $return = false){
+        $ci =& get_instance();
+        $_script = $ci->load->js($script, $data, true);
+        if($return)
+            return $_script;
+        else 
+            echo $_script;
     }
 }
