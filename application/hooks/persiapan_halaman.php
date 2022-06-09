@@ -19,9 +19,13 @@ class PersiapanHalaman {
 
             $ci->session->set_userdata('login', $userdata);
         }
-        $allowedPermission = $userdata['permission'];
+        $allowedPermission = [];
+        if(isset($userdata['permission']) && !empty($userdata['permission']))
+            $allowedPermission = $userdata['permission'];
+
         $allowedPermission[] = 6;
         $allowedPermission[] = 3;
+        $allowedPermission[] = 5;
 
         
         $allMenu = $ci->db->select('menu.*, menu_permission.permission')
@@ -45,7 +49,6 @@ class PersiapanHalaman {
         $this->menuWithCurrentUrl = $menuWithCurrentUrl;
         list($harusLogin, $perm)= $this->mustLogin($menuWithCurrentUrl);
 
-        log_message("DEBUG", "=== User Permission ===". print_r($userdata['permission'], true));
         log_message("DEBUG", "=== Allowed Permission ===". print_r($allowedPermission, true));
         log_message("DEBUG", "=== All Menu With Allowed Permission ===". print_r($allMenu, true));
         log_message("DEBUG", "=== Menu (Current Url) ===". print_r($menuWithCurrentUrl, true));

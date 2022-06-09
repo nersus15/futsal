@@ -9,7 +9,7 @@ class Permission extends CI_Controller
     {
         $perm = $this->db->select('id, nama')->get('permission')->result();
         $tabel = $this->getContentView('component/datatables/datatables.responsive', array(
-            'dtTitle' => 'Daftar Navigasi yang Tersedia',
+            'dtTitle' => 'Daftar Permission yang Tersedia',
             'dtid' => 'dt-navigasi',
             'head' => array(
                '','Nama', 'Deskripsi'
@@ -77,7 +77,7 @@ class Permission extends CI_Controller
             'navbar' => 'component/navbar/navbar.dore',
             'sidebar' => 'component/sidebar/sidebar.dore',
             'sembunyikanSidebar' => true,
-            'pageName' => 'Navigasi',
+            'pageName' => 'Permission',
             'navbarConf' => array(
                 'adaSidebar' => true,
                 'adaUserMenu' => true,

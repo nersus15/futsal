@@ -9,4 +9,15 @@ class User extends CI_Controller{
         list($input) = $this->authentication->persiapan($_POST);
         $this->authentication->login($input);
     }
+    function logout_get(){
+        if (!is_login())
+            response(['message' => 'Anda belum login', 'type' => 'error'], 401);
+
+        try {
+            $this->session->unset_userdata('login');
+            response(['message' => 'Anda berhasil logout', 'type' => 'success'], 200);
+        } catch (\Throwable $th) {
+            response(['message' => 'Gagal, Terjadi kesalahan', 'type' => 'error', 'err' => $th], 500);
+        }
+    }
 }
