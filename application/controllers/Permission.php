@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Navigasi extends CI_Controller
+class Permission extends CI_Controller
 {
     public function __construct() {
         parent::__construct();
@@ -12,12 +12,12 @@ class Navigasi extends CI_Controller
             'dtTitle' => 'Daftar Navigasi yang Tersedia',
             'dtid' => 'dt-navigasi',
             'head' => array(
-               '','Nama', 'URL', 'level', 'Jenis', 'Aktif', 'Hak Akses'
+               '','Nama', 'Deskripsi'
             ),
-            'skrip' => 'dtconfig/dt_navigasi', //wajib
+            'skrip' => 'dtconfig/dt_permission', //wajib
             'skrip_data' => array('id' => 'dt-navigasi'),
             'options' => array(
-                'source' => 'ws/uihelper/navigasi',
+                'source' => 'ws/uihelper/permission',
                 'search' => 'false',
                 'select' => 'multi', //false, true, multi
                 'checkbox' => 'true',
@@ -27,66 +27,21 @@ class Navigasi extends CI_Controller
                 'auto-refresh' => '20000'
             ),
             'form' => array(
-                'id' => 'form-navigasi',
+                'id' => 'form-permission',
                 'path' => '',
-                'nama' => 'Form Navigasi',
-                'skrip' => 'forms/form-navigasi',
+                'nama' => 'Form Permission',
+                'skrip' => 'forms/form-permission',
                 'formGenerate' => array(
                     [
-                        "label" => 'Nama Navigasi', "placeholder" => 'Masukkan navigasi',
+                        "label" => 'Nama Permission', "placeholder" => 'Masukkan Permission',
                         "type" => 'text', "name" => 'nama', "id" => 'nama', "attr" => 'required'
                     ],
                     [
-                        "label" => 'Url', "placeholder" => '',
-                        "type" => 'text', "name" => 'url', "id" => 'url', "attr" => 'required'
-                    ],
-                    [
-                        "label" => 'Level', "placeholder" => 'Level',
-                        "type" => 'select', "name" => 'level', "id" => 'level', "attr" => 'required', 'options' => array(
-                            '1' => array('text' => 1), '2' => array('text' => 2)
-                        )
-                    ],
-                    [
-                        "label" => 'Induk', "placeholder" => '',
-                        "type" => 'select', "name" => 'induk', "id" => 'induk', "attr" => 'required', 'fgClass'  => 'd-none'
-                    ],
-                    [
-                        "label" => 'Jenis', "placeholder" => 'Jenis Navigasi',
-                        "type" => 'select', "name" => 'jenis', "id" => 'jenis', "attr" => 'required', 'options' => array(
-                            'sidebar' => array('text' => 'sidebar'), 'navbar' => array('text' => 'navbar'),
-                            'url' => array('text' => 'url'),
-                            'page' => array('text' => 'Halaman'),
-                        )
-                        
-                    ],
-                    [
-                        "label" => 'Icon', "placeholder" => 'Icon',
-                        "type" => 'text', "name" => 'icon', "id" => 'icon'
-                    ],
-                    [
-                        'type' => 'custom', 'text' => "<div><h5> Hak Akses </h5><div class='row' id='permission-wrapper'></div></div>"
-                    ],
-                    [
-                        'type' => 'custom', 'text' => " <div class='separator mb-2'>Permission Baru</div>
-                        <div id='add-permission-wrapper' class='row mb-4'>
-                            <div class='col-12'>
-                                <div class='form-group'>
-                                    <label> Nama Permission yang baru </label>
-                                    <input class='form-control' id='perm_name' type='text' name='perm_name'>
-                                    <p class='text-danger' id='perm-warning'></p>
-                                </div>
-                                <div class='form-group'>
-                                    <label> Deskripsi Permission yang baru </label>
-                                    <input class='form-control' id='perm_desc' type='text' name='desc_perm'>
-                                </div>
-                            </div>
-                            <div class='col-12' style='text-align:center;'>
-                                <button type='button' style='background-color: lightgray' class='btn btn-xs' id='add-permission'>Tambah Permission </button>
-                            </div>
-                        </div>"
+                        "label" => 'Deskripsi', "placeholder" => '',
+                        "type" => 'textarea', "name" => 'desc', "id" => 'desc'
                     ],
                 ),
-                'posturl' => 'ws/uihelper/navigasi',
+                'posturl' => 'ws/uihelper/permission',
                 'updateurl' => '',
                 'deleteurl' => '',
                 'buttons' => array(

@@ -89,6 +89,7 @@ uihelper = function () {
                 '<div id="alert_danger" style="display: none" class="alert alert-danger" role="alert"> </div>' +
                 '<div id="alert_success" style="display: none" class="alert alert-success" role="alert"> </div>' +
                 inputEl +
+                '<div class="separator mb-5"></div>' +
                 buttonsEl +
                 '</form>' +
                 opt.modalBody.extra;
@@ -423,7 +424,7 @@ uihelper = function () {
         var body = "";
         var foot = "";
         var stored = null;
-        if(!opt.clickToClose)
+        if(opt.clickToClose == undefined)
             opt.clickToClose = true;
             
         var kembalian = null;
@@ -447,19 +448,21 @@ uihelper = function () {
             body += this.tambahkanBody(opt.type, opt);
 
         if (opt.modalFooter) {
+            foot = '<div class="modal-footer">';
             opt.modalFooter.forEach(el => {
                 var id = !el.id ? "" : el.id;
                 var data = el.data ? el.data : "";
                 foot += '<button ' + data + ' type = "' + el.type + '" id ="' + id + '" class ="' + el.class + '">' + el.text + '</button>';
             });
+            foot += '</div>';
         }
 
         if (!opt.modalPos)
             opt.modalPos = 'def';
 
         var modalTemplate = opt.modalPos == 'def' ?
-            '<div class="modal fade" id="' + modalId + '" tabindex="-1" role="dialog">' +
-            '<div class="modal-dialog ' + opt.size + '" role="document">' +
+            '<div style="overflow-y: scroll" class="modal fade" id="' + modalId + '" tabindex="-1" role="dialog">' +
+            '<div class="modal-dialog ' + opt.size + ' dialog-scrollable" role="document">' +
             '<div class="modal-content">' +
             '<div class="modal-header d-block">' +
             '<div class = "d-flex">' +
@@ -470,15 +473,14 @@ uihelper = function () {
             '</div>' +
             '<h6 id="modal-subtitle" class = "modal-title text-muted">' + opt.modalSubtitle + '</h6>' +
             '</div>' +
-            '<div class="modal-body">' + body + '</div>' +
-            '<div class="modal-footer">' + foot + '</div>' +
+            '<div class="modal-body">' + body + '</div>' + foot +
             '</div>' +
             '</div>' +
             '</div>'
             :
             opt.modalPos == 'left' ?
-                '<div class="modal fade modal-lef" id="' + modalId + '" tabindex="-1" role="dialog">' +
-                '<div class="modal-dialog ' + opt.size + '" role="document">' +
+                '<div style="overflow-y:scroll" class="modal fade modal-lef" id="' + modalId + '" tabindex="-1" role="dialog">' +
+                '<div class="modal-dialog ' + opt.size + ' dialog-scrollable" role="document">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header d-block">' +
                 '<div class = "d-flex">' +
@@ -489,14 +491,13 @@ uihelper = function () {
                 '</div>' +
                 '<h6 id="modal-subtitle" class = "modal-title text-muted">' + opt.modalSubtitle + '</h6>' +
                 '</div>' +
-                '<div class="modal-body">' + body + '</div>' +
-                '<div class="modal-footer">' + foot + '</div>' +
+                '<div class="modal-body">' + body + '</div>' + foot +
                 '</div>' +
                 '</div>' +
                 '</div>'
                 :
-                '<div class="modal fade modal-right" id="' + modalId + '" tabindex="-1" role="dialog">' +
-                '<div class="modal-dialog ' + opt.size + '" role="document">' +
+                '<div style="overflow-y: scroll" class="modal fade modal-right" id="' + modalId + '" tabindex="-1" role="dialog">' +
+                '<div class="modal-dialog ' + opt.size + ' dialog-scrollable" role="document">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header d-block">' +
                 '<div class = "d-flex">' +
@@ -507,8 +508,7 @@ uihelper = function () {
                 '</div>' +
                 '<h6 id="modal-subtitle" class = "modal-title text-muted">' + opt.modalSubtitle + '</h6>' +
                 '</div>' +
-                '<div class="modal-body">' + body + '</div>' +
-                '<div class="modal-footer">' + foot + '</div>' +
+                '<div class="modal-body">' + body + '</div>' + foot +
                 '</div>' +
                 '</div>' +
                 '</div>'
@@ -523,7 +523,6 @@ uihelper = function () {
 
         if (opt.tulis)
             $(wrapper).append(modalTemplate);
-
         if (opt.open && !opt.clickToClose)
             $("#" + modalId).modal({ backdrop: 'static', keyboard: false }, 'show');
         else if (opt.open && opt.clickToClose)
@@ -1021,6 +1020,16 @@ uihelper = function () {
                 var length = $(this).text();
                 dt_instance.page.len(length).draw();
             });
+        }
+
+        if(attribut.autoRefresh != undefined && attribut.autoRefresh !=  false){
+            var interval = 2000;
+            if(attribut.autoRefresh != true){
+                interval = parseInt(attribut.autoRefresh);
+            }
+            setInterval(function(){
+                dt_instance.ajax.reload();
+            }, interval);
         }
         setInstance('dataTables', id, dt_instance);
 

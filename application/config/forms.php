@@ -85,3 +85,18 @@ $config['form']['transaksi_keluar'] = array(
     'jumlah' => 'jumlah'
 
 );
+
+
+$config['form']['navigasi-menu'] = array(
+    'id' => 'id',
+    'nama' =>  'nama',
+    'level' => 'lvl',
+    'induk' => 'parent',
+    'jenis' => 'parrent_element',
+    'icon' => 'icon',
+    'aktif' => 'aktif',
+    'url' => 'url',
+);
+$config['form']['navigasi-permission'] = array(
+    'permission' =>  'permission',
+);

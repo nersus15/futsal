@@ -523,5 +523,5 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 $config['web_services'] = [
-    'ws/user/login', 'ws/user/logout', 'ws/uihelper/form', 'ws/uihelper/skrip'
+    'ws/user/login', 'ws/user/logout', 'ws/uihelper/form', 'ws/uihelper/skrip',
 ];

@@ -11,9 +11,10 @@
     else
         echo "<script>" . load_script($skrip, $skrip_data, true) . "</script>";
 
+    if(!isset($perpage) && isset($pages) && !empty($pages)) $perpage = 10;
 
     if(!isset($form)) $form = array('formid'=>'form-'. $dtid, 'posturl' => '', 'path' => '', 'skrip' => '', 'formGenerate' => '');
-    else$form = array_merge(array('formid'=>'form-'. $dtid, 'posturl' => '', 'path' => '', 'skrip' => '', 'formGenerate' => '', 'nama' => '', 'skripVar' => []), $form);
+    else$form = array_merge(array('formid'=>'form-'. $dtid, 'posturl' => '', 'path' => '', 'skrip' => '', 'formGenerate' => '', 'nama' => '', 'skripVar' => (object)[]), $form);
 ?>
 <div class="row mb-4 mt-3">
     <div class="col-12 mb-4">
@@ -83,8 +84,7 @@
 
         if(!form.buttons){
             form.buttons = [
-                { type: 'button', text: 'Daftar', id: "daftar", class: "btn btn-empty" },
-                { type: 'submit', text: 'Masuk', id: "login", class: "btn btn btn-primary" }
+                
             ];
         }
 
@@ -97,6 +97,7 @@
             modalId: modalid,
             wrapper: "body",
             opt: {
+                clickToClose: false,
                 type: form.path ? 'form-custom' : 'form',
                 ajax: true,
                 rules: [
@@ -112,55 +113,64 @@
                 },
                 submitSuccess: function (res) {
                     endLoading();
-                    defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss')
-                    makToast(defaultCnfigToast);
+                    res = JSON.parse(res);
+                    defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss');
+                    defaultCnfigToast.message = res.message;
+                    console.log(res);
+                    setTimeout(function(){
+                        $("#" + modalid).modal('hide');
+                    }, 1000);
+                    makeToast(defaultCnfigToast);
+                    setTimeout(function(){
+                       window.location.reload();
+                    }, 2000);
+
                 },
                 submitError: function(res){
                     endLoading();
+                    if(typeof(res) == 'string')
+                        res = JSON.parse(res);
+
                     if (res.message)
                         defaultCnfigToast.message = res.message;
                     else
                         defaultCnfigToast.message = "Sumbit Failed";
 
                     defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss')
-                    makToast(defaultCnfigToast);
+                    makeToast(defaultCnfigToast);
+                   
                 },
                 open: true,
                 destroy: true,
                 modalPos: 'right',
                 saatBuka: (innerOpt) => {
-                    console.log(!form.path);
-                    if(!form.path){
-                        var datatable = getInstance('dataTables', dtid);
-                        if(!datatable) return;
+                    var datatable = getInstance('dataTables', dtid);
+                    if(!datatable) return;
 
-                        var url = path + 'ws/uihelper/skrip/?s=' + form.skrip;
-                        if(innerOpt.mode == 'edit'){
-                            var rowData = datatable.rows({selected:true}).data();
-                            var editedData =rowData[0];
-                            if(editedData)
-                                url += "&ed=" + JSON.stringify(editedData);
+                    var url = path + 'ws/uihelper/skrip?s=' + form.skrip;
+                    if(innerOpt.mode == 'edit'){
+                        var rowData = datatable.rows({selected:true}).data();
+                        var editedData =rowData[0];
+                        if(editedData)
+                            url += "&ed=" + JSON.stringify(editedData);
 
-                        }
-
-                        if(form.skripVar)
-                            url += "&sv=" + JSON.stringify(form.skripVar);
-
-
-                        var formEl = fetch(url, {method: 'GET', })
-                        .then(res => {
-                            if (res.status != 200)
-                                return;
-                            else
-                                return res.json()
-                        }).then(res => {
-                            if (!res)
-                                return;
-                            else {
-                               $("#" + modalid).after(res.skrip);
-                            }
-                        });
                     }
+                    if(form.skripVar)
+                        url += "&sv=" + JSON.stringify(form.skripVar);
+
+                    var formEl = fetch(url, {method: 'GET', })
+                    .then(res => {
+                        if (res.status != 200)
+                            return;
+                        else
+                            return res.json()
+                    }).then(res => {
+                        if (!res)
+                            return;
+                        else {
+                            $("#" + modalid).after(res.skrip);
+                        }
+                    });
                 },
                 saatTutup: () => {
                 },
@@ -179,10 +189,10 @@
         };
         if(addButton.length > 0){
             addButton.click(function(){
+                form.skripVar.mode = 'baru';
+                form.skripVar.formid = modalConfig.opt.formOpt.formId;
                 if(form.path){
-                    var url = path + 'ws/uihelper/form/?f=' + form.path + '&s=' + form.skrip;
-                    if(form.skripVar)
-                        url += "&sv=" + JSON.stringify(form.skripVar);
+                    var url = path + 'ws/uihelper/form/?f=' + form.path 
 
                     var formEl = fetch(url, {
                         method: 'GET',
@@ -212,18 +222,22 @@
                 if(!datatable) return;
 
                 modalConfig.opt.mode = 'edit';
+                form.skripVar.formid = modalConfig.opt.formOpt.formId;
 
                 var rowData = datatable.rows({selected:true}).data();
-                if(rowData.length <= 0)
+                if(rowData.length <= 0){
                     alert("pilih salah satu data untuk melanjutkan");
-                else if(rowData.length > 1)
-                    alert("Hanya bisa mengedit satu data dalam satu waktu");
+                    return;
+                }
+                else if(rowData.length > 1){
+                    alert("Hanya bisa mengedit satu data dalam satu waktu"); 
+                    return;
+                }
                 var editedData =rowData[0];
                 var url = path + 'ws/uihelper/form/?f=' + form.path + '&s=' + form.skrip + "&ed=" + JSON.stringify(editedData);
 
-                if(form.skripVar)
-                    url += "&sv=" + JSON.stringify(form.skripVar);
-
+                form.skripVar['mode'] = 'edit';
+                
                 if(form.path){
                     var formEl = fetch(url, {
                         method: 'GET',
@@ -253,17 +267,28 @@
                 var datatable = getInstance('dataTables', dtid);
                 var rowData = datatable.rows({selected:true}).data();
 
-                if(rowData.length <= 0)
+                if(rowData.length <= 0){
                     alert("pilih salah satu data untuk melanjutkan");
-
+                    return;
+                }
+                    
                 if(!form.deleteurl)
                     form.deleteurl = form.posturl;
-                var ids = rowData.map(e => e.id);
-                // console
+                var ids = [];
+                var names = [];
+                for (let i = 0; i < rowData.length; i++) {
+                   ids.push(rowData[i].id);
+                   names.push(rowData[i].nama);
+                }
+
+                confirm("Yakin Ingin Menghapus data dengen id " + ids.join(', ') + "(" + names.join(', ') + ")")
+
+
                 fetch(form.deleteurl, {
                     method: 'POST',
                     body: JSON.stringify({
                         '_http_method': 'delete',
+                        'ids': ids,
                     })
                 }).then(res => {
                     if (res.status != 200)
@@ -273,7 +298,20 @@
                 }).then(res => {
                     if (!res)
                         return;
+                        
                     else {
+                        if(typeof(res) == 'string')
+                            res = JSON.parse(res);
+
+                        if (res.message)
+                            defaultCnfigToast.message = res.message;
+                        else
+                            defaultCnfigToast.message = "Sumbit Berhasil";
+
+                        defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss')
+                        makeToast(defaultCnfigToast);
+                        var dt = getInstance('dataTables', dtid);
+                        dt.ajax.reload();
                     }
                 });
             

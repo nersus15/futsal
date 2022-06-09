@@ -8,6 +8,8 @@ class Datatables {
     private $search_option;
     private $all_data;
     private $filterred_data;
+    private $reCount = false;
+    private $isFilterred = false;
     /**
      * @var CI_DB_query_builder
      * 
@@ -32,6 +34,7 @@ class Datatables {
      * @param CI_DB_query_builder $query Query sql database
      * @return Void
      */
+    
     function setQuery($query){
         $searchable = [];
         $query->select($this->selection);
@@ -108,6 +111,12 @@ class Datatables {
             $data = $callback($this->data, $data, $this->header, $this->query);
         }
 
+        if($this->reCount){
+            $this->all_data = count($data);
+            if(empty($keyword))
+                $this->filterred_data = count($data);
+        }
+
         $this->reset();
         return (object) array(
             'draw' => $_GET['draw'], // Ini dari datatablenya    
@@ -133,11 +142,14 @@ class Datatables {
      * @param Array $dataMap Data after compile
      * @param Array $header header for response
      * @param CI_DB_query_builder $query Query sql database
-     * @return Void
+     * @return Function
      */
 
     function set_resultHandler($callback){
         $this->resultHandler = $callback;
+        return function(){
+           $this->reCount = true;
+        };
     }
 
     /**
@@ -155,5 +167,7 @@ class Datatables {
         $this->resultHandler = null;
         $this->keyword = null;
         $this->search_option = null;
+        $this->reCount = false;
+        $this->isFilterred = false;
     }
 }
