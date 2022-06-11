@@ -1054,7 +1054,9 @@ uihelper = function () {
         function createProto($dt){
             dt_instance.__proto__.api = $dt.api;
         }
-       
+        setInstance('dataTables', id, dt_instance);
+
+    }
     $(document).ready(function(){
         if(!$().dataTable && ! $().DataTable) return;
 
