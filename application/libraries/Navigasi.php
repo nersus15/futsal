@@ -86,13 +86,15 @@
             
             $header = array(
                 'id' => array('searchable' => false),
+                'icon' => array('searchable' => false),
                 'nama' => array('searchable' => 'menu.nama'),
                 'url' => array('searchable' => true),
                 'level' => array('searchable' => 'lvl', 'field' => 'lvl'),
                 'jenis' => array('searchable' => 'parrent_element', 'field' => 'parrent_element'),
                 'aktif' => array('searchable' => true),
                 'nama_permission' => array('searchable' => 'permission.nama', 'field' => 'nama_permission'),
-                'id_permission' => array('searchable' => false, 'field' => 'id_permission')
+                'id_permission' => array('searchable' => false, 'field' => 'id_permission'),
+                'desc' => array('searchable' => 'menu.deskripsi ', 'field' => 'deskripsi'),
             );
             
 
@@ -110,6 +112,10 @@
             $menu = fieldmapping('navigasi-menu', $post, array(
                 'id' => random(8),
                 'aktif'=> 1,
+            ), array(
+                'deskripsi' => array(
+                    '' => '#unset'
+                )
             ));
             $permission = fieldmapping('navigasi-permission', $post);
             $permission['menu'] = $menu['id'];

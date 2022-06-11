@@ -21,6 +21,9 @@ $config['themes'] = array(
         'css' => array(
             array('pos' => 'head', 'src' => 'vendor/bootstrap/css/bootstrap.min.css'),
             array('pos' => 'head', 'src' => 'vendor/kamscore/css/main.css'),
+            array('pos' => 'head', 'src' => 'vendor/fontawesome/css/all.min.css'),
+            array('pos' => 'head', 'src' => 'vendor/icon/iconsmind/style.css' ),
+            array('pos' => 'head', 'src' => 'vendor/icon/simple-line-icons/css/simple-line-icons.css')
         )
     ), 
 

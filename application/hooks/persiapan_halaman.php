@@ -12,7 +12,10 @@ class PersiapanHalaman {
         $userdata = $ci->session->userdata('login');
         if(!is_null($userdata)){
             // Sync user permission from database to app
+            // store cache
+            $ci->db->cache_on();
             $userPerm = $ci->db->select('permission_id')->where('username', $userdata['username'])->get('user_permission')->result();
+            $ci->db->cache_off();
             $userdata['permission'] = [];
             foreach($userPerm as $v)
                 $userdata['permission'][] = $v->permission_id;
@@ -27,7 +30,7 @@ class PersiapanHalaman {
         $allowedPermission[] = 3;
         $allowedPermission[] = 5;
 
-        
+        $ci->db->cache_on();        
         $allMenu = $ci->db->select('menu.*, menu_permission.permission')
             ->join('menu_permission',  'menu_permission.menu= menu.id')
             ->where('aktif', 1)
@@ -35,6 +38,8 @@ class PersiapanHalaman {
             ->order_by('menu.bobot', 'ASC')
             ->get('menu')
             ->result();
+        $ci->db->cache_off();      
+        
         
 
         $current_routes = [];
@@ -54,7 +59,7 @@ class PersiapanHalaman {
         log_message("DEBUG", "=== Menu (Current Url) ===". print_r($menuWithCurrentUrl, true));
         if(!$this->isWebService()){
             if(is_null($perm)){
-                $ci->load->view('errors/html/error_404', ['heading' => '404 Page Not Found', 'message' => 'The page you requested was not found.']);
+                $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
             }
 
             $ci->session_info = array(
@@ -83,20 +88,54 @@ class PersiapanHalaman {
 
             $m = array();
             foreach($allMenu as $menu){
-                if($menu->permission)
+                // if($menu->permission)
                 if($menu->aktif == 1 && !isset($m[$menu->id])){
-                    $ci->session_info['menus'][$menu->id] = array(
-                        'induk' => $menu->parent,
-                        'lvl' => $menu->lvl,
-                        'text' => $menu->nama,
-                        'icon' => $menu->icon,
-                        'link' => $menu->url,
-                        'parrent_element' => $menu->parrent_element,
-                        'active' => $this->currentUrl == $menu->url
-                    );
+                    if(!empty($menu->parent)){
+                        if(!isset($ci->session_info['subMenus'])){
+                            $ci->session_info['subMenus'] = [];
+                        }
+                        if(!isset($ci->session_info['subMenus'][$menu->parent])){
+                            $ci->session_info['subMenus'][$menu->parent] = array(
+                                'induk' => $menu->parent,
+                                'menus' =>array(
+                                    array(
+                                        'lvl' => $menu->lvl,
+                                        'text' => $menu->nama,
+                                        'icon' => $menu->icon,
+                                        'link' => $menu->url,
+                                        'parrent_element' => $menu->parrent_element,
+                                        'active' => $this->currentUrl == $menu->url
+                                    )
+                                )
+                            );
+                        }else{
+                            $ci->session_info['subMenus'][$menu->parent]['menus'][] = array(
+                                'lvl' => $menu->lvl,
+                                'text' => $menu->nama,
+                                'icon' => $menu->icon,
+                                'link' => $menu->url,
+                                'parrent_element' => $menu->parrent_element,
+                                'active' => $this->currentUrl == $menu->url
+                            );
+                        }
+                        
+                    }else{
+                        $ci->session_info['menus'][$menu->id] = array(
+                            'id' => $menu->id,
+                            'induk' => $menu->parent,
+                            'lvl' => $menu->lvl,
+                            'text' => $menu->nama,
+                            'icon' => $menu->icon,
+                            'link' => $menu->url,
+                            'parrent_element' => $menu->parrent_element,
+                            'active' => $this->currentUrl == $menu->url
+                        );
+                    }
                 }
 
             }
+            
+            log_message("DEBUG", " ======= MENU this PAGE " . print_r($ci->session_info, true));
         }else{
             // TODO: handle webservice path
         }

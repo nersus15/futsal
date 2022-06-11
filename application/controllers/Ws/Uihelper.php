@@ -56,7 +56,7 @@ class Uihelper extends CI_Controller
         $this->datatables->setHeader($header)
             ->addSelect('permission.*')
             ->setQuery($q);
-        $data =  $this->datatables->getData();
+        $data =  $this->datatables->getData('object', true);
         response($data);
     }
 

@@ -12,7 +12,7 @@ class Navigasi extends CI_Controller
             'dtTitle' => 'Daftar Navigasi yang Tersedia',
             'dtid' => 'dt-navigasi',
             'head' => array(
-               '','Nama', 'URL', 'level', 'Jenis', 'Aktif', 'Hak Akses'
+               '','Nama', 'URL', 'level', 'Jenis', 'Icon', 'Aktif', 'Hak Akses', 'Deskripsi'
             ),
             'skrip' => 'dtconfig/dt_navigasi', //wajib
             'skrip_data' => array('id' => 'dt-navigasi'),
@@ -24,7 +24,8 @@ class Navigasi extends CI_Controller
                 'change' => 'false',
                 'dom' => 'rtip',
                 'responsive' => 'true',
-                'auto-refresh' => '20000'
+                'auto-refresh' => '30000',
+                'deselect-on-refresh' => 'true',
             ),
             'form' => array(
                 'id' => 'form-navigasi',
@@ -33,8 +34,12 @@ class Navigasi extends CI_Controller
                 'skrip' => 'forms/form-navigasi',
                 'formGenerate' => array(
                     [
-                        "label" => 'Nama Navigasi', "placeholder" => 'Masukkan navigasi',
+                        "label" => 'Nama Navigasi', "placeholder" => 'Masukkan nama navigasi',
                         "type" => 'text', "name" => 'nama', "id" => 'nama', "attr" => 'required'
+                    ],
+                    [
+                        "label" => 'Deskripsi Navigasi', "placeholder" => 'Masukkan deskripsi navigasi',
+                        "type" => 'textarea', "name" => 'deskripsi', "id" => 'deskripsi'
                     ],
                     [
                         "label" => 'Url', "placeholder" => '',
@@ -113,15 +118,14 @@ class Navigasi extends CI_Controller
             )
         ), true);
         $data = array(
-            'resource' => array('main', 'dore', 'icon', 'datatables', 'form'),
+            'resource' => array('main', 'dore','datatables', 'form'),
             'contentHtml' => array($tabel),
             'data_content' => array(
                
             ),
-            'adaThemeSelector' => true,
+            'adaThemeSelector' => false,
             'navbar' => 'component/navbar/navbar.dore',
             'sidebar' => 'component/sidebar/sidebar.dore',
-            'sembunyikanSidebar' => true,
             'pageName' => 'Navigasi',
             'navbarConf' => array(
                 'adaSidebar' => true,

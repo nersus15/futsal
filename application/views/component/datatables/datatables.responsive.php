@@ -16,6 +16,11 @@
     if(!isset($form)) $form = array('formid'=>'form-'. $dtid, 'posturl' => '', 'path' => '', 'skrip' => '', 'formGenerate' => '');
     else$form = array_merge(array('formid'=>'form-'. $dtid, 'posturl' => '', 'path' => '', 'skrip' => '', 'formGenerate' => '', 'nama' => '', 'skripVar' => (object)[]), $form);
 ?>
+<style>
+    tr.selected{
+        background-color: white !important;
+    }
+</style>
 <div class="row mb-4 mt-3">
     <div class="col-12 mb-4">
         <?php 

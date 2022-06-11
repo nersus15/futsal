@@ -974,18 +974,24 @@ uihelper = function () {
         var id = this.attr('id');
         var file_skrip_dtconfig = attribut.skrip;
         var skrip_dtconfig = null;
-
+        var selected_rows = [];
+        var selectRow = attribut.select == undefined ? true : attribut.select;
         if(!configTabel[id]){
             alert("Config Tabel " + id + " tidak ditemukan");
         }
     
         var columnDefs = [];
+        var autoDeselect = attribut.deselectOnRefresh == undefined ? true : attribut.deselectOnRefresh;
         if(attribut.checkbox){
             columnDefs = [
                 {
                     'targets': 0,
                     'checkboxes': {
-                       'selectRow': true
+                       'selectRow': selectRow
+                    },
+                    'createdCell':  function (td, cellData, rowData, row, col){
+                        if(autoDeselect)
+                            this.api().cell(td).checkboxes.deselect();
                     }
                  }
             ];
@@ -999,10 +1005,18 @@ uihelper = function () {
             bSearch: attribut.search == undefined ? true : attribut.search,
             bLengthChange: attribut.change == undefined ? true : attribut.change,
             responsive: attribut.responsive == undefined ? true : attribut.responsive,
-            select: attribut.select == undefined ? true : attribut.select,
+            select: selectRow,
             order: attribut.order == undefined ? [[1, 'asc']] : [[attribut.order, 'asc']],
             columnDefs: columnDefs,
             columns: configTabel[id],
+            deferRender: false,
+            initComplete: function(){
+                createProto(this);
+
+            },
+            createdRow: function(row, data, dataIndex ){
+                $(row).find('input.dt-checkboxes').addClass(dataIndex.toString());
+            },
         };
         var dt_instance = $("#" + id).DataTable(options);
         var panel = $("#displayOptions-dt-navigasi");
@@ -1011,7 +1025,6 @@ uihelper = function () {
             var lengthMenu = panel.find('.length-menu a');
             searchBar.keyup(function(){
                 var val = $(this).val();
-                console.log(val)
                 dt_instance.search(val).draw();
             });
 
@@ -1028,12 +1041,20 @@ uihelper = function () {
                 interval = parseInt(attribut.autoRefresh);
             }
             setInterval(function(){
-                dt_instance.ajax.reload();
+                dt_instance.ajax.reload(null, false);
             }, interval);
         }
-        setInstance('dataTables', id, dt_instance);
 
-    }
+        
+        dt_instance.rows().data().__proto__.edit = function(newData){
+            var data = this[0];
+            this[0].jenis = 'aaffa';
+            this.setan = 'agaga';
+        }
+        function createProto($dt){
+            dt_instance.__proto__.api = $dt.api;
+        }
+       
     $(document).ready(function(){
         if(!$().dataTable && ! $().DataTable) return;
 

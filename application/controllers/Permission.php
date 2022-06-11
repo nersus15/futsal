@@ -73,10 +73,9 @@ class Permission extends CI_Controller
             'data_content' => array(
                
             ),
-            'adaThemeSelector' => true,
+            'adaThemeSelector' => false,
             'navbar' => 'component/navbar/navbar.dore',
             'sidebar' => 'component/sidebar/sidebar.dore',
-            'sembunyikanSidebar' => true,
             'pageName' => 'Permission',
             'navbarConf' => array(
                 'adaSidebar' => true,

@@ -9,7 +9,7 @@
                             if($menu['parrent_element'] != 'sidebar') continue;
                 ?>
                 <li class="<?php echo isset($menu['active']) && $menu['active'] ? 'active': null ?>">
-                    <a href="<?php echo $menu['link'] ?>">
+                    <a href="<?php echo isset($subMenus) && isset($subMenus[$menu['id']]) ? "#" . $menu['id'] : $menu['link'] ?>">
                         <i class="<?php echo isset($menu['icon']) ? $menu['icon'] : null ?>"></i>
                         <span><?php echo $menu['text'] ?></span>
                     </a>

@@ -15,7 +15,12 @@ configTabel["<?= $id ?>"] = [
         data: 'jenis'
     },
     { 
-        data: 'aktif' 
+        data: 'icon'
+    },
+    { 
+        mRender: function (row, type, data){
+            return data.aktif == 1 ? 'Aktif' : 'Non Aktif';
+        }
     },
     {
         mRender: function(row, type, data){
@@ -35,5 +40,8 @@ configTabel["<?= $id ?>"] = [
             }
             return perm;
         }
-    },
+    },{
+        data: 'desc',
+        sWidth: "20%",
+    }
 ];

@@ -10,6 +10,7 @@ class Datatables {
     private $filterred_data;
     private $reCount = false;
     private $isFilterred = false;
+    private $enableCache = false;
     /**
      * @var CI_DB_query_builder
      * 
@@ -102,9 +103,13 @@ class Datatables {
     /**
      * @param String $tipe Array or Object
      */
-    function getData( string $tipe = 'object'){
+    function getData( string $tipe = 'object', $enableCache = false){
+        if($enableCache)
+            $this->query->cache_on();
         $this->data = $this->query->get()->result($tipe);
-        // var_dump($this->data);
+        if($enableCache)
+            $this->query->cache_off();
+
         $data = $this->_get_data();
         if(!empty($this->resultHandler)){
             $callback = $this->resultHandler;
@@ -151,7 +156,7 @@ class Datatables {
            $this->reCount = true;
         };
     }
-
+    
     /**
      * @param Array $option option for filter/searching, -spesifik = true/false (true use where and false use like, default false), -liketipe = after/before/both (default after)
      */
@@ -169,5 +174,6 @@ class Datatables {
         $this->search_option = null;
         $this->reCount = false;
         $this->isFilterred = false;
+        $this->enableCache = false;
     }
 }

@@ -96,6 +96,7 @@ $config['form']['navigasi-menu'] = array(
     'icon' => 'icon',
     'aktif' => 'aktif',
     'url' => 'url',
+    'deskripsi' => 'deskripsi',
 );
 $config['form']['navigasi-permission'] = array(
     'permission' =>  'permission',

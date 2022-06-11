@@ -17,17 +17,22 @@ if(!method_exists($this,'fieldmapping')){
         foreach($configitem[$config] as $k => $v){
             if(isset($input[$k]))
                 $field[$v] = html_escape($input[$k]);
-            elseif(!isset($input[$k]) && $adaDefault && isset($defaultValue[$k]))
+            elseif((!isset($input[$k]) || is_null($input[$k]) || $input[$k] == "") && $adaDefault && isset($defaultValue[$k]))
                 $field[$v] = $defaultValue[$k];
         }
-
+        
+        
         if($adaPeta){
-            foreach($petaNilai as $f){
+            foreach($petaNilai as $key => $f){
                 foreach($f as $k => $v){
-                    if($field[$f] == $k)
-                        $field[$f] = $v;
+                    if($field[$key] == $k)
+                        $field[$key] = $v;
                 }
             }
+        }
+        foreach($field as $k => $f){
+            if($f == '#unset') // nanti jika dia defaultnya unset dia dihapus dari arraya agar tidak update kolom itu
+                unset($field[$k]);
         }
         return $field;
     }
