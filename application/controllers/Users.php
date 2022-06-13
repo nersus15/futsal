@@ -6,6 +6,6 @@ class Users extends CI_Controller{
         parent::__construct();
     }
     function index(){
-
+        
     }
 }

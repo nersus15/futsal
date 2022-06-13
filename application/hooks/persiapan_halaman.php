@@ -46,12 +46,11 @@ class PersiapanHalaman {
         if(isset($ci->uri->routes['dir']) && !empty( $ci->uri->routes['dir'])) $current_routes[] = $ci->uri->routes['dir'];
 
         $current_routes[] = $ci->uri->routes['class'];
-        $current_routes[] =  $ci->uri->routes['method'] == 'index' ? '' : $ci->uri->routes['method'];
-
+        $current_routes[] = $ci->uri->routes['method'] == 'index' ? '' : $ci->uri->routes['method'];
         $currentUrl = join('/', $current_routes);
+        if(endWith($currentUrl, '/')) $currentUrl = substr($currentUrl, 0, strlen($currentUrl) - 1);
         $menuWithCurrentUrl = array_filter($allMenu, function($menu) use ($currentUrl){
-            // var_dump($currentUrl); die;
-            return $currentUrl == $menu->url || $currentUrl == $menu->url . '/';
+            return $currentUrl == $menu->url;
         });
         $this->menuWithCurrentUrl = $menuWithCurrentUrl;
         list($harusLogin, $perm)= $this->mustLogin($menuWithCurrentUrl);
@@ -61,7 +60,7 @@ class PersiapanHalaman {
         log_message("DEBUG", "=== Menu (Current Url) ===". print_r($menuWithCurrentUrl, true));
         if(!$this->isWebService()){
             if(is_null($perm)){
-                $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED PERMISSION NULL', 'message' => 'You dont have permission to access this page']);
+                $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
             }
 
             $ci->session_info = array(
@@ -71,7 +70,7 @@ class PersiapanHalaman {
             );
             if($harusLogin){    
                 if(is_null($userdata))
-                    $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED HARUS LOGIN', 'message' => 'You dont have permission to access this page']);
+                    $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
 
                 $tidakAdaSama = true;
                 foreach($perm as $p){
@@ -83,7 +82,7 @@ class PersiapanHalaman {
                     }
                 }
                 if($tidakAdaSama)
-                    $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED TIDAK ADA SAMA', 'message' => 'You dont have permission to access this page']);
+                    $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
                     
             }else if($this->dontLogin())
                 $ci->load->view('errors/html/error_404', ['heading' => 'Denied', 'message' => 'Please logout before access this page']);
@@ -106,7 +105,7 @@ class PersiapanHalaman {
                                         'icon' => $menu->icon,
                                         'link' => $menu->url,
                                         'parrent_element' => $menu->parrent_element,
-                                        'active' => $currentUrl == $menu->url || $currentUrl == $menu->url . '/'
+                                        'active' => $currentUrl == $menu->url
                                     )
                                 )
                             );
@@ -117,7 +116,7 @@ class PersiapanHalaman {
                                 'icon' => $menu->icon,
                                 'link' => $menu->url,
                                 'parrent_element' => $menu->parrent_element,
-                                'active' => $currentUrl == $menu->url || $currentUrl == $menu->url . '/'
+                                'active' => $currentUrl == $menu->url
                             );
                         }
                         
@@ -130,24 +129,25 @@ class PersiapanHalaman {
                             'icon' => $menu->icon,
                             'link' => $menu->url,
                             'parrent_element' => $menu->parrent_element,
-                            'active' => $currentUrl == $menu->url || $currentUrl == $menu->url . '/'
+                            'active' => $currentUrl == $menu->url
                         );
                     }
                 }
-
+                
             }
             if(isset($ci->session_info['subMenus']) && !empty($ci->session_info['subMenus'])){
                 $subMenuAktif = array_map(function($arr){
                     foreach($arr['menus'] as $m){
                         if($m['active']){
-                          return $m;
+                            return $m;
                         }
                     }
-                },$ci->session_info['subMenus']);
-              if( count(array_keys($subMenuAktif)) == 1){
-                $menuInduk = array_key_first($subMenuAktif);
-                $ci_session_info['menus'][$menuInduk]['active'] = true;
-              }
+                }, $ci->session_info['subMenus']);
+                if(count($subMenuAktif) == 1){
+                    $key = array_key_first($subMenuAktif);
+                    if(!empty($subMenuAktif[$key]))
+                        $ci->session_info['menus'][$key]['active'] = true;
+                }
             }
             log_message("DEBUG", " ======= MENU this PAGE " . print_r($ci->session_info, true));
         }else{

@@ -371,3 +371,20 @@ if(!function_exists('load_script')){
             echo $_script;
     }
 }
+
+if(!function_exists('starWith')){
+    function startWith( $haystack, $needle ) {
+        $length = strlen( $needle );
+        return substr( $haystack, 0, $length ) === $needle;
+   }
+}
+
+if(!function_exists('endWith')){
+    function endWith( $haystack, $needle ) {
+        $length = strlen( $needle );
+        if( !$length ) {
+            return true;
+        }
+        return substr( $haystack, -$length ) === $needle;
+    }
+}

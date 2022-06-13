@@ -7,7 +7,6 @@ class Navigasi extends CI_Controller
     }
     function index()
     {
-        $perm = $this->db->select('id, nama')->get('permission')->result();
         $tabel = $this->getContentView('component/datatables/datatables.responsive', array(
             'dtTitle' => 'Daftar Navigasi yang Tersedia',
             'dtid' => 'dt-navigasi',
