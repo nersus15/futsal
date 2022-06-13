@@ -112,10 +112,7 @@
             $menu = fieldmapping('navigasi-menu', $post, array(
                 'id' => random(8),
                 'aktif'=> 1,
-            ), array(
-                'deskripsi' => array(
-                    '' => '#unset'
-                )
+                'deskripsi' => '#unset'
             ));
             $permission = fieldmapping('navigasi-permission', $post);
             $permission['menu'] = $menu['id'];
