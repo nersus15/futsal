@@ -30,7 +30,7 @@ class PersiapanHalaman {
         $allowedPermission[] = 3;
         $allowedPermission[] = 5;
 
-        $ci->db->cache_on();        
+        // $ci->db->cache_on();        
         $allMenu = $ci->db->select('menu.*, menu_permission.permission')
             ->join('menu_permission',  'menu_permission.menu= menu.id')
             ->where('aktif', 1)
@@ -38,7 +38,7 @@ class PersiapanHalaman {
             ->order_by('menu.bobot', 'ASC')
             ->get('menu')
             ->result();
-        $ci->db->cache_off();      
+        // $ci->db->cache_off();      
         
         
 
@@ -46,10 +46,12 @@ class PersiapanHalaman {
         if(isset($ci->uri->routes['dir']) && !empty( $ci->uri->routes['dir'])) $current_routes[] = $ci->uri->routes['dir'];
 
         $current_routes[] = $ci->uri->routes['class'];
-        $current_routes[] = $ci->uri->routes['method'];
-        
-        $menuWithCurrentUrl = array_filter($allMenu, function($menu) use ($current_routes){
-            return $this->currentUrl == $menu->url || join('/', $current_routes) == $menu->url;
+        $current_routes[] =  $ci->uri->routes['method'] == 'index' ? '' : $ci->uri->routes['method'];
+
+        $currentUrl = join('/', $current_routes);
+        $menuWithCurrentUrl = array_filter($allMenu, function($menu) use ($currentUrl){
+            // var_dump($currentUrl); die;
+            return $currentUrl == $menu->url || $currentUrl == $menu->url . '/';
         });
         $this->menuWithCurrentUrl = $menuWithCurrentUrl;
         list($harusLogin, $perm)= $this->mustLogin($menuWithCurrentUrl);
@@ -59,7 +61,7 @@ class PersiapanHalaman {
         log_message("DEBUG", "=== Menu (Current Url) ===". print_r($menuWithCurrentUrl, true));
         if(!$this->isWebService()){
             if(is_null($perm)){
-                $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
+                $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED PERMISSION NULL', 'message' => 'You dont have permission to access this page']);
             }
 
             $ci->session_info = array(
@@ -69,7 +71,7 @@ class PersiapanHalaman {
             );
             if($harusLogin){    
                 if(is_null($userdata))
-                    $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
+                    $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED HARUS LOGIN', 'message' => 'You dont have permission to access this page']);
 
                 $tidakAdaSama = true;
                 foreach($perm as $p){
@@ -81,7 +83,7 @@ class PersiapanHalaman {
                     }
                 }
                 if($tidakAdaSama)
-                    $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED', 'message' => 'You dont have permission to access this page']);
+                    $ci->load->view('errors/html/error_404', ['heading' => 'ACCESS DENIED TIDAK ADA SAMA', 'message' => 'You dont have permission to access this page']);
                     
             }else if($this->dontLogin())
                 $ci->load->view('errors/html/error_404', ['heading' => 'Denied', 'message' => 'Please logout before access this page']);
@@ -104,7 +106,7 @@ class PersiapanHalaman {
                                         'icon' => $menu->icon,
                                         'link' => $menu->url,
                                         'parrent_element' => $menu->parrent_element,
-                                        'active' => $this->currentUrl == $menu->url
+                                        'active' => $currentUrl == $menu->url || $currentUrl == $menu->url . '/'
                                     )
                                 )
                             );
@@ -115,7 +117,7 @@ class PersiapanHalaman {
                                 'icon' => $menu->icon,
                                 'link' => $menu->url,
                                 'parrent_element' => $menu->parrent_element,
-                                'active' => $this->currentUrl == $menu->url
+                                'active' => $currentUrl == $menu->url || $currentUrl == $menu->url . '/'
                             );
                         }
                         
@@ -128,13 +130,25 @@ class PersiapanHalaman {
                             'icon' => $menu->icon,
                             'link' => $menu->url,
                             'parrent_element' => $menu->parrent_element,
-                            'active' => $this->currentUrl == $menu->url
+                            'active' => $currentUrl == $menu->url || $currentUrl == $menu->url . '/'
                         );
                     }
                 }
 
             }
-            
+            if(isset($ci->session_info['subMenus']) && !empty($ci->session_info['subMenus'])){
+                $subMenuAktif = array_map(function($arr){
+                    foreach($arr['menus'] as $m){
+                        if($m['active']){
+                          return $m;
+                        }
+                    }
+                },$ci->session_info['subMenus']);
+              if( count(array_keys($subMenuAktif)) == 1){
+                $menuInduk = array_key_first($subMenuAktif);
+                $ci_session_info['menus'][$menuInduk]['active'] = true;
+              }
+            }
             log_message("DEBUG", " ======= MENU this PAGE " . print_r($ci->session_info, true));
         }else{
             // TODO: handle webservice path

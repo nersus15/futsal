@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Permission extends CI_Controller
+class Uom extends CI_Controller
 {
     public function __construct() {
         parent::__construct();
@@ -9,7 +9,7 @@ class Permission extends CI_Controller
     {
         $perm = $this->db->select('id, nama')->get('permission')->result();
         $tabel = $this->getContentView('component/datatables/datatables.responsive', array(
-            'dtTitle' => 'Daftar Permission yang Tersedia',
+            'dtTitle' => 'Daftar Unit yang Tersedia',
             'dtid' => 'dt-navigasi',
             'head' => array(
                '','Nama', 'Deskripsi'
@@ -17,7 +17,7 @@ class Permission extends CI_Controller
             'skrip' => 'dtconfig/dt_permission', //wajib
             'skrip_data' => array('id' => 'dt-navigasi'),
             'options' => array(
-                'source' => 'ws/uihelper/permission',
+                'source' => 'ws/uihelper/uom',
                 'search' => 'false',
                 'select' => 'multi', //false, true, multi
                 'checkbox' => 'true',
@@ -28,21 +28,17 @@ class Permission extends CI_Controller
                 'form-posisi'=>'def'
             ),
             'form' => array(
-                'id' => 'form-permission',
+                'id' => 'form-unit',
                 'path' => '',
                 'nama' => 'Form Permission',
-                'skrip' => 'forms/form-permission',
+                'skrip' => 'forms/form-uom',
                 'formGenerate' => array(
                     [
-                        "label" => 'Nama Permission', "placeholder" => 'Masukkan Permission',
+                        "label" => 'Nama Uom', "placeholder" => 'Masukkan Uom',
                         "type" => 'text', "name" => 'nama', "id" => 'nama', "attr" => 'required'
                     ],
-                    [
-                        "label" => 'Deskripsi', "placeholder" => '',
-                        "type" => 'textarea', "name" => 'desc', "id" => 'desc'
-                    ],
                 ),
-                'posturl' => 'ws/uihelper/permission',
+                'posturl' => 'ws/uihelper/uom',
                 'updateurl' => '',
                 'deleteurl' => '',
                 'buttons' => array(

@@ -92,7 +92,7 @@
                 
             ];
         }
-
+        var attributTabel = $("#"+dtid).data();
         var panel = $("#displayOptions-" + dtid);
         var addButton = panel.find('.tool-add');
         var editButton = panel.find('.tool-edit');
@@ -147,7 +147,7 @@
                 },
                 open: true,
                 destroy: true,
-                modalPos: 'right',
+                modalPos: attributTabel.formPosisi?attributTabel.formPosisi:'rigth',
                 saatBuka: (innerOpt) => {
                     var datatable = getInstance('dataTables', dtid);
                     if(!datatable) return;
