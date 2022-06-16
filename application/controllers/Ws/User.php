@@ -20,4 +20,16 @@ class User extends CI_Controller{
             response(['message' => 'Gagal, Terjadi kesalahan', 'type' => 'error', 'err' => $th], 500);
         }
     }
+
+    function crud_post(){
+
+    }
+
+    function crud_delete(){
+
+    }
+
+    function crud_get(){
+
+    }
 }

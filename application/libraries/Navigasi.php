@@ -63,7 +63,7 @@
             //     $menu[] = $v;
             // }
 
-            $v = $ci->datatables->set_resultHandler(function($data, $compiledData){
+            $ci->datatables->set_resultHandler(function($data, $compiledData){
                 $tmp = [];
                 foreach($compiledData as $v){
                     if(!isset($tmp[$v->id])){
@@ -82,7 +82,6 @@
                 }
                 return $menu;
             });
-            $v();
             
             $header = array(
                 'id' => array('searchable' => false),

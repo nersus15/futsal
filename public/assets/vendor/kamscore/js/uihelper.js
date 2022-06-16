@@ -998,9 +998,6 @@ uihelper = function () {
         }
 
         var options = {
-            processing: true,
-            serverSide: true,
-            ajax: path + attribut.source,
             dom: attribut.dom == undefined ? 'lfrtip' : attribut.dorm,
             bSearch: attribut.search == undefined ? true : attribut.search,
             bLengthChange: attribut.change == undefined ? true : attribut.change,
@@ -1008,16 +1005,26 @@ uihelper = function () {
             select: selectRow,
             order: attribut.order == undefined ? [[1, 'asc']] : [[attribut.order, 'asc']],
             columnDefs: columnDefs,
-            columns: configTabel[id],
             deferRender: false,
+            info: attribut.showInfo == undefined ? true : attribut.showInfo,
             initComplete: function(){
-                createProto(this);
+                if(attribut.ajax != false)
+                    createProto(this);
 
             },
             createdRow: function(row, data, dataIndex ){
                 $(row).find('input.dt-checkboxes').addClass(dataIndex.toString());
             },
         };
+        if(attribut.ajax != false){
+            options.processing = true,
+            options.ajax = path + attribut.source;
+            options.serverSide= true;
+            options.columns = configTabel[id];
+        }else{
+            await renderDatatablesOffline(path + attribut.source, id, configTabel[id])
+        }
+
         var dt_instance = $("#" + id).DataTable(options);
         var panel = $("#displayOptions-dt-navigasi");
         if(panel.length > 0){
@@ -1041,7 +1048,10 @@ uihelper = function () {
                 interval = parseInt(attribut.autoRefresh);
             }
             setInterval(function(){
-                dt_instance.ajax.reload(null, false);
+                if(attribut.ajax)
+                    dt_instance.ajax.reload(null, false);
+                else
+                    renderDatatablesOffline(path + attribut.source, id, configTabel[id]);
             }, interval);
         }
 
@@ -1063,6 +1073,35 @@ uihelper = function () {
         $('.dataTable').initDatatable();
     });
 
+
+    async function renderDatatablesOffline(path, dtid, configTabel){
+        fetch(path).then(res => res.json()).then(res => {
+            var data  = res.data;
+            var tabel = $("#" + dtid);
+            var rows = '';
+            if(!configTabel)
+                throw("Konfig datatable #" + dtid + " invalid");
+
+            tabel.find('tbody').empty();
+            data.forEach(row => {
+                rows += '<tr>';
+                configTabel.forEach(column => {
+                    if(column.data == null){
+                        rows += '<td></td>';
+                    }else if(column.data && column.data != null && column.data != '' && !column.mRender){
+                        rows += '<td>' + row[column.data] + '</td>';
+                    }else if(column.mRender && typeof(column.mRender) =='function'){
+                        rows += '<td>' + column.mRender(null, null, row) + '</td>';
+                    }
+                    
+                });
+                rows += '</tr>';
+            });
+            tabel.find('tbody').html(rows);
+        }).catch(err => {
+            console.log("Error Proccessing Datatable #" + dtid, err);
+        })
+    }
     async function load_skrip(path_skrip){
         await fetch(path + 'ws/uihelper/scriptloader?path=' + path_skrip, { method: 'GET' }).then(res => res.json()).then(res => {
             if (!res.data) {

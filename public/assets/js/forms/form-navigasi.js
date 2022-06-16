@@ -41,9 +41,15 @@ $(document).ready(function(){
             if(val > 1){
                 components.induk.parent().removeClass('d-none');
                 components.induk.prop('required', true);
+
+                // components.url.parent().removeClass('d-none');
+                // components.url.prop('required', true);
             }else{
                 components.induk.parent().addClass('d-none');
                 components.induk.prop('required', false);
+                
+                // components.url.parent().addClass('d-none');
+                // components.url.val('').prop('required', false);
             }
         });
 

@@ -6,7 +6,9 @@ configTabel["<?= $id ?>"] = [
         data: 'nama'
     },
     { 
-        data: 'url' 
+        mRender: function(row, type, data){
+            return !data.url ? '#' : data.url
+        }
     },
     {
         data: 'level'

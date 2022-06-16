@@ -36,7 +36,7 @@ class Datatables {
      * @return Void
      */
     
-    function setQuery($query){
+    function setQuery($query){        
         $searchable = [];
         $query->select($this->selection);
         foreach($this->header as $key => $value){
@@ -56,8 +56,6 @@ class Datatables {
                 'liketipe' => 'after',
             );
         }
-        $all_data_q = clone $query;
-        $this->all_data = $all_data_q->get()->num_rows();
         if(!empty($keyword)){
             $i = 0;
             foreach($searchable as $v){
@@ -70,8 +68,7 @@ class Datatables {
                 }
                 $i++;
             }
-        }
-
+        }        
         $this->query = $query;
         $filterred_data_q = clone $query;
         $this->filterred_data = $filterred_data_q->get()->num_rows();
@@ -106,6 +103,7 @@ class Datatables {
     function getData( string $tipe = 'object', $enableCache = false){
         if($enableCache)
             $this->query->cache_on();
+    
         $this->data = $this->query->get()->result($tipe);
         if($enableCache)
             $this->query->cache_off();
@@ -115,16 +113,29 @@ class Datatables {
             $callback = $this->resultHandler;
             $data = $callback($this->data, $data, $this->header, $this->query);
         }
+        $this->all_data = count($data);
+        if(!empty($this->keyword))
+            $this->filterred_data = count($data);
+        if(isset($_GET['start']) && isset($_GET['length'])){
+            $start = $_GET['start'];
+            $length = $_GET['length'];
 
-        if($this->reCount){
-            $this->all_data = count($data);
-            if(empty($keyword))
-                $this->filterred_data = count($data);
+            $data = array_splice($data, $start, $length);
         }
+       
+        // if($this->reCount){
+        //     if(isset($_GET['start']) && isset($_GET['length'])){
+        //         $start = $_GET['start'];
+        //         $length = $_GET['length'];
+        //     }
+        //     $this->all_data = count($data);
+        //     if(empty($keyword))
+        //         $this->filterred_data = count($data);
+        // }
 
         $this->reset();
         return (object) array(
-            'draw' => $_GET['draw'], // Ini dari datatablenya    
+            'draw' => isset($_GET['draw']) ? $_GET['draw'] : 1, // Ini dari datatablenya    
             'recordsTotal' => $this->all_data,    
             'recordsFiltered'=> $this->filterred_data,    
             'data'=> $data
@@ -150,11 +161,9 @@ class Datatables {
      * @return Function
      */
 
-    function set_resultHandler($callback){
+    function set_resultHandler($callback, $reCount = false){
         $this->resultHandler = $callback;
-        return function(){
-           $this->reCount = true;
-        };
+        $this->reCount = $reCount;
     }
     
     /**

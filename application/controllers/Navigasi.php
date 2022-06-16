@@ -23,7 +23,8 @@ class Navigasi extends CI_Controller
                 'change' => 'false',
                 'dom' => 'rtip',
                 'responsive' => 'true',
-                'auto-refresh' => '30000',
+                'auto-refresh' => 'false',
+                'show-info' => 'false',
                 'deselect-on-refresh' => 'true',
             ),
             'form' => array(
@@ -41,14 +42,14 @@ class Navigasi extends CI_Controller
                         "type" => 'textarea', "name" => 'deskripsi', "id" => 'deskripsi'
                     ],
                     [
-                        "label" => 'Url', "placeholder" => '',
-                        "type" => 'text', "name" => 'url', "id" => 'url', "attr" => 'required'
-                    ],
-                    [
                         "label" => 'Level', "placeholder" => 'Level',
                         "type" => 'select', "name" => 'level', "id" => 'level', "attr" => 'required', 'options' => array(
                             '1' => array('text' => 1), '2' => array('text' => 2)
                         )
+                    ],
+                    [
+                        "label" => 'Url', "placeholder" => 'Jika memiliki anak jangan isi url',
+                        "type" => 'text', "name" => 'url', "id" => 'url', "attr" => 'required'
                     ],
                     [
                         "label" => 'Induk', "placeholder" => '',
