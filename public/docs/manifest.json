@@ -1,5 +1,8 @@
 {
-    "title": "MPERMISSION", 
+    "title": "TA Futsal", 
     "description": "TA ORANG",
-    "image": null
+    "image": "public/assets/img/logo/kamscode.png",
+    "email": "ta.futsal@m.com",
+    "facebook": "futsal",
+    "twitter": "futsal"
 }

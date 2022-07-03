@@ -6,8 +6,12 @@ $data_head = array(
     'extra_css' => isset($extra_css) ? $extra_css : null,
     'includeTiny' => isset($includeTiny) ? $includeTiny : null,
     'loadingAnim' => isset($loadingAnim) ? $loadingAnim : null,
+    'bodyClass' => isset($bodyClass) ? $bodyClass : 'show-spinner',
+    'hideSpinner' => isset($hideSpinner) ? $hideSpinner : false,
 );
-include_view('head/main', $data_head);
+$head = isset($head) ? $head : 'head/main';
+$foot = isset($foot) ? $foot : 'footer/main';
+include_view($head, $data_head);
 if (isset($navbar) && !is_array($navbar))
     include_view($navbar, $navbarConf);
 if (isset($sidebar) && !is_array($sidebar))
@@ -57,4 +61,4 @@ $dataFoot = array(
     'extra_js' => isset($extra_js) ? $extra_js : null, 
     'extra_css' => isset($extra_css) ? $extra_css : null
 );
-include_view('footer/main', array('resource' => $resource, 'extra_js' => isset($extra_js) ? $extra_js : null, 'extra_css' => isset($extra_css) ? $extra_css : null));
+include_view($foot, array('resource' => $resource, 'extra_js' => isset($extra_js) ? $extra_js : null, 'extra_css' => isset($extra_css) ? $extra_css : null));

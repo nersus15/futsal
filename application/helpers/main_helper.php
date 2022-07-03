@@ -116,6 +116,19 @@ if (!method_exists($this, 'config_sidebar')) {
         if (!empty($subMenuConf)) {
             $sidebarConf['subMenus'][$subMenuConf['sub']]['menus'][$subMenuConf['menu']]['active'] = true;
         }
+        
+        // Tandai sebagai menu sidebar
+        foreach($sidebarConf['menus']  as $k => $m){
+            $sidebarConf['menus'][$k]['parrent_element'] = 'sidebar';
+            $sidebarConf['menus'][$k]['id'] = '-';
+
+        }
+
+        foreach($sidebarConf['subMenus'] as $k => $sb){
+            foreach($sb['menus'] as $k1 => $m){
+                $sidebarConf['subMenus'][$k]['menus'][$k1]['parrent_element'] = 'sidebar';
+            }
+        }
         return $sidebarConf;
     }
 }

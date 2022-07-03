@@ -67,7 +67,97 @@ $config['themes'] = array(
             array('pos' => 'head', 'src' => 'themes/dore/js/dore.script.js'),
         )
     ),
-
+    'mievent' => array(
+        'css' => array(
+            array('src' => "themes/mievent/slider/css/bootstrap.css", 'pos' => 'head'),
+            array('src' => "themes/mievent/slider/css/font-awesome.min.css", 'pos' => 'head'),
+            array('src' => "themes/mievent/slider/css/flexslider.css", 'pos' => 'head'),
+            array('src' => "themes/mievent/slider/css/superslides.css", 'pos' => 'head'),
+            array('src' => "themes/mievent/slider/css/animate.css", 'pos' => 'head'),
+            array('src' => "themes/mievent/slider/css/schedule.css", 'pos' => 'head'),
+            array('src' => "themes/mievent/slider/css/gridgallery.css", 'pos' => 'head'),
+            array('src' => "themes/mievent/slider/css/venobox.css", 'pos' => 'head'),
+            array('src' => "themes/mievent/slider/css/styles.css", 'pos' => 'head'),
+            array('src' => "themes/mievent/slider/css/queries.css", 'pos' => 'head'),
+        ),
+        'js' => array(
+            // array('pos' => 'head', 'src' => "themes/jquery/jquery-3.3.1.min.js'),
+            array('pos' => 'head', 'src' => "themes/mievent/slider/js/jquery-1.11.0.min.js"),
+            // array('pos' => 'body:end', 'src' => "var $ = $ === undefined ? jQuery : undefined;", 'type' => 'inline'),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/jquery-ui-1.10.4.min.js"),
+        
+            // VIMEO VIDEO//     
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/venobox.js"),
+        
+            // 3D GALLERY//
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/classie.grid.gallery.js"),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/modernizr.gridgallery.js"),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/cbpGridGallery.js"),
+        
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/classie.js"),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/modalEffects.js"),
+        
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/nlform.js"),
+            array('pos' => 'body:end', 'src' =>"nlform = new NLForm( document.getElementById( 'nl-form' ) )", 'type' => 'inline'),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/bootstrap.min.js"),
+        
+            // TEAM SLIDER  //
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/jquery.flexslider.js"),
+        
+            // SCHEDULE TABS  //
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/modernizr.js"),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/cbpFWTabs.js"),
+        
+            // SPONSOR SLIDER//
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/jssor.core.js"),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/jssor.utils.js"),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/jssor.slider.js"),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/sponsor_init.js"),
+        
+            // SMOOTH SCROLL  //
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/smooth-scroll.js"),
+        
+            // NICE SCROLL  //
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/jquery.nicescroll.js"),
+        
+            // SUBSCRIPTION FORM  //
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/notifyMe.js"),
+        
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/jquery.placeholder.js"),
+        
+            // ANIMATION  //
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/wow.min.js"),
+        
+            // LANDINGPAGE SLIDER  //
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/hammer.min.js"),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/jquery.mobile-1.4.3.js"),
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/jquery.superslides.js"),
+        
+            // INITIALIZATION  //
+            array('pos' => 'body:end', 'src' => "themes/mievent/slider/js/init.js"),
+        )
+    ),
+    'funden' => array(
+        'css' => array(
+            array('pos' => 'head', 'src' => "themes/funden/css/animate.min.css"),
+            array('pos' => 'head', 'src' => "themes/funden/css/bootstrap.min.css"),
+            array('pos' => 'head', 'src' => "themes/funden/css/font-awesome.min.css"),
+            array('pos' => 'head', 'src' => "themes/funden/css/flaticon.css"),
+            array('pos' => 'head', 'src' => "themes/funden/css/slick.min.css"),
+            array('pos' => 'head', 'src' => "themes/funden/css/lity.min.css"),
+            array('pos' => 'head', 'src' => "themes/funden/css/main.css"),
+            array('pos' => 'head', 'src' => "themes/funden/css/responsive.css"),
+        ),
+        'js' => array(
+           array('pos' => 'head', 'src' => "themes/funden/js/jquery.min.js"),
+           array('pos' => 'head', 'src' => "themes/funden/js/bootstrap.min.js"),    
+           array('pos' => 'body:end', 'src' => "themes/funden/js/jquery.inview.min.js"),    
+           array('pos' => 'body:end', 'src' => "themes/funden/js/slick.min.js"),    
+           array('pos' => 'body:end', 'src' => "themes/funden/js/lity.min.js"),    
+           array('pos' => 'body:end', 'src' => "themes/funden/js/wow.min.js"),    
+           array('pos' => 'body:end', 'src' => "themes/funden/js/main.js"),       
+        )
+    ),
     'form' => array(
         'js' => array(
             array('pos' => 'head', 'src' => 'vendor/select2/dist/js/select2.min.js'),

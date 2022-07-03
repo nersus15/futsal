@@ -74,7 +74,7 @@ defined('FOPEN_READ_WRITE_CREATE_STRICT')       OR define('FOPEN_READ_WRITE_CREA
 |
 */
 
-define('USER_ROLES', ['bendahara 1', 'bendahara 2', 'ketua yayasan', 'kepala sekolah']);
+define('USER_ROLES', ['admin', 'member']);
 
 defined('EXIT_SUCCESS')        OR define('EXIT_SUCCESS', 0); // no errors
 defined('EXIT_ERROR')          OR define('EXIT_ERROR', 1); // generic error

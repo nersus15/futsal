@@ -18,11 +18,14 @@ class Auth extends CI_Controller
 
     function login()
     {
+        if(is_login())
+            redirect(base_url("dashboard"));
         $data = array(
             'header' => 'main',
             'footer' => 'main',
             'resource' => array('main', 'softui'),
-            'content' => array('pages/softui/login'),
+            'content' => array('forms/login'),
+            'hideSpinner' => true
         );
         $this->add_cachedJavascript('pages/auth', 'file', 'body:end', array(
             'formid' => '#form-login',

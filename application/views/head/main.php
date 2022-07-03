@@ -27,7 +27,7 @@
     <link rel="icon" type="image/gif" href="<?php echo !empty($manifest) && isset($manifest->image) ? base_url( $manifest->image ) : null ?>">
     <?php endif?>
     <title><?php echo isset($title) ? $title : $manifest->title; ?></title>
-
+        
     <?php
     if (isset($resource) && !empty($resource)) {
         foreach ($resource as $k => $v) {
@@ -66,6 +66,8 @@
 
         }
     }
+    if(isset($hideSpinner) && !empty($bodyClass))
+        $bodyClass = str_replace("show-spinner", "", $bodyClass);
     ?>
     <script>
         var path = "<?= base_url() ?>";
@@ -74,7 +76,9 @@
     </script>
 </head>
 
-<body id="app-container" class="<?php echo isset($sembunyikanSidebar) && $sembunyikanSidebar ? 'menu-hidden' : 'menu-default';?> show-spinner">
-    <div class="c-overlay">
-        <div class="c-overlay-text">Loading</div>
-    </div>
+<body id="app-container" class="<?php echo isset($sembunyikanSidebar) && $sembunyikanSidebar ? 'menu-hidden' : 'menu-default';?> <?= $bodyClass ?>">
+   <?php if(isset($loading_animation) && $loading_animation === TRUE):?>
+        <div class="c-overlay">
+            <div class="c-overlay-text">Loading</div>
+        </div>
+    <?php endif ?>
