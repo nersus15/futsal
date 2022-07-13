@@ -65,6 +65,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	}
 }
 
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	if(isset($_POST['_http_method']) && $_POST['_http_method'] == 'update'){
+		$_SERVER['REQUEST_METHOD'] = "UPDATE";
+		unset($_POST['_http_method']);
+	}
+}
+
+// BUAT HTTP METHOD UPDATE
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

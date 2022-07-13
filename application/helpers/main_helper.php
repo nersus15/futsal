@@ -24,6 +24,12 @@ if (!method_exists($this, 'response')) {
             $responsse['type'] = $type;
         else
             $responsse['type'] = $message['type'];
+
+        if($code != 200 && $format == 'json'){
+            header("message: " . join(";", $responsse));
+            exit();
+        }
+        
         if ($format == 'json')
             echo json_encode($responsse);
         elseif ($format == 'html') {

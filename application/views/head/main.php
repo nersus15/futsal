@@ -68,6 +68,7 @@
     }
     if(isset($hideSpinner) && !empty($bodyClass))
         $bodyClass = str_replace("show-spinner", "", $bodyClass);
+    
     ?>
     <script>
         var path = "<?= base_url() ?>";

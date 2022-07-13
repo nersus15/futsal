@@ -3,9 +3,12 @@ configTabel["<?= $id ?>"] = [
         mData: null,
     },
     { 
-        data: 'nama'
+        data: 'id'
+    },
+    {
+        data: 'jenis'
     },
     { 
-        data: 'desc' 
+        data: 'tempat'
     },
 ];

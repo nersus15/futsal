@@ -6,6 +6,8 @@ $data_head = array(
     'extra_css' => isset($extra_css) ? $extra_css : null,
     'includeTiny' => isset($includeTiny) ? $includeTiny : null,
     'loading_animation' => isset($loading_animation) ? $loading_animation : true,
+	'bodyClass' => isset($bodyClass) ? $bodyClass : 'show-spinner',
+    'hideSpinner' => isset($hideSpinner) ? $hideSpinner : false,
 );
 $head = isset($head) ? $head : 'head/main';
 $foot = isset($foot) ? $foot : 'footer/main';
@@ -69,7 +71,13 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 								<a href="project-1.html">Price</a>
 							</li>
 							<li>
-								<a id="#login" href="<?= base_url("auth/login") ?>">Login</a>
+								<?php if(!is_login()): ?>
+									<a id="#login" href="<?= base_url("auth/login") ?>">Login</a>
+								<?php elseif(is_login('admin')): ?>
+									<a id="#login" href="<?= base_url("dashboard") ?>">Dashboard</a>
+								<?php elseif(is_login('member')): ?>
+									<a id="#login" href="<?= base_url("member") ?>">Member Area</a>
+								<?php endif ?>
 							</li>
 						</ul>
 					</div>
@@ -418,23 +426,51 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 		<div id="booking" class="container">
 			<!-- Call to Action -->
 			<div class="cta-box cta-double-content" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/cta/01.jpg);">
-				<form action="<?= base_url('booking/create') ?>" method="post" id="booking">
-					<div class="row justify-content-center">
-						<div class="col-xl-4 col-lg-5 col-md-9">
-							<div class="content">
+				<form action="<?= is_login('member') ? base_url('member/add_booking') : base_url('ws/booking') ?>" method="POST" id="form-booking">
+					<div class="row">
+						<div class="col-xl-8 col-lg-8 col-md-12">
+							<div class="content" style="text-align: left">
 								<div class="form-group">
 									<label class="text-white" for="">Tanggal</label>
-									<input class="" type="date" name="tanggal" id="tanggal" class="form-control">
+									<input data-rule-required="true" type="date" name="tanggal" id="tanggal" class="form-control">
 								</div>
-							</div>
-						</div>
-						<div class="col-xl-2 col-lg-1 cta-double-content-gap"></div>
-						<div class="col-xl-4 col-lg-5 col-md-9">
-							<div class="content">
-								<h2 class="cta-title">Access Data And Insights</h2>
-								<p>Sed perspiciatis unde omniste natus error sit voluptatem accusantium doloremque laudan
-									totamrem aperiam eaque quae abille</p>
-								<a href="events.html" class="main-btn">Start a Funden <i class="far fa-arrow-right"></i></a>
+								<div class="form-group">
+									<label class="text-white" for="">Lapangan</label>
+									<select class="form-control" name="lapangan" id="lapangan">
+										<?php foreach($lapangan as $v): ?>
+											<option value="<?= $v->id ?>"><?= $v->id . "(". $v->jenis .") - " . $v->tempat ?></option>
+										<?php endforeach?>
+									</select>
+								</div>
+								<div class="form-group">
+									<label class="text-white" for="">Jam</label>
+									<select class="form-control" name="jadwal" id="jadwal">
+										<option value="">anjajnngkag</option>
+										<option value="">anjajnngkag</option>
+										<?php foreach($jadwal as $v): ?>
+											<option data-lapangan="<?= $v->lapangan ?>" value="<?= $v->id ?>"><?= $v->mulai . " - " . $v->selesai . "(". rupiah_format($v->tarif) .")" ?></option>
+										<?php endforeach?>
+									</select>
+								</div>
+								<div class="form-group">
+									<label class="text-white" for="">Penanggung Jawab</label>
+									<input type="text" name="penanggun_jawab" id="wakil" class="form-control">
+								</div>
+								<div class="form-group">
+									<label class="text-white" for="">Tim</label>
+									<input type="text" name="tim" id="tim" class="form-control">
+								</div>
+								<?php if(!is_login()): ?>
+									<div class="form-group">
+										<label class="text-white" for=""><small>Sudah menjadi member? jika sudah menjadi member, silahkan booking melalui <a href="<?= base_url('member/booking') ?>">Member Area</a></small></label>
+									</div>
+								<?php endif ?>
+								<div style="text-align: center">
+									<button type="submit" class="btn btn-sm btn-primary">Booking</button>
+								</div>
+								<div class="form-group">
+									<label style="display: none" id="alert_danger" class="text-danger" for=""><small></small></label>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -443,9 +479,13 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 		</div>
 	</section>
 	<!--====== Emergency Project & CTA End ======-->
+	<style>
+		form .error{
+			color: red;
+		}
+	</style>
 
-
-
+			
     <?php
 $dataFoot = array(
     'resource' => $resource, 

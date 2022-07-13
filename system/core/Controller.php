@@ -232,10 +232,16 @@ class CI_Controller {
 
 	function getContentView ($path, $data = [], $return = false){
 		$html = $this->load->view(get_path( $path . '.php'), $data, true);
+		if(!empty($data)){
+			foreach($data as $k => $d) {
+				unset($$k);
+			}
+		}
 		if($return)
 			return $html;
 		else
 			echo $html;
+		
 	}
 	public function render(){
 		foreach($this->views as $view){

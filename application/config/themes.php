@@ -6,13 +6,10 @@ $config['themes'] = array(
     'main' => array(
         'js' => array(
             array('pos' => 'head', 'src' => 'vendor/jquery/jquery.min.js'),
-            array('pos' => 'head', 'src' => 'vendor/jquery/jquery.form.js'),
             array('pos' => 'head', 'src' => 'vendor/bootstrap/js/popper.min.js'),
             array('pos' => 'head', 'src' => 'vendor/bootstrap/js/bootstrap.min.js'),
             array('pos' => 'head', 'src' => 'vendor/bootstrap/js/bootstrap.bundle.min.js'),
             array('pos' => 'head', 'src' => 'vendor/bootstrap-notify/bootstrap-notify.min.js'),
-            array('pos' => 'head', 'src' => 'vendor/jquery-validation/dist/jquery.validate.min.js'),
-            array('pos' => 'head', 'src' => 'vendor/jquery-validation/lang/id.js'),
             array('pos' => 'head', 'src' => 'vendor/moment/moment.min.js'),
             array('pos' => 'head', 'src' => 'vendor/kamscore/js/Kamscore.js'),
             array('pos' => 'head', 'src' => 'vendor/kamscore/js/uihelper.js'),
@@ -160,15 +157,20 @@ $config['themes'] = array(
     ),
     'form' => array(
         'js' => array(
+            array('pos' => 'head', 'src' => 'vendor/jquery/jquery.form.js'),
+            array('pos' => 'head', 'src' => 'vendor/jquery-validation/dist/jquery.validate.min.js'),
+            array('pos' => 'head', 'src' => 'vendor/jquery-validation/lang/id.js'),
             array('pos' => 'head', 'src' => 'vendor/select2/dist/js/select2.min.js'),
             array('pos' => 'head', 'src' => 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', 'type' => 'cdn'),
             array('pos' => 'head', 'src' => 'vendor/datepicker/js/bootstrap-datepicker.js'),
+            array('pos' => 'head', 'src' => 'vendor/timepicker/jquery.timepicker.js'),
             array('pos' => 'head', 'src' => 'js/utils/main.init.js'),
         ),
         'css' => array(
             array('pos' => 'head', 'src' => 'vendor/select2/dist/css/select2.css'),
             array('pos' => 'head', 'src' => 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', 'type' => 'cdn'),
             array('pos' => 'head', 'src' => 'vendor/datepicker/css/datepicker.css'),
+            array('pos' => 'head', 'src' => 'vendor/timepicker/jquery.timepicker.css'),
         )
     ),
 

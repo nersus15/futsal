@@ -152,7 +152,7 @@
                     var datatable = getInstance('dataTables', dtid);
                     if(!datatable) return;
 
-                    var url = path + 'ws/uihelper/skrip?s=' + form.skrip;
+                    var url = path + 'uihelper/skrip?s=' + form.skrip;
                     if(innerOpt.mode == 'edit'){
                         var rowData = datatable.rows({selected:true}).data();
                         var editedData =rowData[0];
@@ -182,7 +182,7 @@
                 formOpt: {
                     enctype: 'multipart/form-data',
                     formId: form.formid,
-                    formAct: form.posturl,
+                    formAct: path + form.posturl,
                     formMethod: 'POST',
                 },
                 modalTitle: form.nama,
@@ -197,7 +197,7 @@
                 form.skripVar.mode = 'baru';
                 form.skripVar.formid = modalConfig.opt.formOpt.formId;
                 if(form.path){
-                    var url = path + 'ws/uihelper/form/?f=' + form.path 
+                    var url = path + 'uihelper/form/?f=' + form.path 
 
                     var formEl = fetch(url, {
                         method: 'GET',
@@ -239,7 +239,7 @@
                     return;
                 }
                 var editedData =rowData[0];
-                var url = path + 'ws/uihelper/form/?f=' + form.path + '&s=' + form.skrip + "&ed=" + JSON.stringify(editedData);
+                var url = path + 'uihelper/form/?f=' + form.path + '&s=' + form.skrip + "&ed=" + JSON.stringify(editedData);
 
                 form.skripVar['mode'] = 'edit';
                 
@@ -255,7 +255,7 @@
                         if (!res)
                             return;
                         else {
-                            modalConfig.opt.formOpt.formAct = form.updateurl != undefined ? form.updateurl : form.posturl;
+                            modalConfig.opt.formOpt.formAct = form.updateurl != undefined ? path + form.updateurl : path + form.posturl;
                             modalConfig.opt.modalBody.customBody = res.html
                             generateModal(modalConfig.modalId, modalConfig.wrapper, modalConfig.opt)
                         }
@@ -289,15 +289,28 @@
                 confirm("Yakin Ingin Menghapus data dengen id " + ids.join(', ') + "(" + names.join(', ') + ")")
 
 
-                fetch(form.deleteurl, {
+                fetch(path + form.deleteurl, {
                     method: 'POST',
                     body: JSON.stringify({
                         '_http_method': 'delete',
                         'ids': ids,
                     })
                 }).then(res => {
-                    if (res.status != 200)
-                        return;
+                    if (res.status != 200){
+                        if(typeof(res) == 'string')
+                            res = JSON.parse(res);
+
+                        if (res.message)
+                            defaultCnfigToast.message = res.message;
+                        else
+                            defaultCnfigToast.message = "Delete Gagal";
+
+                        defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss')
+                        makeToast(defaultCnfigToast);
+                        var dt = getInstance('dataTables', dtid);
+                        dt.ajax.reload();
+                    }
+                        
                     else
                         return res.json()
                 }).then(res => {
@@ -311,17 +324,34 @@
                         if (res.message)
                             defaultCnfigToast.message = res.message;
                         else
-                            defaultCnfigToast.message = "Sumbit Berhasil";
+                            defaultCnfigToast.message = "Delete Berhasil";
 
                         defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss')
                         makeToast(defaultCnfigToast);
                         var dt = getInstance('dataTables', dtid);
                         dt.ajax.reload();
                     }
-                });
-            
+                }).catch(res => {
+                    if (!res)
+                            return;
+                            
+                        else {
+                            if(typeof(res) == 'string')
+                                res = JSON.parse(res);
 
-            });
+                            if (res.message)
+                                defaultCnfigToast.message = res.message;
+                            else
+                                defaultCnfigToast.message = "Delete Gagal";
+
+                            defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss')
+                            makeToast(defaultCnfigToast);
+                            var dt = getInstance('dataTables', dtid);
+                            dt.ajax.reload();
+                        }
+                });            
+
+            })
         }
     });
 

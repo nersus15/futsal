@@ -1,21 +1,26 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Dashboard extends CI_Controller
+class Member extends CI_Controller
 {
+    public function __construct() {
+        parent::__construct();
+        if(!is_login())
+            redirect(base_url('auth/login'));
+        elseif(sessiondata('login', 'role') != 'member') 
+            redirect(base_url('dashboard'));
+    }
     function index()
     {
-        if(!is_login('admin'))
-            redirect(base_url());
-            
         $data = [
             'resource' => array('main', 'dore'),
             'content' => array(),
             'navbar' => 'component/navbar/navbar.dore',
             'adaThemeSelector' => true,
             'sidebar' => 'component/sidebar/sidebar.dore',
-            'pageName' => 'Dashboard',
-            'sidebarConf' => config_sidebar('comp', 'admin', 0),
+            'pageName' => 'Member',
+            'subPageName' => 'Area',
+            'sidebarConf' => config_sidebar('comp', 'member', 0),
             'navbarConf' => array(
                 'adaUserMenu' => true,
                 'adaNotif' => true,
@@ -26,5 +31,9 @@ class Dashboard extends CI_Controller
         ];
         $this->addViews('template/dore', $data);
         $this->render();
+    }
+
+    function booking() {
+
     }
 }

@@ -35,22 +35,22 @@ $config['comp']['dore']['sidebar'] = array(
 
         )
     ),
-    // 'member' => array(
-    //     'menus' => array(
-    //         array('text' => 'Dashboard', 'icon' => 'iconsmind-Home', 'link' => base_url()),
-    //         array('text' => 'Barang', 'icon' => 'iconsmind-Home', 'link' => base_url('barang')),
-    //         array('text' => 'Penjual', 'link' =>  base_url('penjual'), 'icon' => 'simple-icon-people'),
-    //         array('text' => 'Pesanan', 'link' =>  '#', 'icon' => 'iconsmind-Full-Cart'),
-    //         // array('text' => 'Siswa', 'link' =>  base_url('siswa'), 'icon' => 'iconsmind-Students'),
-    //     )
-    //     // 'subMenus' => array(
-    //     //     array(
-    //     //         'induk' => 'transaksi',
-    //     //         'menus' => array(
-    //     //             array('text' => 'Masuk', 'active' => true, 'link' => base_url('transaksi/masuk')),
-    //     //             array('text' => 'Keluar', 'link' => base_url('transaksi/keluar')),
-    //     //         )
-    //     //     )
-    //     // )
-    // )
+    'member' => array(
+        'menus' => array(
+            array('text' => 'Dashboard', 'icon' => 'iconsmind-Home', 'link' => base_url()),
+            array('text' => 'Riwayat Booking', 'icon' => 'iconsmind-Home', 'link' => base_url('member/booking')),
+            // array('text' => 'Penjual', 'link' =>  base_url('penjual'), 'icon' => 'simple-icon-people'),
+            // array('text' => 'Pesanan', 'link' =>  '#', 'icon' => 'iconsmind-Full-Cart'),
+            // array('text' => 'Siswa', 'link' =>  base_url('siswa'), 'icon' => 'iconsmind-Students'),
+        )
+        // 'subMenus' => array(
+        //     array(
+        //         'induk' => 'transaksi',
+        //         'menus' => array(
+        //             array('text' => 'Masuk', 'active' => true, 'link' => base_url('transaksi/masuk')),
+        //             array('text' => 'Keluar', 'link' => base_url('transaksi/keluar')),
+        //         )
+        //     )
+        // )
+    )
 );

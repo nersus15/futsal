@@ -2,7 +2,7 @@ $(document).ready(function(){
 	$('#logout').on('click', async function(e){
 		showLoading();
 		var options = {
-			url: path + 'ws/user/logout',
+			url: path + 'auth/logout',
 			method: 'GET',
 			success: function(){
 				endLoading();
@@ -34,5 +34,5 @@ $(document).ready(function(){
 		$.ajax(options);
 	});
 
-	$('#profile').on('click', function(e){e.preventDefault(); location.href = path + 'profile'})
+	$('#akun').on('click', function(e){e.preventDefault(); location.href = path + 'profile'})
 })

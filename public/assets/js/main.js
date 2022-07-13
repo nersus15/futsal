@@ -37,6 +37,6 @@ $(document).ready(function(){
     });
 
     $('#akun').click(function(){
-        location.href = path + 'admin/profile';
+        location.href = path + 'profile';
     })
 })

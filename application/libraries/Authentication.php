@@ -105,11 +105,10 @@ class Authentication
         $ci = &get_instance();
 
         $user = $ci->db
-            ->select('user.*, profile.*, profile.id as profile_id')
+            ->select('user.*')
             ->where('user.username', $input['user'])
             ->or_where('user.email', $input['user'])
             ->from('user')
-            ->join('profile', 'user.profile = profile.id', 'left')
             ->get()->row_array();
         $ci->db->reset_query();
 
@@ -120,15 +119,7 @@ class Authentication
                 // setciobject($user);
                 unset($user['password']);
                 $user['session_dibuat'] = time();
-
-                $perm = $ci->db->select('permission_id')->where('username', $user['username'])->get('user_permission')->result_array();
-                if(!empty($perm)){
-                    foreach($perm as $v){
-                        $user['permission'][] = $v['permission_id'];
-                    }
-                }else{
-                    $user['permission'] = [];
-                }
+                
                 if (JWT_AUTH)
                     $token = JWT::encode($user, 'BQNIT');
                 else

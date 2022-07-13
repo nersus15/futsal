@@ -861,13 +861,15 @@ uihelper = function () {
 
             })
         }
-        $("#" + formid).validate({
+        var form =  $("#" + formid).validate({
             rules: rules,
             submitHandler: function (form) {
                 $('#' + formid + ' #alert_danger, #alert_success').html('').hide();
                 $(form).ajaxSubmit(options);
             }
         });
+
+        setInstance('validator', formid, form);
 
     }
 
@@ -1026,7 +1028,7 @@ uihelper = function () {
         }
 
         var dt_instance = $("#" + id).DataTable(options);
-        var panel = $("#displayOptions-dt-navigasi");
+        var panel = $("#displayOptions-" + id);
         if(panel.length > 0){
             var searchBar = panel.find('.table-search input');
             var lengthMenu = panel.find('.length-menu a');
