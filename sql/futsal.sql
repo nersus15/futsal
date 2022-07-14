@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 13, 2022 at 03:27 AM
+-- Generation Time: Jul 14, 2022 at 08:05 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `booking` (
-  `id` varchar(10) NOT NULL,
+  `id` varchar(15) NOT NULL,
   `tanggal` date NOT NULL,
   `jadwal` varchar(8) NOT NULL,
   `status` enum('baru','aktif','selesai','terverifikasi','batal') NOT NULL,
@@ -36,8 +36,37 @@ CREATE TABLE `booking` (
   `tim` varchar(100) NOT NULL,
   `dibuat` datetime NOT NULL,
   `member` varchar(8) DEFAULT NULL,
-  `lapangan` varchar(8) NOT NULL
+  `lapangan` varchar(8) NOT NULL,
+  `bukti_bayar` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `booking`
+--
+
+INSERT INTO `booking` (`id`, `tanggal`, `jadwal`, `status`, `penanggung_jawab`, `tim`, `dibuat`, `member`, `lapangan`, `bukti_bayar`) VALUES
+('BOOK2022071401', '2022-07-21', 'v8BBbX8d', 'baru', 'Rizal', 'Ntah', '2022-07-14 09:36:42', NULL, 'LPN01', 'LzqLT8EklVnm8PL'),
+('BOOK2022071402', '2022-07-30', 'v8BBbX8d', 'baru', 'Rizal', '', '2022-07-14 13:24:52', NULL, 'LPN01', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `file_upload`
+--
+
+CREATE TABLE `file_upload` (
+  `id` varchar(15) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `uuid` varchar(46) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `file_upload`
+--
+
+INSERT INTO `file_upload` (`id`, `nama`, `uuid`) VALUES
+('LzqLT8EklVnm8PL', '862cfa524ea454.JPG', 'd5f5692b-2af5-487a-ae98-fb9fa35157bd'),
+('Pa6WT9DQNVyV7kV', '862cfa258c5743.jpg', 'ddc43a8a-74a1-42d1-b010-2a618de60b2a');
 
 -- --------------------------------------------------------
 
@@ -137,7 +166,14 @@ ALTER TABLE `booking`
   ADD PRIMARY KEY (`id`),
   ADD KEY `member` (`member`),
   ADD KEY `jadwal` (`jadwal`),
-  ADD KEY `lapangan` (`lapangan`);
+  ADD KEY `lapangan` (`lapangan`),
+  ADD KEY `bukti_bayar` (`bukti_bayar`);
+
+--
+-- Indexes for table `file_upload`
+--
+ALTER TABLE `file_upload`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `jadwal`
@@ -175,7 +211,8 @@ ALTER TABLE `user`
 ALTER TABLE `booking`
   ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`member`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`jadwal`) REFERENCES `jadwal` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `booking_ibfk_3` FOREIGN KEY (`lapangan`) REFERENCES `lapangan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `booking_ibfk_3` FOREIGN KEY (`lapangan`) REFERENCES `lapangan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `booking_ibfk_4` FOREIGN KEY (`bukti_bayar`) REFERENCES `file_upload` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `jadwal`
