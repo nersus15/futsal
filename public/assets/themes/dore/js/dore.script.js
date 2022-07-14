@@ -3179,12 +3179,6 @@ $.fn.addCommas = function(nStr) {
   
       /* 03.20. Dropzone */
       if ($().dropzone && !$(".dropzone").hasClass("disabled")) {
-        $(".dropzone").dropzone({
-          url: "/file/post",
-          thumbnailWidth: 160,
-          previewTemplate:
-            '<div class="dz-preview dz-file-preview mb-3"><div class="d-flex flex-row "> <div class="p-0 w-30 position-relative"> <div class="dz-error-mark"><span><i class="simple-icon-exclamation"></i>  </span></div>      <div class="dz-success-mark"><span><i class="simple-icon-check-circle"></i></span></div>      <img data-dz-thumbnail class="img-thumbnail border-0" /> </div> <div class="pl-3 pt-2 pr-2 pb-1 w-70 dz-details position-relative"> <div> <span data-dz-name /> </div> <div class="text-primary text-extra-small" data-dz-size /> </div> <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>        <div class="dz-error-message"><span data-dz-errormessage></span></div>            </div><a href="#" class="remove" data-dz-remove> <i class="simple-icon-trash"></i> </a></div>'
-        });
       }
   
       /* 03.21. Cropperjs */

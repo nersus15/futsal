@@ -28,14 +28,27 @@ class Booking extends CI_Model{
         $lapangan = $this->db->select('*')->order_by('id', 'DESC')->get('jadwal')->result();
         return $lapangan;
     }
+    function get_by($where = null){
+        $query = $this->db->select('booking.*, jadwal.mulai, jadwal.selesai, jadwal.tarif, lapangan.jenis, lapangan.tempat, member.tim  as mtim, member.penanggung_jawab as mwakil, member.asal as masal')
+                ->from('booking')
+                ->join('lapangan', 'lapangan.id = booking.lapangan', 'inner')
+                ->join('jadwal', 'jadwal.id = booking.jadwal', 'inner')
+                ->join('member', 'member.id = booking.member', 'left');
 
+        if(!empty($where)){
+            foreach($where as $k => $v){
+                $query->where($k, $v);
+            }
+        }
+
+        return $query->get()->result();
+    }
     function create($data, $member = true){
         try {
             $lastid = $this->db->select('id')->order_by('id', 'DESC')->get('booking')->row();
             if(!empty($lastid)){
-                $lastid = substr($lastid, 12, 2);
-                $lastid = strlen($lastid) > 1 ? $lastid++ : '0' . $lastid++;
-                
+                $lastid = intval(substr($lastid->id, 12, 2));
+                $lastid = strlen($lastid) > 1 || $lastid == 9 ? ++$lastid : '0' . ++$lastid;
             }else{
                 $lastid = "01";
             }
@@ -43,10 +56,9 @@ class Booking extends CI_Model{
             $data['dibuat'] = waktu();
             $data['status'] = "baru";
             $this->db->insert('booking', $data);
-
-            return [true, 'Berhasil Booking'];
+            return[true, "Berhasil mebooking", $data];
         } catch (\Throwable $th) {
-            return [false, "Gagal Booking " . print_r($th, true)];
+            return[true, "Berhasil mebooking", $data];
         }
     }
 

@@ -18,8 +18,8 @@ class Member extends CI_Controller
             'navbar' => 'component/navbar/navbar.dore',
             'adaThemeSelector' => true,
             'sidebar' => 'component/sidebar/sidebar.dore',
-            'pageName' => 'Member',
-            'subPageName' => 'Area',
+            'pageName' => 'Member Area',
+            // 'subPageName' => '',
             'sidebarConf' => config_sidebar('comp', 'member', 0),
             'navbarConf' => array(
                 'adaUserMenu' => true,

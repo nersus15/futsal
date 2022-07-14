@@ -161,11 +161,11 @@ class CI_Controller {
 	function add_javascript($js, $posisi = 'body:end', $tipe = 'file'){
 		if(is_array($js)){
 			foreach($js as $c){
-				$this->params['extra_js'][] = $c;
+				$this->params['extra_js'][] = ($c . '.js');
 			}
 		}else{
 			$this->params['extra_js'][] = array(
-				'src' => $js,
+				'src' => ($js . '.js'),
 				'pos' => $posisi,
 				'type' => $tipe
 			);
@@ -219,11 +219,11 @@ class CI_Controller {
 	function add_stylesheet($css, $posisi = 'head', $tipe = 'file'){
 		if(is_array($css)){
 			foreach($css as $c){
-				$this->params['extra_css'][] = $c;
+				$this->params['extra_css'][] = ($c . '.css');
 			}
 		}else{
 			$this->params['extra_css'][] = array(
-				'src' => $css,
+				'src' => ($css . '.css'),
 				'pos' => $posisi,
 				'type' => $tipe
 			);

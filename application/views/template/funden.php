@@ -428,15 +428,16 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 			<div class="cta-box cta-double-content" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/cta/01.jpg);">
 				<form action="<?= is_login('member') ? base_url('member/add_booking') : base_url('ws/booking') ?>" method="POST" id="form-booking">
 					<div class="row">
-						<div class="col-xl-8 col-lg-8 col-md-12">
-							<div class="content" style="text-align: left">
+						<div class="col-xl-8 col-lg-6 col-md-6 col-sm-12">
+							<h4 class="text-white">Booking</h4>
+							<div class="content mt-5" style="text-align: left">
 								<div class="form-group">
 									<label class="text-white" for="">Tanggal</label>
 									<input data-rule-required="true" type="date" name="tanggal" id="tanggal" class="form-control">
 								</div>
 								<div class="form-group">
 									<label class="text-white" for="">Lapangan</label>
-									<select class="form-control" name="lapangan" id="lapangan">
+									<select class="form-control" data-rule-required="true" name="lapangan" id="lapangan">
 										<?php foreach($lapangan as $v): ?>
 											<option value="<?= $v->id ?>"><?= $v->id . "(". $v->jenis .") - " . $v->tempat ?></option>
 										<?php endforeach?>
@@ -444,9 +445,7 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 								</div>
 								<div class="form-group">
 									<label class="text-white" for="">Jam</label>
-									<select class="form-control" name="jadwal" id="jadwal">
-										<option value="">anjajnngkag</option>
-										<option value="">anjajnngkag</option>
+									<select class="form-control" data-rule-required="true" name="jadwal" id="jadwal">
 										<?php foreach($jadwal as $v): ?>
 											<option data-lapangan="<?= $v->lapangan ?>" value="<?= $v->id ?>"><?= $v->mulai . " - " . $v->selesai . "(". rupiah_format($v->tarif) .")" ?></option>
 										<?php endforeach?>
@@ -454,7 +453,7 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 								</div>
 								<div class="form-group">
 									<label class="text-white" for="">Penanggung Jawab</label>
-									<input type="text" name="penanggun_jawab" id="wakil" class="form-control">
+									<input type="text" data-rule-required="true" name="penanggung_jawab" id="wakil" class="form-control">
 								</div>
 								<div class="form-group">
 									<label class="text-white" for="">Tim</label>
@@ -471,6 +470,18 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 								<div class="form-group">
 									<label style="display: none" id="alert_danger" class="text-danger" for=""><small></small></label>
 								</div>
+							</div>
+						</div>
+						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+							<h4 class="text-white">Lihat Status Booking</h4>
+							<div class="content mt-5" style="text-align: left">
+								<div class="form-group">
+									<label class="text-white" for="">ID Booking</label>
+									<input type="text" id="bid" class="form-control">
+								</div>
+							</div>
+							<div style="text-align: center">
+								<button id="lihat-booking" type="button" class="btn btn-sm btn-primary">Lihat</button>
 							</div>
 						</div>
 					</div>

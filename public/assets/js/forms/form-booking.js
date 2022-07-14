@@ -13,21 +13,43 @@ $(document).ready(function(){
         _persiapan_nilai(data);
     
     });
-   
-
-
+    var defaultCnfigToast = {
+        title: 'Submit Feedback',
+        message: 'Submit Successfull',
+        id: 'defaut-config',
+        cara_tempel: 'after',
+        autohide: true,
+        show: true,
+        hancurkan: true,
+        wrapper: 'form',
+        delay: 5000,
+        bg: 'bg-primary'
+    };
 
     async function _persiapan_data(){
         var data = {};
         var options = {
             submitError: function(response){
                 endLoading();
-                var responseText  = JSON.parse(response.responseText)
-                console.log(responseText);
-                $('#alert_danger small').text(responseText.message).show();
-    
-                if(isFunction(submitError))
-                    submitError(response);
+                console.log(response.responseText);
+                var data;
+                if(response.responseText){
+                    if(typeof(response.responseText))
+                        data = JSON.parse(response.responseText);
+                    else
+                        data = response.responseText;
+                }else{
+                    var header = response.getResponseHeader('message');
+                    console.log(header);
+                    if(header)
+                        data = JSON.parse(header);
+                }
+                console.log(data);
+                var toast = defaultCnfigToast;
+                toast.message = data.message;
+                toast.bg = 'bg-danger';
+                toast.time = moment().format('YYYY-MM-DD HH:ss');
+                makeToast(toast);
     
             },
             sebelumSubmit: function(input, ){
@@ -37,6 +59,19 @@ $(document).ready(function(){
             }, 
             submitSuccess: function(data){
                 endLoading();
+                if(typeof(data) == 'string')
+                    data = JSON.parse(data);
+                var toast = defaultCnfigToast;
+                toast.title = toast.message;
+                toast.message = data.message;
+                toast.bg = 'bg-primary'
+                toast.time = moment().format('YYYY-MM-DD HH:ss');
+                makeToast(toast);
+                if(data.id){
+                    setTimeout(function(){
+                        window.location.href = path + 'home/pembayaran/' + data.id
+                    }, 5000);
+                }
             }
         };
         
@@ -57,6 +92,12 @@ $(document).ready(function(){
             });
             $("#lapangan").trigger('change')
         });
+        $("#lihat-booking").click(function(){
+            var id = $("#bid").val();
+            if(!bid) return;
+
+            window.location.href = path + 'home/pembayaran/' + id;
+        })
     }
 
 

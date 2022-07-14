@@ -127,7 +127,21 @@ class Ws extends CI_Controller{
     function booking(){
         $this->load->model('Booking');
         $post = $_POST;
-        list($_, $res) = $this->Booking->create($post);
-        response($res, $_ ? 200 : 500);
+        list($_, $res, $data) = $this->Booking->create($post);
+        response(['message' => $res, 'id' => isset($data['id']) ? $data['id'] : null], $_ ? 200 : 500);
+    }
+
+    function upload(){
+        $this->load->helper('file_upload_helper');
+        $fname = uploadImage($_FILES['file'], 'file', 'booking');
+        $newId = random(15);
+        $this->db->insert('file_upload', array(
+            'id' => $newId,
+            'nama' => $fname,
+            'uuid' => $_POST['uuid']
+        ));
+        $this->db->where('id', $_POST['id'])->update('booking', array('bukti_bayar' => $newId));
+    }
+    function cancel_upload(){
     }
 }

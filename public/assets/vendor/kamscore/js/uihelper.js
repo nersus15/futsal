@@ -1115,5 +1115,27 @@ uihelper = function () {
             endLoading();
         }).catch(err => { endLoading() });
     }
+
+    this.copyToClipboard = function(text) {
+        var sampleTextarea = document.createElement("textarea");
+        document.body.appendChild(sampleTextarea);
+        sampleTextarea.value = text; //save main text in it
+        sampleTextarea.select(); //select textarea contenrs
+        document.execCommand("copy");
+        document.body.removeChild(sampleTextarea);
+        makeToast({
+            title: 'Copy To Clipboard',
+            message: 'Berhasil copy text ke clipboard',
+            id: 'defaut-config',
+            cara_tempel: 'after',
+            autohide: true,
+            show: true,
+            time: moment().format('H:m:s'),
+            hancurkan: true,
+            wrapper: 'body',
+            delay: 3000,
+            bg: 'bg-primary'
+        });
+    }
     return this;
 }();

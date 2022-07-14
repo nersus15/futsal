@@ -21,7 +21,7 @@ class Auth extends CI_Controller
         if(is_login())
             redirect(base_url("dashboard"));
         $data = array(
-            'resource' => array('main', 'softui'),
+            'resource' => array('main', 'softui', 'form'),
             'content' => array('forms/login'),
             'hideSpinner' => true
         );
