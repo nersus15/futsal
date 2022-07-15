@@ -53,6 +53,8 @@ $(document).ready(function(){
     
             },
             sebelumSubmit: function(input, ){
+                if($("#jadwal-err").is(':visible'))
+                    return false;
                 showLoading();
                 $('#alert_danger small').text('').hide();
                 $('#btn-login').prop('disabled', true);
@@ -88,7 +90,7 @@ $(document).ready(function(){
                 $("#jadwal option").hide();
                 $("#jadwal option[data-lapangan='" + lapangan + "']").show();
                 var option = $("#jadwal option[data-lapangan='" + lapangan + "']");
-                $(option[0]).prop('selected', true)
+                $(option[0]).prop('selected', true).parent().trigger('change');
             });
             $("#lapangan").trigger('change')
         });
@@ -97,7 +99,17 @@ $(document).ready(function(){
             if(!bid) return;
 
             window.location.href = path + 'home/pembayaran/' + id;
-        })
+        });
+        $("#jadwal, #tanggal").change(function(){
+            var tanggal = $("#tanggal").val();
+            var jadwal = $("#jadwal").val();
+            $.get(path + 'ws/cekjadwal/?t=' + tanggal + '&j=' + jadwal).then(res =>{
+                if(!res.kosong)
+                    $("#jadwal-err").show();
+                else
+                    $("#jadwal-err").hide();
+            });
+        });
     }
 
 

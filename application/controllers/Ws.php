@@ -144,4 +144,28 @@ class Ws extends CI_Controller{
     }
     function cancel_upload(){
     }
+
+    function cekjadwal(){
+        if(!isset($_GET['j']) || !isset($_GET['t']))
+            response("Parameter yang dibutuhkan tidak tersedia", 500);
+
+        $tanggal = $_GET['t'];
+        $jadwal = $_GET['j'];
+        $boleh = true;
+        $data = $this->db->select('*')
+            ->where('tanggal', $tanggal)
+            ->where('jadwal', $jadwal)
+            ->get('booking')->result();
+        
+        if(!empty($data)){
+            foreach($data as $v){
+                if($v->status != 'selesai' && $v->status != 'batal'){
+                    $boleh =  false;
+                    continue;
+                }
+            }
+        }
+
+        response(['kosong' => $boleh]);
+    }
 }

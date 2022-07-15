@@ -25,13 +25,13 @@ if (!method_exists($this, 'response')) {
         else
             $responsse['type'] = $message['type'];
 
-        if($code != 200 && $format == 'json'){
+        if($code != 200 && $format == 'json')
             header("message: " . json_encode($responsse));
-            exit();
-        }
         
-        if ($format == 'json')
+        if ($format == 'json'){
+            header('Content-Type: application/json');
             echo json_encode($responsse);
+        }
         elseif ($format == 'html') {
             echo '<script> var path = "' . base_url() . '"</script>';
             echo $responsse['message'];

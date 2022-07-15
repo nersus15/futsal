@@ -450,6 +450,7 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 											<option data-lapangan="<?= $v->lapangan ?>" value="<?= $v->id ?>"><?= $v->mulai . " - " . $v->selesai . "(". rupiah_format($v->tarif) .")" ?></option>
 										<?php endforeach?>
 									</select>
+									<label style="display: none;" id="jadwal-err" class="text-danger" for=""><small>Sudah dibooking, silahkan piling jam atau tanggal lain</small></label>
 								</div>
 								<div class="form-group">
 									<label class="text-white" for="">Penanggung Jawab</label>
