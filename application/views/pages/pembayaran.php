@@ -1,3 +1,6 @@
+<?php
+    $diskon = ($booking->tarif * $booking->diskon)/100;
+?>
 <div class="bg col-md-6 col-lg-6 col-sm-12">
 <div class="alert alert-warning" role="alert">
   Untuk keamanan disarankan untuk menyimpan <b> booking id </b> anda (setelah tanda pagar(#))
@@ -21,12 +24,15 @@
                 <p class="card__email">Jadwal: <?= $booking->mulai . "-" . $booking->selesai ?></p>
                 <p class="card__email">Penanggung Jawab: <?= !empty($booking->mwakil) ? $booking->mwakil : $booking->penanggung_jawab ?></p>
                 <p class="card__email">Tim: <?= !empty($booking->mtim) ? $booking->mtim : $booking->tim ?></p>
+                <p class="card__email">Tarif: <?=rupiah_format($booking->tarif) ?></p>
+                <p class="card__email">Diskon: <?=  $booking->diskon . "% - " . rupiah_format($diskon) ?></p>
                 <p class="card__email">Member ID: <b> <?= !empty($booking->mid) ? $booking->mid : "Bukan Member" ?></b></p>
             </div>
             <br>
-            <h1 class="card__price"><?= rupiah_format($booking->tarif) ?></h1>
+            <h1 class="card__price"><?= rupiah_format($booking->tarif - $diskon) ?></h1>
+            <h2 class="">Status Booking: <b><?= ucfirst($booking->status) ?></b></h2>
             
-            <?php if (!empty($booking->bukti_bayar)): ?>
+            <?php if (!empty($booking->bukti_bayar) && $booking->status == 'baru'): ?>
                 <p class="card__method">Status Pembayaran</p>
                 <hr>
                 <div class="card__payment">
@@ -35,7 +41,7 @@
                         <p class="card__card-number">Menunggu konfirmasi admin</p>
                     </div>
                 </div>   
-            <?php else:?>
+            <?php elseif(empty($booking->bukit_bayar) && $booking->status == 'baru'):?>
                 <p class="card__method">Cara Bayar</p>
                 <hr>
                 <div class="card__payment">
@@ -120,3 +126,5 @@
     });
 
 </script>
+
+

@@ -60,12 +60,12 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 			<div class="container">
 				<div class="navbar-inner">
 					<div class="site-logo">
-						<a href="index.html"><img style="width: 50px; margin-right: 10px" src="<?= base_url($manifest->image) ?>" alt="TA Futsal"><span style="font-size: 20px; font-weight: bold">TA Futsal</span></a>
+						<a href="<?= base_url()?>"><img style="width: 50px; margin-right: 10px" src="<?= base_url($manifest->image) ?>" alt="TA Futsal"><span style="font-size: 20px; font-weight: bold">TA Futsal</span></a>
 					</div>
 					<div class="nav-menu">
 						<ul>
 							<li class="current">
-								<a href="index.html">Home</a>
+								<a href="<?= base_url()?>">Home</a>
 							</li>
 							<li>
 								<a href="project-1.html">Price</a>
@@ -82,12 +82,14 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 						</ul>
 					</div>
 					<div class="navbar-extra d-flex align-items-center">
-						<a href="#booking" class="main-btn nav-btn d-none d-sm-inline-block">
-							Booking Now <i class="far fa-arrow-right"></i>
-						</a>
+						<?php if(!is_login('admin')):?>
+							<a href="#booking" class="main-btn nav-btn d-none d-sm-inline-block">
+								Booking Now <i class="far fa-arrow-right"></i>
+							</a>
+						<?php endif ?>
 						<a href="#" class="nav-toggler">
-                            <span></span>
-                        </a>
+							<span></span>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -104,14 +106,22 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 					<a href="project-1.html">Price</a>
 				</li>
 				<li>
-					<a id="#login" href="<?= base_url("auth/login") ?>">Login</a>
+				<?php if(!is_login()): ?>
+						<a id="#login" href="<?= base_url("auth/login") ?>">Login</a>
+					<?php elseif(is_login('admin')): ?>
+						<a id="#login" href="<?= base_url("dashboard") ?>">Dashboard</a>
+					<?php elseif(is_login('member')): ?>
+						<a id="#login" href="<?= base_url("member") ?>">Member Area</a>
+					<?php endif ?>
 				</li>
 
 			</ul>
 			<div class="panel-extra">
-				<a href="#booking" class="main-btn btn-white">
-					Booking Now <i class="far fa-arrow-right"></i>
-				</a>
+				<?php if(!is_login('admin')): ?>
+					<a href="#booking" class="main-btn btn-white">
+						Booking Now <i class="far fa-arrow-right"></i>
+					</a>
+				<?php endif ?>
 			</div>
 			<a href="#" class="panel-close">
 				<i class="fal fa-times"></i>
@@ -423,72 +433,72 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 				</div>
 			</div>
 		</div>
-		<div id="booking" class="container">
-			<!-- Call to Action -->
-			<div class="cta-box cta-double-content" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/cta/01.jpg);">
-				<form action="<?= is_login('member') ? base_url('member/add_booking') : base_url('ws/booking') ?>" method="POST" id="form-booking">
-					<div class="row">
-						<div class="col-xl-8 col-lg-6 col-md-6 col-sm-12">
-							<h4 class="text-white">Booking</h4>
-							<div class="content mt-5" style="text-align: left">
-								<div class="form-group">
-									<label class="text-white" for="">Tanggal</label>
-									<input data-rule-required="true" type="date" name="tanggal" id="tanggal" class="form-control">
-								</div>
-								<div class="form-group">
-									<label class="text-white" for="">Lapangan</label>
-									<select class="form-control" data-rule-required="true" name="lapangan" id="lapangan">
-										<?php foreach($lapangan as $v): ?>
-											<option value="<?= $v->id ?>"><?= $v->id . "(". $v->jenis .") - " . $v->tempat ?></option>
-										<?php endforeach?>
-									</select>
-								</div>
-								<div class="form-group">
-									<label class="text-white" for="">Jam</label>
-									<select class="form-control" data-rule-required="true" name="jadwal" id="jadwal">
-										<?php foreach($jadwal as $v): ?>
-											<option data-lapangan="<?= $v->lapangan ?>" value="<?= $v->id ?>"><?= $v->mulai . " - " . $v->selesai . "(". rupiah_format($v->tarif) .")" ?></option>
-										<?php endforeach?>
-									</select>
-									<label style="display: none;" id="jadwal-err" class="text-danger" for=""><small>Sudah dibooking, silahkan piling jam atau tanggal lain</small></label>
-								</div>
-								<div class="form-group">
-									<label class="text-white" for="">Penanggung Jawab</label>
-									<input type="text" data-rule-required="true" name="penanggung_jawab" id="wakil" class="form-control">
-								</div>
-								<div class="form-group">
-									<label class="text-white" for="">Tim</label>
-									<input type="text" name="tim" id="tim" class="form-control">
-								</div>
-								<?php if(!is_login()): ?>
+		<?php if(!is_login('admin')):?>
+			<div id="booking" class="container">
+				<!-- Call to Action -->
+				<div class="cta-box cta-double-content" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/cta/01.jpg);">
+					<form action="<?= is_login('member') ? base_url('member/add_booking') : base_url('ws/booking') ?>" method="POST" id="form-booking">
+						<div class="row">
+							<div class="col-xl-8 col-lg-6 col-md-6 col-sm-12">
+								<h4 class="text-white">Booking</h4>
+								<div class="content mt-5" style="text-align: left">
+									<div class="form-group">
+										<label class="text-white" for="">Tanggal</label>
+										<input data-rule-required="true" type="date" name="tanggal" id="tanggal" class="form-control">
+									</div>
+									<div class="form-group">
+										<label class="text-white" for="">Lapangan</label>
+										<select class="form-control" data-rule-required="true" name="lapangan" id="lapangan">
+											<?php foreach($lapangan as $v): ?>
+												<option value="<?= $v->id ?>"><?= $v->id . "(". $v->jenis .") - " . $v->tempat ?></option>
+											<?php endforeach?>
+										</select>
+									</div>
+									<div class="form-group">
+										<label class="text-white" for="">Jam</label>
+										<select class="form-control" data-rule-required="true" name="jadwal" id="jadwal">
+											<?php foreach($jadwal as $v): ?>
+												<option data-lapangan="<?= $v->lapangan ?>" value="<?= $v->id ?>"><?= $v->mulai . " - " . $v->selesai . "(". rupiah_format($v->tarif) .")" ?></option>
+											<?php endforeach?>
+										</select>
+										<label style="display: none;" id="jadwal-err" class="text-danger" for=""><small>Sudah dibooking, silahkan piling jam atau tanggal lain</small></label>
+									</div>
+									<div class="form-group">
+										<label class="text-white" for="">Penanggung Jawab</label>
+										<input type="text" data-rule-required="true" name="penanggung_jawab" id="wakil" class="form-control">
+									</div>
+									<div class="form-group">
+										<label class="text-white" for="">Tim</label>
+										<input type="text" name="tim" id="tim" class="form-control">
+									</div>
 									<div class="form-group">
 										<label class="text-white" for=""><small>Sudah menjadi member? jika sudah menjadi member, silahkan booking melalui <a href="<?= base_url('member/booking') ?>">Member Area</a></small></label>
 									</div>
-								<?php endif ?>
+									<div style="text-align: center">
+										<button type="submit" class="btn btn-sm btn-primary">Booking</button>
+									</div>
+									<div class="form-group">
+										<label style="display: none" id="alert_danger" class="text-danger" for=""><small></small></label>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+								<h4 class="text-white">Lihat Status Booking</h4>
+								<div class="content mt-5" style="text-align: left">
+									<div class="form-group">
+										<label class="text-white" for="">ID Booking</label>
+										<input type="text" id="bid" class="form-control">
+									</div>
+								</div>
 								<div style="text-align: center">
-									<button type="submit" class="btn btn-sm btn-primary">Booking</button>
-								</div>
-								<div class="form-group">
-									<label style="display: none" id="alert_danger" class="text-danger" for=""><small></small></label>
+									<button id="lihat-booking" type="button" class="btn btn-sm btn-primary">Lihat</button>
 								</div>
 							</div>
 						</div>
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-							<h4 class="text-white">Lihat Status Booking</h4>
-							<div class="content mt-5" style="text-align: left">
-								<div class="form-group">
-									<label class="text-white" for="">ID Booking</label>
-									<input type="text" id="bid" class="form-control">
-								</div>
-							</div>
-							<div style="text-align: center">
-								<button id="lihat-booking" type="button" class="btn btn-sm btn-primary">Lihat</button>
-							</div>
-						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
-		</div>
+		<?php endif ?>
 	</section>
 	<!--====== Emergency Project & CTA End ======-->
 	<style>

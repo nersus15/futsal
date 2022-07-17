@@ -98,6 +98,7 @@
         var editButton = panel.find('.tool-edit');
         var deleteButton = panel.find('.tool-delete');
         var modalid = "modal-" + dtid;
+        var skripid = '';
         var modalConfig = {
             modalId: modalid,
             wrapper: "body",
@@ -118,7 +119,9 @@
                 },
                 submitSuccess: function (res) {
                     endLoading();
-                    res = JSON.parse(res);
+                    if(typeof(res) == 'string')
+                        res = JSON.parse(res);
+
                     defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss');
                     defaultCnfigToast.message = res.message;
                     console.log(res);
@@ -159,7 +162,15 @@
                         if(editedData)
                             url += "&ed=" + JSON.stringify(editedData);
 
+                    }else{
+                        
                     }
+                    if(!form.path){
+                        skripid = moment().format('YYYYMMDDHHss');
+                        if(form.skripVar)
+                            form.skripVar['skripid'] = skripid;
+                    }
+                    
                     if(form.skripVar)
                         url += "&sv=" + JSON.stringify(form.skripVar);
 
@@ -178,6 +189,8 @@
                     });
                 },
                 saatTutup: () => {
+                    console.log(skripid);
+                    $("#" + skripid).remove();
                 },
                 formOpt: {
                     enctype: 'multipart/form-data',
@@ -240,7 +253,6 @@
                 }
                 var editedData =rowData[0];
                 var url = path + 'uihelper/form/?f=' + form.path + '&s=' + form.skrip + "&ed=" + JSON.stringify(editedData);
-
                 form.skripVar['mode'] = 'edit';
                 
                 if(form.path){
@@ -359,7 +371,7 @@
 <script id="toolbar-user-skrip">
 <?php
     if(isset($toolbarSkrip) && !empty($toolbarSkrip)){
-        load_script($toolbar, $form + array('dtid' => $dtid));
+        load_script($toolbarSkrip, $form + array('dtid' => $dtid));
     }
 ?>
 </script>

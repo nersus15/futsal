@@ -34,7 +34,7 @@ class Uihelper extends CI_Controller{
                 ], true);    
             }
             response([
-                'html' => $html . $skrip
+                'html' => $html . "<script id='" .$data['sv']->skripid. "'>" . $skrip . '</script>'
             ]);
         }
     }
@@ -59,9 +59,8 @@ class Uihelper extends CI_Controller{
                 $data['ed'] = json_decode($_GET['ed']);
             if(isset($_GET['sv']))
                 $data['sv'] = json_decode($_GET['sv']);
-
             response([
-                'skrip' => "<script>" . load_script($skrip,[
+                'skrip' => "<script id='". $data['sv']->skripid ."'>" . load_script($skrip,[
                     'form_cache' => json_encode($data['ed']),
                     'form_data' => json_encode($data['sv'])
                 ], true) . "</script>"

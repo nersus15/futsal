@@ -6,7 +6,7 @@ $config['comp']['dore']['sidebar'] = array(
         'menus' => array(
             array('text' => 'Dashboard', 'icon' => 'iconsmind-Home', 'link' => base_url('admin/dashboard')),
             array('text' => 'Data', 'link' =>  '#data', 'icon' => 'iconsmind-Big-Data'),
-            array('text' => 'Booking List', 'link' => '#laporan', 'icon' => 'iconsmind-Bar-Chart'),
+            array('text' => 'Booking List', 'link' => base_url('data/booking'), 'icon' => 'iconsmind-Bar-Chart'),
             array('text' => 'Settings', 'link' => '#settings', 'icon' => 'simple-icon-settings')
         ),
         'subMenus' => array(

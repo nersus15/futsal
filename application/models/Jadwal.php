@@ -8,15 +8,14 @@ class Jadwal extends CI_Model{
         $q = $this->db->from('jadwal')->join('lapangan', 'lapangan.id = jadwal.lapangan');
 
         $this->datatables->setHeader(array(
-            'id' => array('searchable' => false),
+            'id' => array('searchable' => false, 'field' => 'jadwal.id'),
             'mulai' => array('searchable' => true),
             'selesai' => array('searchable' => true),
             'lapangan' => array('searchable' => true, 'field' => 'jadwal.lapangan'),
             'tarif' => array('searhcable' => true),
-            'jenis' => array('searchable' => true, 'field' => 'jadwal.jenis'),
-            'tempat' => array('searchable' => true, 'field' => 'tempat')
+            'jenis' => array('searchable' => true, 'field' => 'lapangan.jenis'),
+            'tempat' => array('searchable' => true, 'field' => 'lapangan.tempat')
         ));
-        $this->datatables->addSelect('jadwal.*, lapangan.jenis, lapangan.tempat');
         $this->datatables->setQuery($q);
         $data = $this->datatables->getData();
         return $data;

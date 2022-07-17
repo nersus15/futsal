@@ -28,7 +28,17 @@ class Member extends CI_Model{
         $data = $this->datatables->getData();
         return $data;
     }
+    function get_by($where = null){
+        $query = $this->db->from('member')->join('user', 'user.member = member.id')
+            ->select('member.*, user.username, user.id as userid, user.hp, user.email');
+        if(!empty($where)){
+            foreach($where as $k => $v){
+                $query->where($k, $v);
+            }
+        }
 
+        return $query->get()->result();
+    }
     function create($data){
         try {
             $dataMember = array(
@@ -46,10 +56,11 @@ class Member extends CI_Model{
                 'role' => 'member',
                 'member' => $dataMember['id']
             );
-            if(isset($post['email']) && !empty($post['email']))
-                $dataUser['email'] = $post['email'];
-            if(isset($post['hp']) && !empty($post['hp']))
-                $dataUser['hp'] = $post['hp'];
+            if(isset($data['email']) && !empty($data['email']))
+                $dataUser['email'] = $data['email'];
+            if(isset($data['hp']) && !empty($data['hp']))
+                $dataUser['hp'] = $data['hp'];
+
             $this->db->insert('member', $dataMember);
             $this->db->insert('user', $dataUser);
 

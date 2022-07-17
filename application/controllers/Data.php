@@ -312,4 +312,121 @@ class Data extends CI_Controller
         $this->addViews('template/dore', $data);
         $this->render();
     }
+
+    function booking(){
+        $tabelBooking = $this->getContentView('component/datatables/datatables.responsive', array(
+            'dtTitle' => 'Data bookingan',
+            'dtid' => 'dt-booking',
+            'head' => array(
+               '', 'Lapangan', 'Jadwal', 'Nama Tim','Perwakilan', 'Tanggal Booking', 'Member', 'Tarif', 'Diskon', 'Tagihan', 'Status', 'Bukti Bayar'
+            ),
+            'skrip' => 'dtconfig/dt_booking', //wajib
+            'skrip_data' => array('id' => 'dt-booking'),
+            'options' => array(
+                'source' => 'ws/get_booking',
+                'search' => 'false',
+                'select' => 'multi', //false, true, multi
+                'checkbox' => 'true',
+                'change' => 'false',
+                'dom' => 'rtip',
+                'responsive' => 'true',
+                'auto-refresh' => 'false',
+                'deselect-on-refresh' => 'true',
+            ),
+            'form' => array(
+                'id' => 'form-booking',
+                'path' => '',
+                'nama' => 'Form Booking',
+                'skrip' => 'forms/form-booking-admin',
+                'formGenerate' => array(
+                    [
+                        'type' => 'hidden', 'name' => '_http_method', 'id' => 'method'
+                    ],
+                    [
+                        'type' => 'hidden', 'name' => 'id', 'id' => 'id'
+                    ],
+                    [
+                        'type' => 'hidden', 'name' => 'registrar', 'id' => 'registrar', 'value' => sessiondata('login', 'id')
+                    ],
+                    [
+                        "label" => 'ID Member', "placeholder" => '',
+                        "type" => 'text', "name" => 'member', "id" => 'member',
+                    ],
+                    [
+                        "label" => 'Nama Tim', "placeholder" => '',
+                        "type" => 'text', "name" => 'tim', "id" => 'tim',
+                    ],
+                    [
+                        "label" => 'Nama Penanggung Jawab', "placeholder" => '', 'attr' => 'data-rule-required=true',
+                        "type" => 'text', "name" => 'penanggung_jawab', "id" => 'wakil',
+                    ],
+                    [
+                        "label" => 'Tanggal', "placeholder" => '', 'attr' => 'data-rule-required=true',
+                        "type" => 'date', "name" => 'tanggal', "id" => 'tanggal',
+                    ],
+                    [
+                        "label" => 'Lapangan', "placeholder" => '', 'attr' => 'data-rule-required=true',
+                        "type" => 'select', "name" => 'lapangan', "id" => 'lapangan', 'option' => array()
+                    ],
+                    [
+                        "label" => 'Jadwal', "placeholder" => '', 'attr' => 'data-rule-required=true',
+                        "type" => 'select', "name" => 'jadwal', "id" => 'jadwal', 'option' => array()
+                    ],
+                    
+                ),
+                    'posturl' => 'ws/booking',
+                    'updateurl' => '',
+                    'buttons' => array(
+                        [ "type" => 'reset', "data" => 'data-dismiss="modal"', "text" => 'Batal', "id" => "batal", "class" => "btn btn btn-warning" ],
+                        [ "type" => 'submit', "text" => 'Simpan', "id" => "simpan", "class" => "btn btn btn-primary" ]
+                )
+            ),
+            'data_panel' => array(
+                'nama' => 'dt-booking',
+                'perpage' => 10,
+                'pages' => array(1, 2, 10),
+                'hilangkan_display_length' => true,
+                'toolbar' => array(
+                    array(
+                        'tipe' => 'buttonset',
+                        'tombol' => array(
+                            array('tipe' => 'link', 'href' => '#', 'title' => 'Booking', 'icon' => 'icon-plus simple-icon-paper-plane', 'class' => 'btn-outline-primary tool-add tetap'),
+                            array('tipe' => 'link', 'href' => '#', 'title' => 'Edit Data', 'icon' => 'icon-edit simple-icon-note', 'class' => 'tool-edit'),
+                            array('tipe' => 'link', 'href' => '#', 'title' => 'Batalkan', 'icon' => 'icon-edit simple-icon-note', 'class' => 'tool-batalkan'),
+                            array('tipe' => 'link', 'href' => '#', 'title' => 'Verifikasi', 'icon' => 'icon-edit simple-icon-note', 'class' => 'tool-verify'),
+                            array('tipe' => 'link', 'href' => '#', 'title' => 'Check in', 'icon' => 'icon-edit simple-icon-note', 'class' => 'tool-aktif'),
+                            array('tipe' => 'link', 'href' => '#', 'title' => 'Check out', 'icon' => 'icon-edit simple-icon-note', 'class' => 'tool-selesai'),
+                        )
+                    ),
+                ),
+                'toolbarSkrip' => 'pages/bookinglist',
+            )
+        ), true);
+        $data = [
+            'resource' => array('main', 'dore','datatables', 'form'),
+            'contentHtml' => array('<h5> Keterangan: </h5> <ul style="list-style:none"><li class="row-batalkan"> Strip merah disamping masing masing data menandakan untuk segera merubah status data tersebut menjadi batal</li><li class="row-selesai mt-2"> Strip merah disamping masing masing data menandakan untuk segera merubah status data tersebut menjadi selesai</li></ul>', $tabelBooking),
+            'content' => array(),
+            'navbar' => 'component/navbar/navbar.dore',
+            'sidebar' => 'component/sidebar/sidebar.dore',
+            'pageName' => 'Booking List',
+            'sidebarConf' => config_sidebar('comp', 'admin', 2),
+            'navbarConf' => array(
+                'adaUserMenu' => true,
+                'adaNotif' => true,
+                'pencarian' => false,
+                'adaSidebar' => true,
+                'homePath' => base_url()
+            ),
+            'bodyClass' => 'menu-hidden sub-hidden'
+        ];
+        $this->add_cachedStylesheet("
+        .row-batalkan{
+            border-left: 5px solid #b61827 !important
+        } 
+        .row-selesai{
+            border-left: 5px solid #338a3e !important
+        }", 'inline', 'head');
+        $this->addViews('template/dore', $data);
+        $this->render();
+    }
 }

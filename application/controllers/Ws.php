@@ -104,6 +104,21 @@ class Ws extends CI_Controller{
         $data = $this->Member->get_all();
         response($data);
     }
+    function get_memberby(){
+        $this->load->model('Member');
+        if(!empty($_GET))
+            $where = $_GET;
+        else
+            $where = null;
+        if(!empty($where)){
+            $tmp = array();
+            foreach($where as $k => $v){
+                $tmp[str_replace('-', '.', $k)] = $v;
+            }
+            $where = $tmp;
+        }
+        response(array('data' => $this->Member->get_by($where)));
+    }
     function add_member(){
         $this->load->model('Member');
         $post = $_POST;
@@ -127,8 +142,33 @@ class Ws extends CI_Controller{
     function booking(){
         $this->load->model('Booking');
         $post = $_POST;
-        list($_, $res, $data) = $this->Booking->create($post);
+        if($_SERVER['REQUEST_METHOD'] == 'UPDATE'){
+            if(isset($post['member']) && empty($post['member']))
+                unset($post['member']);
+            $id = array($post['id']);
+            unset($post['id']);
+            list($_, $res, $data) = $this->Booking->update($post, $id);
+        }elseif($_SERVER['REQUEST_METHOD'] == 'POST'){
+            if(isset($post['member']) && empty($post['member']))
+                unset($post['member']);
+            if(isset($post['id']) && !empty($post['id']))
+                unset($post['id']);
+
+            list($_, $res, $data) = $this->Booking->create($post);
+        }
         response(['message' => $res, 'id' => isset($data['id']) ? $data['id'] : null], $_ ? 200 : 500);
+    }
+    function update_status_booking($status){
+        $this->load->model('Booking');
+        $post = $_POST;
+        $ids = $post['ids'];
+        list($_, $res, $data) = $this->Booking->update(array('status' => $status), $ids);
+        response(['message' => $res, 'id' => isset($data['id']) ? $data['id'] : null], $_ ? 200 : 500);
+    }
+    function get_booking($member = null){
+        $this->load->model('Booking');
+        $data = $this->Booking->get_all($member);
+        response($data);
     }
 
     function upload(){
@@ -167,5 +207,36 @@ class Ws extends CI_Controller{
         }
 
         response(['kosong' => $boleh]);
+    }
+
+    function file(){
+        $download = false;
+        if(!isset($_GET['l']))
+            response("Invalid", 403);
+        if(isset($_GET['d']) && $_GET['d'] == 1)
+            $download = true;
+
+        $location = $_GET['l'];
+        if(!file_exists(get_path(ASSETS_PATH . '/img' . $location)))
+            response("Not Found", 404);
+        $name = explode('/', $location);
+        $name = end($name);
+        $extension = pathinfo($name, PATHINFO_EXTENSION);
+        $location = get_path(ASSETS_PATH . '/img' . $location);
+        if($download){
+            $this->load->helper('download');
+            $content = file_get_contents(get_path(ASSETS_PATH . '/img' . $location));
+            force_download($name . '.', $content, true);
+        }
+        else{
+            $fp = fopen($location, 'rb');
+            // send the right headers
+            header("Content-Type: image/" . strtolower($extension));
+            header("Content-Length: " . filesize($name));
+            // dump the picture and stop the script
+            $contents = fread($fp, filesize($location)); 
+            fclose($fp); 
+            echo $contents;
+        }
     }
 }

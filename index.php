@@ -59,15 +59,14 @@ if(empty($_POST) && $_SERVER['REQUEST_METHOD'] == 'POST')
 	$_POST = json_decode(file_get_contents('php://input'), true);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	if(isset($_POST['_http_method']) && $_POST['_http_method'] == 'delete'){
-		$_SERVER['REQUEST_METHOD'] = "DELETE";
-		unset($_POST['_http_method']);
-	}
-}
-
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	if(isset($_POST['_http_method']) && $_POST['_http_method'] == 'update'){
-		$_SERVER['REQUEST_METHOD'] = "UPDATE";
+	if(isset($_POST['_http_method'])){
+		if(strtolower($_POST['_http_method']) == 'post')
+			$_SERVER['REQUEST_METHOD'] = "POST";
+		elseif(strtolower($_POST['_http_method']) == 'delete')
+			$_SERVER['REQUEST_METHOD'] = 'DELETE';
+		elseif(strtolower($_POST['_http_method']) == 'update')
+			$_SERVER['REQUEST_METHOD'] = "UPDATE";
+		
 		unset($_POST['_http_method']);
 	}
 }
