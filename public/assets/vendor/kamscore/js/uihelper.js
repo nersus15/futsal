@@ -1051,7 +1051,7 @@ uihelper = function () {
             }
             setInterval(function(){
                 if(attribut.ajax)
-                    dt_instance.ajax.reload(null, false);
+                    dt_instance.ajax.reload(null, true);
                 else
                     renderDatatablesOffline(path + attribut.source, id, configTabel[id]);
             }, interval);

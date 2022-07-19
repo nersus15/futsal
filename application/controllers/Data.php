@@ -330,8 +330,8 @@ class Data extends CI_Controller
                 'change' => 'false',
                 'dom' => 'rtip',
                 'responsive' => 'true',
-                'auto-refresh' => 'false',
-                'deselect-on-refresh' => 'true',
+                'auto-refresh' => 'fakse',
+                'deselect-on-refresh' => 'false',
             ),
             'form' => array(
                 'id' => 'form-booking',
@@ -404,7 +404,7 @@ class Data extends CI_Controller
         ), true);
         $data = [
             'resource' => array('main', 'dore','datatables', 'form'),
-            'contentHtml' => array('<h5> Keterangan: </h5> <ul style="list-style:none"><li class="row-batalkan"> Strip merah disamping masing masing data menandakan untuk segera merubah status data tersebut menjadi batal</li><li class="row-selesai mt-2"> Strip merah disamping masing masing data menandakan untuk segera merubah status data tersebut menjadi selesai</li></ul>', $tabelBooking),
+            'contentHtml' => array('<h5> Keterangan: </h5> <ul style="list-style:none"><li class="row-batalkan"> Strip merah disamping masing masing data menandakan untuk segera merubah status data tersebut menjadi batal</li><li class="row-selesai mt-2"> Strip hijau disamping masing masing data menandakan untuk segera merubah status data tersebut menjadi selesai</li><li class="row-editable mt-2"> Strip kuning disamping masing masing data menandakan data bisa di edit</li></ul>', $tabelBooking),
             'content' => array(),
             'navbar' => 'component/navbar/navbar.dore',
             'sidebar' => 'component/sidebar/sidebar.dore',
@@ -420,6 +420,9 @@ class Data extends CI_Controller
             'bodyClass' => 'menu-hidden sub-hidden'
         ];
         $this->add_cachedStylesheet("
+        .row-editable{
+            border-left: 5px solid #ffb300 !important
+        }
         .row-batalkan{
             border-left: 5px solid #b61827 !important
         } 

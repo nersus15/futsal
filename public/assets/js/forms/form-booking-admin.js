@@ -48,11 +48,9 @@ $(document).ready(function(){
                         data = response.responseText;
                 }else{
                     var header = response.getResponseHeader('message');
-                    console.log(header);
                     if(header)
                         data = JSON.parse(header);
                 }
-                console.log(data);
                 var toast = defaultCnfigToast;
                 toast.message = data.message;
                 toast.bg = 'bg-danger';
@@ -118,7 +116,6 @@ $(document).ready(function(){
                     row += "<option data-lapangan='"+ d.lapangan +"' value='" + d.id + "'>" + d.mulai + " - " + d.selesai + " (Rp. "+ d.tarif.rupiahFormat() +") </option>";
                 i++;
             });
-            console.log(row);
             $("#jadwal").empty().append(row);
          });
     }
@@ -190,6 +187,11 @@ $(document).ready(function(){
             setTimeout(function(){
                 components.jadwal.find('optiion[value="' + edited_data.jadwal + '"]').prop('selected', true).trigger('change');
             }, 500);
+            console.log(edited_data.registrar);
+            if(edited_data.registrar == null || edited_data.registrar == undefined){
+                $("#" + formid + " input, select, button[type='submit']").prop('disabled', true);
+                alert("Tidak bisa edit data yang didaftar bukan oleh admin");
+            }
         }else if(form_data.mode == 'baru'){
             var option = $("#lapangan option");
             if(option.length > 0)

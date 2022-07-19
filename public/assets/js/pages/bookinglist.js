@@ -147,9 +147,10 @@ $(document).ready(function(){
             row = row[i];
             var column = $(row).find('td');
             var selesai = data.tanggal + " " + data.selesai;
-            console.log(data.dibuat, moment(data.dibuat).diff(moment(), 'minutes'));
             if(moment(selesai).diff(moment(), 'minutes') < 0 && data.status == 'terverifikasi')
                 $(column[0]).addClass('row-selesai');
+            if(data.registrar != null && data.registrar != undefined)
+                $(column[0]).addClass('row-editable');
 
             if(moment(data.dibuat).diff(moment(), 'minutes') < -18 && data.status == 'baru' && !data.bukti_bayar){
                 $(column[0]).addClass('row-batalkan');
