@@ -39,7 +39,9 @@
 
 <script>
     var adaThemeSelector = <?php echo !empty($adaThemeSelector) ? boolval($adaThemeSelector) : 'false' ?>;
+    var notifBtn = $("#notificationButton");
     $(document).ready(function(){
+        var notif = <?= json_encode($this->notifikasi) ?>;
         if(adaThemeSelector && themeSelector && typeof(themeSelector) === "function")
             themeSelector();
         else{
@@ -48,6 +50,68 @@
             } catch (error) {
                 
             }
+        }
+        function renderNotifikasi(){
+            var notifItem = "";
+            
+            notif.forEach((n, i) => {
+                var link = n.link ? path + n.link : '#';
+                if(i == 15){
+                    notifItem += '<div style="width: 100%; background: whitesmoke; justify-content: center" class="d-flex flex-row mt-3">' +
+                                '<div class="pl-3 pr-2">' +
+                                    '<a href="'+ path +'notifcenter" class="btn">Baca Semua</a>'
+                                '</div>' +
+                            '</div>';
+                }else if(i < 15){
+                    if(!n.dibaca){
+                        notifItem += '<div class="d-flex flex-row mb-3 pb-3 border-bottom">' +
+                                '<div class="pl-3 pr-2">' +
+                                    '<a href="'+ link +'">' +
+                                        '<p class="font-weight-medium mb-1">'+ n.pesan +'</p>' +
+                                        '<p class="text-muted mb-0 text-small">'+ n.dibuat +'</p>' +
+                                    '</a>' +
+                                '</div>' +
+                            '</div>';
+                    }else{
+                        notifItem += '<div class="d-flex flex-row mb-3 pb-3 border-bottom">' +
+                                '<div class="pl-3 pr-2">' +
+                                    '<b><a class="text-primary" data-id="'+ n.id +'" href="'+ link +'">' +
+                                        '<p class="font-weight-medium mb-1">'+ n.pesan +'</p>' +
+                                        '<p class="text-muted mb-0 text-small">'+ n.dibuat +'</p>' +
+                                    '</a></b>' +
+                                '</div>' +
+                            '</div>';
+                    }
+                }
+                
+            });
+            
+            var unreadNotif = notif.filter(n => !notif.dibaca);
+            $(notifBtn).find('span.count').text(unreadNotif.length);
+            $("#notificationDropdown").empty();
+            $("#notificationDropdown").append(notifItem);
+        };
+
+        if(notifBtn.length > 0){
+            renderNotifikasi();
+            setInterval(renderNotifikasi, 10000);
+
+            notifBtn.find('a').click(function(e){
+                e.preventDefault();
+                var link = $(this).attr('href');
+                var nid = $(this).data('id');
+                var notifItem = notif.filter(n => n.id == nid);
+                if(notifItem.length > 0)
+                    notifItem = notifItem[0];
+
+                if(link != '#')
+                    window.location.href = link;
+                else{
+                    notifikasi(notifItem.pesan);
+                }
+
+                $.post(path + 'ws/baca_notif/' + nid);
+            });
         }
            
     });

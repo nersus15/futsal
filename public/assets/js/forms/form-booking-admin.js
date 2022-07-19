@@ -78,7 +78,7 @@ $(document).ready(function(){
                 makeToast(toast);
                 if(data.id){
                     setTimeout(function(){
-                        window.location.href = path + 'home/pembayaran/' + data.id
+                        window.location.href = path + 'pembayaran/' + data.id
                     }, 5000);
                 }
             }

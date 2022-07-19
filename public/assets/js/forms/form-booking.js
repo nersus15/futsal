@@ -71,7 +71,7 @@ $(document).ready(function(){
                 makeToast(toast);
                 if(data.id){
                     setTimeout(function(){
-                        window.location.href = path + 'home/pembayaran/' + data.id
+                        window.location.href = path + 'pembayaran/' + data.id
                     }, 5000);
                 }
             }
@@ -98,7 +98,7 @@ $(document).ready(function(){
             var id = $("#bid").val();
             if(!bid) return;
 
-            window.location.href = path + 'home/pembayaran/' + id;
+            window.location.href = path + 'pembayaran/' + id;
         });
         $("#jadwal, #tanggal").change(function(){
             var tanggal = $("#tanggal").val();

@@ -148,6 +148,34 @@ class Ws extends CI_Controller{
             $id = array($post['id']);
             unset($post['id']);
             list($_, $res, $data) = $this->Booking->update($post, $id);
+            $dataNotif = [];
+            if(is_login('admin') && isset($data['member'])){
+                $user = $this->db->select('id')->where('member', $data['member'])->get()->row();
+                $dataNotif[] = [
+                    'id' => random(8),
+                    'dibuat' => waktu(),
+                    'pesan' =>  "Bookingan anda dengan id <b>" . $data['id'] . '</b> Telah diupdate oleh Admin',
+                    'jenis' =>  'personal',
+                    'user' =>  $user->id,
+                    'link' => 'pembayaran/' . $data['id']
+                ];
+            }elseif(is_login('member')){
+                $dataNotif[] = [
+                    'id' => random(8),
+                    'dibuat' => waktu(),
+                    'pesan' =>  "Anda telah mengupdate bookingan dengan id <b>" . $data['id'] . '</b>',
+                    'jenis' =>  'personal',
+                    'user' =>  sessiondata('login', 'id'),
+                    'link' => 'pembayaran/' . $data['id']
+                ];
+                $dataNotif[] = [
+                    'id' => random(8),
+                    'dibuat' => waktu(),
+                    'pesan' =>  "Bokingan dengan id <b>" . $data['id'] . ' telah diupdate</b>',
+                    'jenis' =>  'global',
+                    'role' => 'admin',
+                ];
+            }
         }elseif($_SERVER['REQUEST_METHOD'] == 'POST'){
             if(isset($post['member']) && empty($post['member']))
                 unset($post['member']);
@@ -155,6 +183,40 @@ class Ws extends CI_Controller{
                 unset($post['id']);
 
             list($_, $res, $data) = $this->Booking->create($post);
+            $batch = false;
+            $dataNotif = [
+               [
+                'id' => random(8),
+                'dibuat' => waktu(),
+                'pesan' =>  "Bookingan baru telah dibuat dengan id <b>" . $data['id'] . "</b>",
+                'jenis' =>  'global',
+                'role' =>  'admin',
+               ]
+            ];
+            if(isset($data['member']) && !isset($data['registrar'])){
+                $batch = true;
+                $dataNotif[] = [
+                    'id' => random(8),
+                    'dibuat' => waktu(),
+                    'pesan' =>  "Anda telah membuat bookingan baru dengan id <b>" . $data['id'] . '</b> Segera lakukan pembayaran',
+                    'jenis' =>  'personal',
+                    'user' =>  sessiondata('login', 'id'),
+                    'link' => 'pembayaran/' . $data['id']
+                ];
+            }else if(isset($data['member']) && isset($data['registrar'])){
+                // TODO: Buat Notifikasi, untuk member yang didaftarkan admin
+                $user = $this->db->select('id')->where('member', $data['member'])->get()->row();
+                $dataNotif[] = [
+                    'id' => random(8),
+                    'dibuat' => waktu(),
+                    'pesan' =>  "Anda telah membuat bookingan baru melalui admin, booking id <b>" . $data['id'] . '</b> Segera lakukan pembayaran',
+                    'jenis' =>  'personal',
+                    'user' =>  $user->id,
+                    'link' => 'pembayaran/' . $data['id']
+                ];
+            }
+            
+            $this->notification->create($dataNotif, $batch);
         }
         response(['message' => $res, 'id' => isset($data['id']) ? $data['id'] : null], $_ ? 200 : 500);
     }
@@ -163,6 +225,39 @@ class Ws extends CI_Controller{
         $post = $_POST;
         $ids = $post['ids'];
         list($_, $res, $data) = $this->Booking->update(array('status' => $status), $ids);
+        $dataNotif = [];
+        if(is_login('member')){
+            foreach($ids as $id){
+                $dataNotif[] = [
+                    'id' => random(8),
+                    'dibuat' => waktu(),
+                    'pesan' =>  "Status Bookingan dengan id #" . $id . " Telah dirubah menjadi " . $status,
+                    'jenis' =>  'global',
+                    'user' => 'admin',
+                    'link' => 'pembayaran/' . $id
+                ];
+            }
+        }else if(is_login('admin')){
+            foreach($ids as $id){
+                $user = $this->db->select('user.id')
+                    ->join('member', 'member.id = booking.member')
+                    ->join('user', 'user.member = member.id')
+                    ->where('booking.id', $id)
+                    ->get('booking')->row();
+                if(!empty($user)){
+                    $dataNotif[] = [
+                        'id' => random(8),
+                        'dibuat' => waktu(),
+                        'pesan' =>  "Status Bookingan anda dengan id #" . $id . " Telah dirubah menjadi " . $status,
+                        'jenis' =>  'personal',
+                        'user' => $user->id,
+                        'link' => 'pembayaran/' . $id
+                    ];
+                }
+            }
+        }
+        
+        $this->notification->create($dataNotif);
         response(['message' => $res, 'id' => isset($data['id']) ? $data['id'] : null], $_ ? 200 : 500);
     }
     function get_booking($member = null){
@@ -238,5 +333,9 @@ class Ws extends CI_Controller{
             fclose($fp); 
             echo $contents;
         }
+    }
+
+    function baca_notif($nid){
+        $this->notification->baca($nid);
     }
 }

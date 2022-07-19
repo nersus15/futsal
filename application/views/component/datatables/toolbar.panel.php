@@ -55,7 +55,7 @@
         </div>
     </div>
 	<?php endif;?>
-    <div class="panel-top-toolbar float-sm-right text-zero">
+    <div class="panel-top-toolbar panel-toolbar-<?= $tabel ?> float-sm-right text-zero">
         <?php 
            if (isset($toolbar_button[0]) && count($toolbar_button[0]) > 0) {
             $toolbar_items = array();

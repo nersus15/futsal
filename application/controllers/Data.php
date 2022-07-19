@@ -330,7 +330,7 @@ class Data extends CI_Controller
                 'change' => 'false',
                 'dom' => 'rtip',
                 'responsive' => 'false',
-                'auto-refresh' => '5000',
+                'auto-refresh' => '10000',
                 'deselect-on-refresh' => 'false',
             ),
             'form' => array(

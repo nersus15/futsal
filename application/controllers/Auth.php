@@ -3,19 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Auth extends CI_Controller
 {
-    function index()
-    {
-        $data = array(
-            'resource' => array('main', 'dore')
-        );
-
-
-        $this->renderer->add_cachedJavascript('js/pages/login.js');
-
-        $this->renderer->addViews(array('head/main', 'pages/login', 'foot/main'), $data);
-        $this->renderer->render();
-    }
-
     function login()
     {
         if(is_login())

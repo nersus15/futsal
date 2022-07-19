@@ -67,4 +67,8 @@ class Uihelper extends CI_Controller{
             ]);
         }
     }
+
+    function notifcenter(){
+        response("OK");
+    }
 }

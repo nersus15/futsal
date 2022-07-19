@@ -69,7 +69,7 @@
                     <i class="text-primary simple-icon-bell"></i>
                     <span class="count"></span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-right mt-3 scroll position-absolute" id="notificationDropdown">
+                <div class="dropdown-menu dropdown-menu-right mt-3 scroll position-absolute" id="notificationDropdown" style="overflow-y: scroll">
                 </div>
             </div>
             <?php endif ?>
@@ -105,3 +105,4 @@
        
     </div>
 </nav>
+<script></script>

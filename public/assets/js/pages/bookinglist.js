@@ -53,7 +53,7 @@ $(document).ready(function(){
                 return;
             }
                 
-            window.open(path + 'home/pembayaran/' + rowData[0].id)
+            window.open(path + 'pembayaran/' + rowData[0].id)
         });
     }
 
@@ -74,6 +74,9 @@ $(document).ready(function(){
             ids.push(rowData[i].id);
         }
 
+        if(status == 'Terverifikasi' && ids.length == 0)
+            return;
+
         confirm("Yakin Ingin Mengubah data dengen id " + ids.join(', ') + " menjadi " + status);
         fetch(path + 'ws/update_status_booking/' + status.toLowerCase(), {
             method: 'POST',
@@ -89,7 +92,7 @@ $(document).ready(function(){
                 if (res.message)
                     defaultCnfigToast.message = res.message;
                 else
-                    defaultCnfigToast.message = "Delete Gagal";
+                    defaultCnfigToast.message = "Gagal";
 
                 defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss')
                 makeToast(defaultCnfigToast);
@@ -110,7 +113,7 @@ $(document).ready(function(){
                 if (res.message)
                     defaultCnfigToast.message = res.message;
                 else
-                    defaultCnfigToast.message = "Delete Berhasil";
+                    defaultCnfigToast.message = "Berhasil";
 
                 defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss')
                 makeToast(defaultCnfigToast);
@@ -128,7 +131,7 @@ $(document).ready(function(){
                     if (res.message)
                         defaultCnfigToast.message = res.message;
                     else
-                        defaultCnfigToast.message = "Delete Gagal";
+                        defaultCnfigToast.message = "Gagal";
 
                     defaultCnfigToast.time = moment().format('YYYY-MM-DD HH:ss')
                     makeToast(defaultCnfigToast);
@@ -149,15 +152,22 @@ $(document).ready(function(){
             var selesai = data.tanggal + " " + data.selesai;
             if(moment(selesai).diff(moment(), 'minutes') < 0 && data.status == 'terverifikasi')
                 $(column[0]).addClass('row-selesai');
+            else
+                $(column[0]).removeClass('row-selesai');
+
             if(data.registrar != null && data.registrar != undefined)
                 $(column[0]).addClass('row-editable');
+            else
+                $(column[0]).removeClass('row-editable');
 
             if(moment(data.dibuat).diff(moment(), 'minutes') < -18 && data.status == 'baru' && !data.bukti_bayar){
                 $(column[0]).addClass('row-batalkan');
+            }else{
+                $(column[0]).removeClass('row-batalkan');
             }
 
         }
     };
-   setTimeout(customizeTabel, 1000)
+   setInterval(customizeTabel, 1000)
 
 });

@@ -20,6 +20,15 @@
     tr.selected{
         background-color: white !important;
     }
+    .sticky-toolbar{
+        position: fixed;
+        right: 0;z-index: 99;
+        top: 15%;
+        background: white;
+        border: 1px solid whitesmoke;
+        border-radius: 25px;
+        padding: 10px 10px;
+    }
 </style>
 <div class="row mb-4 mt-3">
     <div class="col-12 mb-4">
@@ -86,7 +95,7 @@
             wrapper: 'body',
             delay: 5000
         }
-
+        
         if(!form.buttons){
             form.buttons = [
                 
@@ -99,6 +108,19 @@
         var deleteButton = panel.find('.tool-delete');
         var modalid = "modal-" + dtid;
         var skripid = '';
+
+        $(document).scroll(function(){
+            var toolbarButton = panel.find(".panel-toolbar-" + dtid);
+            if(toolbarButton.length == 0) return;
+
+            var style = "position: fixed;right: 0;z-index: 99;top: 15%;background: white;border: 1px solid whitesmoke;border-radius: 25px;padding: 10px 10px";
+            if($(document).scrollTop() >= 300){
+                if(!toolbarButton.hasClass('sticky-toolbar'))
+                    toolbarButton.addClass('sticky-toolbar');
+            }
+            else if($(document).scrollTop() < 300)
+                toolbarButton.removeClass('sticky-toolbar');
+        });
         var modalConfig = {
             modalId: modalid,
             wrapper: "body",

@@ -83,6 +83,8 @@ class Booking extends CI_Model{
             $data['dibuat'] = waktu();
             $data['status'] = "baru";
             $this->db->insert('booking', $data);
+            
+
             return[true, "Berhasil membooking", $data];
         } catch (\Throwable $th) {
             return[true, "Berhasil membooking", $data];
