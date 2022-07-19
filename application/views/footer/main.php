@@ -66,7 +66,7 @@
                     if(!n.dibaca){
                         notifItem += '<div class="d-flex flex-row mb-3 pb-3 border-bottom">' +
                                 '<div class="pl-3 pr-2">' +
-                                    '<a href="'+ link +'">' +
+                                    '<a data-id="'+n.id+'" href="'+ link +'">' +
                                         '<p class="font-weight-medium mb-1">'+ n.pesan +'</p>' +
                                         '<p class="text-muted mb-0 text-small">'+ n.dibuat +'</p>' +
                                     '</a>' +
@@ -86,7 +86,7 @@
                 
             });
             
-            var unreadNotif = notif.filter(n => !notif.dibaca);
+            var unreadNotif = notif.filter(n =>!n.dibaca);
             $(notifBtn).find('span.count').text(unreadNotif.length);
             $("#notificationDropdown").empty();
             $("#notificationDropdown").append(notifItem);
@@ -96,7 +96,7 @@
             renderNotifikasi();
             setInterval(renderNotifikasi, 10000);
 
-            notifBtn.find('a').click(function(e){
+            $("#notificationDropdown").find('a').click(async function(e){
                 e.preventDefault();
                 var link = $(this).attr('href');
                 var nid = $(this).data('id');
@@ -104,13 +104,13 @@
                 if(notifItem.length > 0)
                     notifItem = notifItem[0];
 
+                await $.post(path + 'ws/baca_notif/' + nid);
                 if(link != '#')
                     window.location.href = link;
                 else{
                     notifikasi(notifItem.pesan);
                 }
 
-                $.post(path + 'ws/baca_notif/' + nid);
             });
         }
            
