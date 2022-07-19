@@ -1,6 +1,3 @@
-<?php
-    $diskon = ($booking->tarif * $booking->diskon)/100;
-?>
 <div class="bg col-md-6 col-lg-6 col-sm-12">
 <div class="alert alert-warning" role="alert">
   Untuk keamanan disarankan untuk menyimpan <b> booking id </b> anda (setelah tanda pagar(#))
@@ -10,6 +7,9 @@
             <h1 class="card__msg">Data tidak ditemukan</h1>
         </div>
     <?php else: ?>
+        <?php
+            $diskon = ($booking->tarif * $booking->diskon)/100;
+        ?>
         <div class="card">
             <h1 class="card__msg">Pembayaran</h1>
             <h2 class="card__submsg">Silahkan Melakukan Pembayaran Untuk Bookingan #<b id="bookingid"><?= $booking->id?></b> <i id="copy-to-clipboard" data-toggle="tooltip" data-placement="bottom" title="Copy booking id anda" style="cursor: pointer;" class="iconsmind-File-Copy2"></i></h2>
