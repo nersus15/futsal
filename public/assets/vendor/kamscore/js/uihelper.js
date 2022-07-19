@@ -992,8 +992,23 @@ uihelper = function () {
                        'selectRow': selectRow
                     },
                     'createdCell':  function (td, cellData, rowData, row, col){
+                        this.api().cell(td).checkboxes.deselect();
                         if(autoDeselect)
                             this.api().cell(td).checkboxes.deselect();
+
+                        else if(!autoDeselect){
+                            var selected = [];
+                            var key = '_dt_s_' + id;
+                            var s = window.localStorage.getItem(key);
+                            if(s)
+                                selected = s.split(',');
+                            if(selected.length > 0)
+                                this.api().cell(td).checkboxes.deselect();
+
+                            if(selected.length > 0 && selected.includes(rowData.id)){
+                                this.api().cell(td).checkboxes.select();
+                            }
+                        }
                     }
                  }
             ];
@@ -1012,6 +1027,10 @@ uihelper = function () {
             initComplete: function(){
                 if(attribut.ajax != false)
                     createProto(this);
+
+                var key = '_dt_s_' + id;
+                window.localStorage.removeItem(key);
+                
 
             },
             createdRow: function(row, data, dataIndex ){
@@ -1048,12 +1067,25 @@ uihelper = function () {
             var interval = 2000;
             if(attribut.autoRefresh != true){
                 interval = parseInt(attribut.autoRefresh);
+                if(!interval) interval = 2000;
             }
             setInterval(function(){
-                if(attribut.ajax)
+                // store selected id to localstorage
+                var selected = dt_instance.rows({selected: true}).data().toArray();
+                var tmp = [];
+                selected.forEach(d => {
+                    tmp.push(d.id);
+                });
+                var key = '_dt_s_' + id;
+                window.localStorage.setItem(key, tmp);
+                if(attribut.ajax != false){
+                    console.log("RELOAD DATATABLE WITH AJAX");
                     dt_instance.ajax.reload(null, true);
-                else
+                }
+                else{
+                    console.log("RELOAD DATATABLE WITH OFFLINE RENDERER");
                     renderDatatablesOffline(path + attribut.source, id, configTabel[id]);
+                }
             }, interval);
         }
 

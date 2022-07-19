@@ -209,7 +209,7 @@ class Data extends CI_Controller
             'dtTitle' => 'Daftar Member',
             'dtid' => 'dt-member',
             'head' => array(
-               '', 'Nama Tim','Perwakilan', 'No. HP', 'Email', 'Alamat', 'Tanggal Daftar', 'Username'
+               '', 'Nama Tim','Perwakilan', 'No. HP', 'Email', 'Alamat', 'Tanggal Daftar', 'Username', 'Password'
             ),
             'skrip' => 'dtconfig/dt_member', //wajib
             'skrip_data' => array('id' => 'dt-member'),
@@ -329,8 +329,8 @@ class Data extends CI_Controller
                 'checkbox' => 'true',
                 'change' => 'false',
                 'dom' => 'rtip',
-                'responsive' => 'true',
-                'auto-refresh' => 'fakse',
+                'responsive' => 'false',
+                'auto-refresh' => '5000',
                 'deselect-on-refresh' => 'false',
             ),
             'form' => array(
