@@ -275,6 +275,14 @@ class Ws extends CI_Controller{
             'nama' => $fname,
             'uuid' => $_POST['uuid']
         ));
+        $dataNotif[] = [
+            'id' => random(8),
+            'dibuat' => waktu(),
+            'pesan' =>  "Bukti pembayaran Bookingan dengan id #" . $_POST['id'] . " Telah diupload, segera konfirmasi!",
+            'jenis' =>  'global',
+            'user' => 'admin',
+        ];
+        $this->notification->create($dataNotif);
         $this->db->where('id', $_POST['id'])->update('booking', array('bukti_bayar' => $newId));
     }
     function cancel_upload(){
