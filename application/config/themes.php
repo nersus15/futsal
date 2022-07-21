@@ -164,7 +164,7 @@ $config['themes'] = array(
             array('pos' => 'head', 'src' => 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', 'type' => 'cdn'),
             array('pos' => 'head', 'src' => 'vendor/datepicker/js/bootstrap-datepicker.js'),
             array('pos' => 'head', 'src' => 'vendor/timepicker/jquery.timepicker.js'),
-            array('pos' => 'head', 'src' => 'js/utils/main.init.js'),
+            // array('pos' => 'head', 'src' => 'js/utils/main.init.js'),
         ),
         'css' => array(
             array('pos' => 'head', 'src' => 'vendor/select2/dist/css/select2.css'),

@@ -72,6 +72,7 @@ class Home extends CI_Controller{
             ),
             'navbar' => 'component/navbar/navbar.dore',
             'adaThemeSelector' => true,
+            'loadingAnim' => true,
             'pageName' => 'Dashboard',
             'navbarConf' => array(
                 'adaUserMenu' => true,

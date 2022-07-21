@@ -78,7 +78,7 @@
 </head>
 
 <body id="app-container" class="<?php echo isset($sembunyikanSidebar) && $sembunyikanSidebar ? 'menu-hidden' : 'menu-default';?> <?= $bodyClass ?>">
-   <?php if(isset($loading_animation) && $loading_animation === TRUE):?>
+   <?php if(isset($loadingAnim) && $loadingAnim === TRUE):?>
         <div class="c-overlay">
             <div class="c-overlay-text">Loading</div>
         </div>
