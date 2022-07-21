@@ -15,12 +15,12 @@ if(!method_exists($this,'fieldmapping')){
             response(['message' => 'Config form ' . $config . ' Tidak ditemukan'], 404);
         
         foreach($configitem[$config] as $k => $v){
-            if($adaDefault && isset($adaDefault[$k])){
-                if(isset($input[$k]) && !is_null($input[$k]) && $input[$k] != '')
-                    $field[$v] = $adaDefault[$k];
+            if($adaDefault && isset($defaultValue[$k])){
+                if(isset($input[$k]) && (is_null($input[$k]) || $input[$k] == ''))
+                    $field[$v] = $defaultValue[$k];
                 else
                     $field[$v] = html_escape($input[$k]);
-            }elseif((!$adaDefault || !isset($adaDefault[$k])) && isset($input[$k]))
+            }elseif((!$adaDefault || !isset($defaultValue[$k])) && isset($input[$k]))
                 $field[$v] = html_escape($input[$k]);
         }
         

@@ -9,6 +9,64 @@ class Ws extends CI_Controller{
         list($input) = $this->authentication->persiapan($_POST);
         $this->authentication->login($input);
     }
+    function update_profile(){
+        if(!httpmethod())
+            response("Metode akses ilegal", 403);
+        if(!is_login())
+            response("Anda belum login", 403);
+
+        $post = $_POST;
+        $dataUser = fieldmapping('user', $post);
+        if(is_login('member')){
+            $dataMember = fieldmapping('member', $_POST);
+            $dataMember['penanggung_jawab'] = $dataUser['nama'];
+            $dataUser['member'] = $post['memberid'];
+        }
+
+        if(isset($dataUser['password']) && !empty($dataUser['password']))
+            $dataUser['password'] = password_hash($dataUser['password'], PASSWORD_DEFAULT);
+        else
+            unset($dataUser['password']);
+
+        if(isset($_FILES['pp']) && !empty($_FILES['pp'])){
+            $this->load->helper('file_upload_helper');
+            $fname = uploadImage($_FILES['pp'], 'pp', 'profile');
+
+            if(sessiondata('login', 'photo') != 'default.jpg')
+                delete_img(sessiondata('login', 'photo'));
+            $dataUser['photo'] = $fname;
+        }
+        $this->db->where('id', $post['memberid'])->update('member', $dataMember);
+        $this->db->where('id', sessiondata('login', 'id'))->update('user', $dataUser);
+
+        // Update in localdata
+        $tmp = sessiondata();
+        foreach ($dataMember as $key => $value) {
+            if(sessiondata('login', $key) != $value)
+                $tmp[$key] = $value;
+        }
+        foreach ($dataUser as $key => $value) {
+            if($key == 'password') continue;
+            if(sessiondata('login', $key) != $value)
+                $tmp[$key] = $value;
+        }
+        $this->session->set_userdata('login', $tmp);
+        response("Berhasil update profile");
+    }
+
+    function cek_username(){
+        if(!httpmethod()) response("Ilegal Akses", 403);
+        if(!is_login()) response("Anda belum login", 403);
+        if(sessiondata('login', 'username') == $_POST['username']) response(['boleh' => true]);
+        if(!isset($_POST['username']) || empty($_POST['username'])) response(['boleh' => false]);
+        $usernameBaru = $_POST['username'];
+        
+        $user = $this->db->select('*')->where('username', $usernameBaru)->get('user')->result();
+        if(!empty($user))
+            response(['boleh'=> false]);
+        else
+            response(['boleh' => true]);
+    }
     function logout(){
         if (!is_login())
             response(['message' => 'Anda belum login', 'type' => 'error'], 401);

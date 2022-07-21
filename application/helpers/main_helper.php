@@ -56,7 +56,9 @@ if (!method_exists($this, 'sessiondata')) {
         $CI =& get_instance();
 
         $data = $CI->session->userdata($index);
+        if(SYNC_DATAUSER){
 
+        }
         return( empty($kolom) ? $data : (empty($data[$kolom]) ? $default : $data[$kolom]));
     }
 }
@@ -109,7 +111,7 @@ if (!method_exists($this, 'myOS')) {
     }
 }
 if (!method_exists($this, 'config_sidebar')) {
-    function config_sidebar($configName = 'comp', $sidebar, int $activeMenu = 0, $subMenuConf = null)
+    function config_sidebar($configName = 'comp', $sidebar, int $activeMenu = null, $subMenuConf = null)
     {
         /** @var CI_Controller $ci */
         $ci =& get_instance();
@@ -117,7 +119,8 @@ if (!method_exists($this, 'config_sidebar')) {
         $ci->load->config($configName);
         $compConf = $ci->config->item('comp');
         $sidebarConf = $compConf['dore']['sidebar'][$sidebar];
-        $sidebarConf['menus'][$activeMenu]['active'] = true;
+        if(!is_null($activeMenu))
+            $sidebarConf['menus'][$activeMenu]['active'] = true;
 
         if (!empty($subMenuConf)) {
             $sidebarConf['subMenus'][$subMenuConf['sub']]['menus'][$subMenuConf['menu']]['active'] = true;

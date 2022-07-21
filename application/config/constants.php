@@ -96,6 +96,6 @@ define ('IS_CORS_ACTIVE', false);
 define('SYNC_DATAUSER', false);
 define('KAS_KECIL', array('K01', 'K02', 'K03', 'K04', 'K05'));
 define('VENDOR_PATH', str_replace('application' . DIRECTORY_SEPARATOR, '', APPPATH) . 'vendor' .DIRECTORY_SEPARATOR);
-define('CDN_PATH', 'https://cdn.kamscodelab.tech/');
+define('CDN_PATH', 'https://cdn.kamscode.site/');
 define('ROOT', str_replace('application/config', '',__DIR__));
 define("CONTROLLER_PATH", APPPATH . "controllers" . DIRECTORY_SEPARATOR);
