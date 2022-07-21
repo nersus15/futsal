@@ -38,5 +38,7 @@ function delete_img($nama, $type = 'profile'){
        $upload_path = get_path($pathConfig[$type]);
     else
        $upload_path = ASSETS_PATH;
-    unlink($upload_path . $nama);
+
+    if(file_exists($upload_path . $nama))
+        unlink($upload_path . $nama);
 }

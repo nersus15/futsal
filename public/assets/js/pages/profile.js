@@ -64,7 +64,7 @@ function inisialisasi(data) {
         },
         submitSuccess: function (res) {
             endLoading();
-            location.reload();
+            // location.reload();
         }
     }
     $("#bqn-form-edit-user").initFormAjax(options);
