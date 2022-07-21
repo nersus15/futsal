@@ -36,14 +36,17 @@ class Ws extends CI_Controller{
                 delete_img(sessiondata('login', 'photo'));
             $dataUser['photo'] = $fname;
         }
-        $this->db->where('id', $post['memberid'])->update('member', $dataMember);
+        if(is_login('member'))
+            $this->db->where('id', sessiondata('login', 'memberid'))->update('member', $dataMember);
         $this->db->where('id', sessiondata('login', 'id'))->update('user', $dataUser);
 
         // Update in localdata
         $tmp = sessiondata();
-        foreach ($dataMember as $key => $value) {
-            if(sessiondata('login', $key) != $value)
-                $tmp[$key] = $value;
+        if(is_login('member')){
+            foreach ($dataMember as $key => $value) {
+                if(sessiondata('login', $key) != $value)
+                    $tmp[$key] = $value;
+            }
         }
         foreach ($dataUser as $key => $value) {
             if($key == 'password') continue;
