@@ -73,8 +73,8 @@ class Home extends CI_Controller{
             'navbar' => 'component/navbar/navbar.dore',
             'adaThemeSelector' => true,
             'loadingAnim' => true,
-            'pageName' => 'Profile',
-            'subPageName' => "<a href='". base_url(is_login('member') ? 'member' : 'dashboard') ."'> Kembali </a>",
+            // 'pageName' => 'Profile',
+            'pageName' => "<a href='". base_url(is_login('member') ? 'member' : 'dashboard') ."'> <i class='simple-icon-arrow-left'>Kembali</i> </a>",
             'navbarConf' => array(
                 'adaUserMenu' => true,
                 'adaNotif' => true,

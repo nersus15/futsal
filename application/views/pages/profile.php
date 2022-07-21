@@ -19,7 +19,7 @@
                     </label>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mt-4">
                 <div class="profile-head">
                     <h5>
                         <?php echo $user['nama'] ?? $user['username'] ?>
@@ -48,7 +48,7 @@
                    
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 mt-4">
                 <button type="submit" class="profile-edit-btn text-white btn-warning" id="btn-edit">Edit Profile</button>
             </div>
         </div>
