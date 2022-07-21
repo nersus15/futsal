@@ -294,7 +294,7 @@ class Ws extends CI_Controller{
                     'dibuat' => waktu(),
                     'pesan' =>  "Status Bookingan dengan id #" . $id . " Telah dirubah menjadi " . $status,
                     'jenis' =>  'global',
-                    'user' => 'admin',
+                    'role' => 'admin',
                     'link' => 'pembayaran/' . $id
                 ];
             }
