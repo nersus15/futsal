@@ -2,7 +2,7 @@
     $link = base_url();
 
     if(is_login('member'))
-        $link = base_url('member/bookin');
+        $link = base_url('member/booking');
     elseif(is_login('admin'))
         $link = base_url('data/booking');
 
@@ -20,7 +20,10 @@
             $diskon = ($booking->tarif * $booking->diskon)/100;
         ?>
         <div class="card">
-            <h1 class="card__msg"><a href="<?= $link ?>"> <i class='simple-icon-arrow-left'>Kembali</i> </a> Pembayaran</h1>
+            <div class="card-title">
+                <a class="float-left" href="<?= $link ?>"> <i class='simple-icon-arrow-left'>Kembali</i> </a>
+            </div>
+            <h1 class="card__msg">Pembayaran</h1>
             <h2 class="card__submsg">Silahkan Melakukan Pembayaran Untuk Bookingan #<b id="bookingid"><?= $booking->id?></b> <i id="copy-to-clipboard" data-toggle="tooltip" data-placement="bottom" title="Copy booking id anda" style="cursor: pointer;" class="iconsmind-File-Copy2"></i></h2>
             <h2 class="card__submsg">Pembayaraan paling lambat 24 jam setelah melakukan booking, jika tidak maka tidak akan diterima dan dianggap dibatalkan</h2>
             
