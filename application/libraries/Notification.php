@@ -23,6 +23,8 @@ class Notification {
     }
 
     function baca($nid){
-        $this->ci->db->where('id', $nid)->update('notifikasi', ['dibaca' => waktu()]);
+        $dibaca = waktu();
+        $this->ci->db->where('id', $nid)->update('notifikasi', ['dibaca' => $dibaca]);
+        response(['dibaca' => $dibaca]);
     }
 }

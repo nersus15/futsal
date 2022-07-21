@@ -47,7 +47,7 @@ function add_eventlistener(data) {
         });
     });
 
-};
+}
 
 function inisialisasi(data) {
     var options = {
@@ -57,7 +57,7 @@ function inisialisasi(data) {
             $('#alert_danger strong').html(responseText.message).parent().show();
             $('#btn-login').prop('disabled', false);
         },
-        sebelumSubmit: function (input,) {
+        sebelumSubmit: function (input) {
             showLoading();
             $('#alert_danger strong').html('').parent().hide();
             $('#btn-login').prop('disabled', true);

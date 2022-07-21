@@ -66,7 +66,7 @@
                     if(!n.dibaca){
                         notifItem += '<div class="d-flex flex-row mb-3 pb-3 border-bottom">' +
                                 '<div class="pl-3 pr-2">' +
-                                    '<a data-id="'+n.id+'" href="'+ link +'">' +
+                                    '<a class="nitem" data-id="'+n.id+'" href="'+ link +'">' +
                                         '<p class="font-weight-medium mb-1">'+ n.pesan +'</p>' +
                                         '<p class="text-muted mb-0 text-small">'+ n.dibuat +'</p>' +
                                     '</a>' +
@@ -75,7 +75,7 @@
                     }else{
                         notifItem += '<div class="d-flex flex-row mb-3 pb-3 border-bottom">' +
                                 '<div class="pl-3 pr-2">' +
-                                    '<b><a class="text-primary" data-id="'+ n.id +'" href="'+ link +'">' +
+                                    '<b><a class="text-primary nitem" data-id="'+ n.id +'" href="'+ link +'">' +
                                         '<p class="font-weight-medium mb-1">'+ n.pesan +'</p>' +
                                         '<p class="text-muted mb-0 text-small">'+ n.dibuat +'</p>' +
                                     '</a></b>' +
@@ -90,28 +90,35 @@
             $(notifBtn).find('span.count').text(unreadNotif.length);
             $("#notificationDropdown").empty();
             $("#notificationDropdown").append(notifItem);
-        };
-
-        if(notifBtn.length > 0){
-            renderNotifikasi();
-            setInterval(renderNotifikasi, 10000);
-
-            $("#notificationDropdown").find('a').click(async function(e){
+            $("#notificationDropdown").find('a.nitem').click(function(e){
                 e.preventDefault();
                 var link = $(this).attr('href');
                 var nid = $(this).data('id');
                 var notifItem = notif.filter(n => n.id == nid);
                 if(notifItem.length > 0)
                     notifItem = notifItem[0];
-
-                await $.post(path + 'ws/baca_notif/' + nid);
+                    
+                if(!notifItem.dibaca){
+                    $.post(path + 'ws/baca_notif/' + nid).then(res => {
+                        notif.forEach((n, i) => {
+                            if(n.id == nid)
+                                notif[i].dibaca = res.dibaca;
+                        });
+                    });
+                }
+                
                 if(link != '#')
                     window.location.href = link;
                 else{
-                    notifikasi(notifItem.pesan);
+                    notifikasi(notifItem.pesan, {});
                 }
 
             });
+        };
+
+        if(notifBtn.length > 0){
+            renderNotifikasi();
+            setInterval(renderNotifikasi, 10000);
         }
            
     });
