@@ -1109,7 +1109,7 @@ uihelper = function () {
 
 
     async function renderDatatablesOffline(path, dtid, configTabel){
-        fetch(path).then(res => res.json()).then(res => {
+        await fetch(path).then(res => res.json()).then(res => {
             var data  = res.data;
             var tabel = $("#" + dtid);
             var rows = '';
@@ -1120,7 +1120,7 @@ uihelper = function () {
             data.forEach(row => {
                 rows += '<tr>';
                 configTabel.forEach(column => {
-                    if(column.data == null){
+                    if(column.data == undefined || column.data == null || column.data == ''){
                         rows += '<td></td>';
                     }else if(column.data && column.data != null && column.data != '' && !column.mRender){
                         rows += '<td>' + row[column.data] + '</td>';

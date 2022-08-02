@@ -55,6 +55,9 @@ function isFunction(variable) {
  return variable && {}.toString.call(variable) === '[object Function]';
 }
 
+function isKosong(variable){
+    return (variable == undefined || variable == null || variable == '')
+}
 // String.prototype.sandi = function(tipe = 'AN'){
 //     $result = null;
 //         $an = {

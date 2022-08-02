@@ -23,9 +23,4 @@ configTabel["<?= $id ?>"] = [
     {
         data: 'username'
     },
-    {
-        mRender: function(row, type, data){
-            return data.id + data.dibuat.split(' ')[0].replaceAll('-', '')
-        }
-    }
 ];

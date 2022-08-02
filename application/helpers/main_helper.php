@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 require_once 'vendor/autoload.php';
 
 use \Firebase\JWT\JWT;
+use Dompdf\Dompdf;
 
 
 if (!method_exists($this, 'response')) {
@@ -43,7 +44,7 @@ if (!method_exists($this, 'response')) {
 if (!method_exists($this, 'httpmethod')) {
     function httpmethod($method = 'POST')
     {
-        return $_SERVER['REQUEST_METHOD'] == $method;
+        return $_SERVER['REQUEST_METHOD'] == strtoupper($method);
     }
 }
 
@@ -524,5 +525,67 @@ if(!function_exists('sandi')){
 if(!function_exists('assets_url')){
     function assets_url($path = null){
         return base_url('public/assets/' . $path);
+    }
+}
+
+if(!function_exists('buatbdf')){
+    function buat_pdf($html, $title = null){
+        require_once "./application/third_party/dompdf-1.0.2/autoload.inc.php";
+        $pdf = new Dompdf();
+
+		$pdf->loadHtml($html);
+		// (Opsional) Mengatur ukuran kertas dan orientasi kertas
+		$pdf->setPaper('A4', 'potrait');
+		// Menjadikan HTML sebagai PDF
+		$pdf->render();
+		// Output akan menghasilkan PDF ke Browser
+		$pdf->stream($title);
+	}
+}
+
+if(!function_exists('contentview_url')){
+    function contentview_url($url){
+        $options = array(
+            CURLOPT_RETURNTRANSFER => true,   // return web page
+            CURLOPT_HEADER         => false,  // don't return headers
+            CURLOPT_FOLLOWLOCATION => true,   // follow redirects
+            CURLOPT_MAXREDIRS      => 10,     // stop after 10 redirects
+            CURLOPT_ENCODING       => "",     // handle compressed
+            CURLOPT_USERAGENT      => "futsal", // name of client
+            CURLOPT_AUTOREFERER    => true,   // set referrer on redirect
+            CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
+            CURLOPT_TIMEOUT        => 120,    // time-out on response
+        ); 
+    
+        $ch = curl_init($url);
+        curl_setopt_array($ch, $options);
+    
+        $content  = curl_exec($ch);
+    
+        curl_close($ch);
+    
+        return $content;
+    }
+}
+if(!function_exists('buat_tabel')){
+    function buat_tabel($header, $data){
+        
+    }
+}
+if(!function_exists('kapitalize')){
+    function kapitalize($string, $tipe = 'firstword'){
+        if($tipe == 'all'){
+            return strtoupper($string);
+        }elseif($tipe == 'first'){
+            return ucfirst(strtolower($string));
+        }elseif($tipe == 'firstword'){
+            $str = explode(' ', $string);
+            $tmp = [];
+            foreach($str as $s) {
+                $tmp[] = ucfirst(strtolower($s));
+            }
+
+            return join(' ', $tmp);
+        }
     }
 }

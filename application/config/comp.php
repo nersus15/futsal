@@ -7,7 +7,6 @@ $config['comp']['dore']['sidebar'] = array(
             array('text' => 'Dashboard', 'icon' => 'iconsmind-Home', 'link' => base_url('admin/dashboard')),
             array('text' => 'Data', 'link' =>  '#data', 'icon' => 'iconsmind-Big-Data'),
             array('text' => 'Booking List', 'link' => base_url('data/booking'), 'icon' => 'iconsmind-Bar-Chart'),
-            array('text' => 'Settings', 'link' => '#settings', 'icon' => 'simple-icon-settings')
         ),
         'subMenus' => array(
             array(
@@ -17,22 +16,23 @@ $config['comp']['dore']['sidebar'] = array(
                     array('text' => 'Jadwal', 'link' => base_url('data/jadwal')),
                     array('text' => 'Member', 'link' => base_url('data/member')),
                 )
-            ),
+            ),            
+
+        )
+    ),
+    'pimpinan' => array(
+        'menus' => array(
+            array('text' => 'Laporan', 'icon' => 'iconsmind-Bar-Chart', 'link' => '#laporan'),
+            array('text' => 'Kelola Admin', 'icon' => 'simple-icon-people', 'link' => base_url('admin')),
+        ),
+        'subMenus' => array(
             array(
                 'induk' => 'laporan',
                 'menus' => array(
-                    array('text' => 'Data transaksi', 'link' => base_url('laporan')),
-                    array('text' => 'Pembayaran SPP', 'link' => base_url('laporan/spp')),
-                    array('text' => 'Grafik', 'link' => base_url('laporan/grafik')),
+                    array('text' => 'Booking', 'link' => base_url('report/booking'), 'icon' => 'iconsmind-Check'),
+                    array('text' => 'Member', 'link' => base_url('report/member'), 'icon' => 'simple-icon-people'),
                 )
-            ),
-            array(
-                'induk' => 'settings',
-                'menus' => array(
-                    array('text' => 'Carousel', 'link' => base_url('admin/settings/carousel'))
-                ),
             )
-
         )
     ),
     'member' => array(

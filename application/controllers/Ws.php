@@ -407,4 +407,55 @@ class Ws extends CI_Controller{
     function baca_notif($nid){
         $this->notification->baca($nid);
     }
+
+    function get_admin(){
+        $this->load->library('Datatables');
+        $q = $this->db->from('user')->where('role', 'admin');
+
+        $this->datatables->setHeader(array(
+            'username' => array('searchable' => true),
+            'id' => array('searchable' => false),
+            'nama' => array('searchable' => true),
+            'hp' => array('searchable' => true),
+            'email' => array('searchable' => true),
+            'photo' => array('searhcable' => true),
+        ));
+        $this->datatables->setQuery($q);
+        $data = $this->datatables->getData();
+        response($data);
+    }
+
+    function add_admin(){
+        $post = $this->input->post();
+        $id = $post['id'];
+        unset($post['id']);
+        $post['username'] = str_replace(' ', '_', $post['username']);
+        if(httpmethod('update')){
+            try {
+                $this->db->where('id', $id)->update('user', $post);
+                response("Berhasil Update Admin");
+            } catch (\Throwable $th) {
+                response("Gagal Update", 500);
+            }
+        }elseif(httpmethod()){
+            try {
+                $this->db->insert('user', $post + ['id' => random(8)]);
+                response("Berhasil Mendaftarkan Admin");
+            } catch (\Throwable $th) {
+                response("Gagal Mendaftarkan Admin", 500);
+            }
+        }
+    }
+    function delete_admin(){
+        $post = $this->input->post();
+        if(isset($post['ids']) && !empty($post['ids'])){
+           try {
+               $ids = $post['ids'];
+               $this->db->where_in('id', $ids)->delete('user');
+               response("Berhasil menghapus data");
+           } catch (\Throwable $th) {
+               response("Gagal menghapus data", 500);
+           }
+        }
+    }
 }

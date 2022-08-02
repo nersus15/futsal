@@ -2,6 +2,7 @@ $(document).ready(function(){
     var dtid = "<?= $dtid?>";
     var panel = $("#displayOptions-" + dtid);
     var batalkan = panel.find('.tool-batalkan');
+    var exportpdf = panel.find('.tool-export-pdf');
     var verifikasi = panel.find('.tool-verify');
     var mulai = panel.find('.tool-aktif');
     var selesai = panel.find('.tool-selesai');
@@ -41,7 +42,12 @@ $(document).ready(function(){
             update_status('Selesai');
         });
     }
-
+    if(exportpdf.length == 1){
+        exportpdf.click(function(e){
+            e.preventDefault();
+            exportData('pdf');
+        });
+    }
     if(detail.length == 1){
         detail.click(function(e){
             e.preventDefault();
@@ -170,4 +176,8 @@ $(document).ready(function(){
     };
    setInterval(customizeTabel, 1000)
 
+
+   function exportData(format){
+       window.open(path + 'uihelper/export/laporan_booking/' + format, '_blank');
+   }
 });
