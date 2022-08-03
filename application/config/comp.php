@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $config['comp']['dore']['sidebar'] = array(
     'admin' => array(
         'menus' => array(
-            array('text' => 'Dashboard', 'icon' => 'iconsmind-Home', 'link' => base_url('admin/dashboard')),
+            array('text' => 'Dashboard', 'icon' => 'iconsmind-Home', 'link' => base_url('dashboard')),
             array('text' => 'Data', 'link' =>  '#data', 'icon' => 'iconsmind-Big-Data'),
             array('text' => 'Booking List', 'link' => base_url('data/booking'), 'icon' => 'iconsmind-Bar-Chart'),
         ),
@@ -22,6 +22,7 @@ $config['comp']['dore']['sidebar'] = array(
     ),
     'pimpinan' => array(
         'menus' => array(
+            array('text' => 'Dashboard', 'icon' => 'iconsmind-Home', 'link' => base_url('dashboard')),
             array('text' => 'Laporan', 'icon' => 'iconsmind-Bar-Chart', 'link' => '#laporan'),
             array('text' => 'Kelola Admin', 'icon' => 'simple-icon-people', 'link' => base_url('admin')),
         ),
@@ -37,7 +38,7 @@ $config['comp']['dore']['sidebar'] = array(
     ),
     'member' => array(
         'menus' => array(
-            array('text' => 'Dashboard', 'icon' => 'iconsmind-Home', 'link' => base_url()),
+            array('text' => 'Dashboard', 'icon' => 'iconsmind-Home', 'link' => base_url('member')),
             array('text' => 'Riwayat Booking', 'icon' => 'iconsmind-Home', 'link' => base_url('member/booking')),
             // array('text' => 'Penjual', 'link' =>  base_url('penjual'), 'icon' => 'simple-icon-people'),
             // array('text' => 'Pesanan', 'link' =>  '#', 'icon' => 'iconsmind-Full-Cart'),

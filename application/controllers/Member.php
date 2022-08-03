@@ -12,9 +12,13 @@ class Member extends CI_Controller
     }
     function index()
     {
+        $dataBooking = $this->db->select('booking.*')->where('member', sessiondata('login', 'memberid'))->get('booking')->result();
         $data = [
             'resource' => array('main', 'dore'),
-            'content' => array(),
+            'content' => array('pages/dashboard/member'),
+            'data_content' => array(
+                'booking' => $dataBooking
+            ),
             'navbar' => 'component/navbar/navbar.dore',
             'adaThemeSelector' => true,
             'sidebar' => 'component/sidebar/sidebar.dore',

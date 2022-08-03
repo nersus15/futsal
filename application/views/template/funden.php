@@ -73,7 +73,7 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 							<li>
 								<?php if(!is_login()): ?>
 									<a id="#login" href="<?= base_url("auth/login") ?>">Login</a>
-								<?php elseif(is_login('admin')): ?>
+								<?php elseif(is_login('admin') || is_login('pimpinan')): ?>
 									<a id="#login" href="<?= base_url("dashboard") ?>">Dashboard</a>
 								<?php elseif(is_login('member')): ?>
 									<a id="#login" href="<?= base_url("member") ?>">Member Area</a>
@@ -108,7 +108,7 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 				<li>
 				<?php if(!is_login()): ?>
 						<a id="#login" href="<?= base_url("auth/login") ?>">Login</a>
-					<?php elseif(is_login('admin')): ?>
+					<?php elseif(is_login('admin') || is_login('pimpinan')): ?>
 						<a id="#login" href="<?= base_url("dashboard") ?>">Dashboard</a>
 					<?php elseif(is_login('member')): ?>
 						<a id="#login" href="<?= base_url("member") ?>">Member Area</a>

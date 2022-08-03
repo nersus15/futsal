@@ -57,11 +57,11 @@
             notif.forEach((n, i) => {
                 var link = n.link ? path + n.link : '#';
                 if(i == 15){
-                    notifItem += '<div style="width: 100%; background: whitesmoke; justify-content: center" class="d-flex flex-row mt-3">' +
-                                '<div class="pl-3 pr-2">' +
-                                    '<a href="'+ path +'notifcenter" class="btn">Baca Semua</a>'
-                                '</div>' +
-                            '</div>';
+                    // notifItem += '<div style="width: 100%; background: whitesmoke; justify-content: center" class="d-flex flex-row mt-3">' +
+                    //             '<div class="pl-3 pr-2">' +
+                    //                 '<a href="'+ path +'notifcenter" class="btn">Baca Semua</a>'
+                    //             '</div>' +
+                    //         '</div>';
                 }else if(i < 15){
                     if(!n.dibaca){
                         notifItem += '<div class="d-flex flex-row mb-3 pb-3 border-bottom">' +

@@ -209,7 +209,7 @@ class Data extends CI_Controller
             'dtTitle' => 'Daftar Member',
             'dtid' => 'dt-member',
             'head' => array(
-               '', 'Nama Tim','Perwakilan', 'No. HP', 'Email', 'Alamat', 'Tanggal Daftar', 'Username', 'Password'
+               '', 'Nama Tim','Perwakilan', 'No. HP', 'Email', 'Alamat', 'Tanggal Daftar', 'Username', 'Default Password'
             ),
             'skrip' => 'dtconfig/dt_member', //wajib
             'skrip_data' => array('id' => 'dt-member'),
