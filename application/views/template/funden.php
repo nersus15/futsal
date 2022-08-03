@@ -283,8 +283,9 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 						</p>
 						<div class="author-note wow fadeInUp">
 							<ul>
-								<li><i class="far fa-check"></i> Non-Profite Crowdfunding Agency</li>
-								<li><i class="far fa-check"></i> We're Successful Institute </li>
+								<li><i class="far fa-check"></i> We have a large schedule that can be booked with more than one field </li>
+								<li><i class="far fa-check"></i> The price we offer is much cheaper than other places </li>
+								<li><i class="far fa-check"></i> You can order from anywhere through our site </li>
 							</ul>
 							<div class="author-info">
 								<div class="author-img">
@@ -316,117 +317,29 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 				<div class="row project-slider-two project-items project-style-four">
 					<div class="col">
 						<div class="project-item">
-							<div class="thumb" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/project/project-slider-01.jpg);"></div>
+							<div class="thumb" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/landing/f4.jpg);"></div>
 							<div class="content">
 								<div class="cats">
-									<a href="#">Covid -19</a>
-								</div>
-
-								<div class="author">
-									<img src="<?= base_url('public/assets/themes/funden') ?>/img/author-thumbs/01.jpg" alt="Thumb">
-									<a href="#">James W. Barrows</a>
+									<a href="#">Member</a>
 								</div>
 
 								<h5 class="title">
-									<a href="project-details.html">Fundraising For The People And Causes You Car About</a>
+									<a href="project-details.html">Our Member Get 30% Dicount for 3 booking in month</a>
 								</h5>
-								<div class="project-stats">
-									<div class="stats-value">
-										<span class="value-title">Raised of <span class="value">$59,689</span></span>
-										<span class="stats-percentage">83%</span>
-									</div>
-									<div class="stats-bar" data-value="90">
-										<div class="bar-line"></div>
-									</div>
-								</div>
-								<span class="date"><i class="far fa-calendar-alt"></i> 25 February 2021</span>
+								
 							</div>
 						</div>
 					</div>
 					<div class="col">
 						<div class="project-item">
-							<div class="thumb" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/project/project-slider-02.jpg);"></div>
+							<div class="thumb" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/landing/f5.webp);"></div>
 							<div class="content">
 								<div class="cats">
-									<a href="#">Covid -19</a>
+									<a href="#">Non Member</a>
 								</div>
-
-								<div class="author">
-									<img src="<?= base_url('public/assets/themes/funden') ?>/img/author-thumbs/01.jpg" alt="Thumb">
-									<a href="#">James W. Barrows</a>
-								</div>
-
 								<h5 class="title">
-									<a href="project-details.html">Fundraising For The People And Causes You Car About</a>
-								</h5>
-								<div class="project-stats">
-									<div class="stats-value">
-										<span class="value-title">Raised of <span class="value">$59,689</span></span>
-										<span class="stats-percentage">83%</span>
-									</div>
-									<div class="stats-bar" data-value="90">
-										<div class="bar-line"></div>
-									</div>
-								</div>
-								<span class="date"><i class="far fa-calendar-alt"></i> 25 February 2021</span>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="project-item">
-							<div class="thumb" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/project/project-slider-01.jpg);"></div>
-							<div class="content">
-								<div class="cats">
-									<a href="#">Covid -19</a>
-								</div>
-
-								<div class="author">
-									<img src="<?= base_url('public/assets/themes/funden') ?>/img/author-thumbs/01.jpg" alt="Thumb">
-									<a href="#">James W. Barrows</a>
-								</div>
-
-								<h5 class="title">
-									<a href="project-details.html">Fundraising For The People And Causes You Car About</a>
-								</h5>
-								<div class="project-stats">
-									<div class="stats-value">
-										<span class="value-title">Raised of <span class="value">$59,689</span></span>
-										<span class="stats-percentage">83%</span>
-									</div>
-									<div class="stats-bar" data-value="90">
-										<div class="bar-line"></div>
-									</div>
-								</div>
-								<span class="date"><i class="far fa-calendar-alt"></i> 25 February 2021</span>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="project-item">
-							<div class="thumb" style="background-image: url(<?= base_url('public/assets/themes/funden') ?>/img/project/project-slider-02.jpg);"></div>
-							<div class="content">
-								<div class="cats">
-									<a href="#">Covid -19</a>
-								</div>
-
-								<div class="author">
-									<img src="<?= base_url('public/assets/themes/funden') ?>/img/author-thumbs/01.jpg" alt="Thumb">
-									<a href="#">James W. Barrows</a>
-								</div>
-
-								<h5 class="title">
-									<a href="project-details.html">Fundraising For The People And Causes You Car About</a>
-								</h5>
-								<div class="project-stats">
-									<div class="stats-value">
-										<span class="value-title">Raised of <span class="value">$59,689</span></span>
-										<span class="stats-percentage">83%</span>
-									</div>
-									<div class="stats-bar" data-value="90">
-										<div class="bar-line"></div>
-									</div>
-								</div>
-								<span class="date"><i class="far fa-calendar-alt"></i> 25 February 2021</span>
+									<a href="project-details.html">we offer the best price for our field in every schedule </a>
+								</h5>								
 							</div>
 						</div>
 					</div>
