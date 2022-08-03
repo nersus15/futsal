@@ -67,7 +67,7 @@ class Dashboard extends CI_Controller
                 'adaThemeSelector' => true,
                 'sidebar' => 'component/sidebar/sidebar.dore',
                 'pageName' => 'Dashboard',
-                'sidebarConf' => config_sidebar('comp', 'admin', 0),
+                'sidebarConf' => config_sidebar('comp', 'pimpinan', 0),
                 'navbarConf' => array(
                     'adaUserMenu' => true,
                     'adaNotif' => true,

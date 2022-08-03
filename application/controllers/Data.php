@@ -3,10 +3,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Data extends CI_Controller
 {
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
-        if(!is_login())
+        if (!is_login())
             redirect(base_url('auth/login'));
+        elseif(!is_login('admin'))
+            redirect('dashboard');
     }
     function lapangan()
     {
@@ -14,7 +17,7 @@ class Data extends CI_Controller
             'dtTitle' => 'Daftar Lapangan yang Tersedia',
             'dtid' => 'dt-lapangan',
             'head' => array(
-               '','Lapangan', 'Jenis', 'Tempat'
+                '', 'Lapangan', 'Jenis', 'Tempat'
             ),
             'skrip' => 'dtconfig/dt_lapangan', //wajib
             'skrip_data' => array('id' => 'dt-lapangan'),
@@ -45,14 +48,14 @@ class Data extends CI_Controller
                     [
                         "label" => 'Jenis', "placeholder" => 'Jenis lapangan',
                         "type" => 'select', "name" => 'jenis', "id" => 'jenis', "attr" => 'required', 'options' => array(
-                            'Vinyl' => array('text' => 'Vinyl'), 
+                            'Vinyl' => array('text' => 'Vinyl'),
                             'Rumput Sintetis' => array('text' => 'Rumput Sintetis'),
                             'Semen' => array('text' => 'Semen'),
                             'Parquette' => array('text' => 'Parquette'),
                             'Taraflex' => array('text' => 'Taraflex'),
                             'Karpet Plastik' => array('text' => 'Karpet Plastik'),
                         )
-                        
+
                     ],
                     [
                         "label" => 'Tempat', "placeholder" => 'Lokasi lapangan',
@@ -63,8 +66,8 @@ class Data extends CI_Controller
                 'updateurl' => '',
                 'deleteurl' => 'ws/delete_lapangan',
                 'buttons' => array(
-                    [ "type" => 'reset', "data" => 'data-dismiss="modal"', "text" => 'Batal', "id" => "batal", "class" => "btn btn btn-warning" ],
-                    [ "type" => 'submit', "text" => 'Simpan', "id" => "simpan", "class" => "btn btn btn-primary" ]
+                    ["type" => 'reset', "data" => 'data-dismiss="modal"', "text" => 'Batal', "id" => "batal", "class" => "btn btn btn-warning"],
+                    ["type" => 'submit', "text" => 'Simpan', "id" => "simpan", "class" => "btn btn btn-primary"]
                 )
             ),
             'data_panel' => array(
@@ -86,7 +89,7 @@ class Data extends CI_Controller
             )
         ), true);
         $data = [
-            'resource' => array('main', 'dore','datatables', 'form'),
+            'resource' => array('main', 'dore', 'datatables', 'form'),
             'contentHtml' => array($tabelLapangan),
             'content' => array(),
             'navbar' => 'component/navbar/navbar.dore',
@@ -107,12 +110,13 @@ class Data extends CI_Controller
         $this->render();
     }
 
-    function jadwal(){
+    function jadwal()
+    {
         $tabelLapangan = $this->getContentView('component/datatables/datatables.responsive', array(
             'dtTitle' => 'Daftar Jadwal yang Tersedia',
             'dtid' => 'dt-jadwal',
             'head' => array(
-               '', 'Lapangan','Waktu', 'Jenis Lapangan', 'Tempat', 'Tarif'
+                '', 'Lapangan', 'Waktu', 'Jenis Lapangan', 'Tempat', 'Tarif'
             ),
             'skrip' => 'dtconfig/dt_jadwal', //wajib
             'skrip_data' => array('id' => 'dt-jadwal'),
@@ -147,9 +151,9 @@ class Data extends CI_Controller
                     [
                         "label" => 'Lapangan', "placeholder" => 'lapangan',
                         "type" => 'select', "name" => 'lapangan', "id" => 'lapangan', "attr" => 'required', 'options' => array(
-                            '' => array('text' => 'Pilih Lapangan'), 
+                            '' => array('text' => 'Pilih Lapangan'),
                         )
-                        
+
                     ],
                     [
                         "label" => 'Tarif', "placeholder" => 'Dalam Rupiah',
@@ -160,8 +164,8 @@ class Data extends CI_Controller
                 'updateurl' => '',
                 'deleteurl' => 'ws/delete_jadwal',
                 'buttons' => array(
-                    [ "type" => 'reset', "data" => 'data-dismiss="modal"', "text" => 'Batal', "id" => "batal", "class" => "btn btn btn-warning" ],
-                    [ "type" => 'submit', "text" => 'Simpan', "id" => "simpan", "class" => "btn btn btn-primary" ]
+                    ["type" => 'reset', "data" => 'data-dismiss="modal"', "text" => 'Batal', "id" => "batal", "class" => "btn btn btn-warning"],
+                    ["type" => 'submit', "text" => 'Simpan', "id" => "simpan", "class" => "btn btn btn-primary"]
                 )
             ),
             'data_panel' => array(
@@ -183,7 +187,7 @@ class Data extends CI_Controller
             )
         ), true);
         $data = [
-            'resource' => array('main', 'dore','datatables', 'form'),
+            'resource' => array('main', 'dore', 'datatables', 'form'),
             'contentHtml' => array($tabelLapangan),
             'content' => array(),
             'navbar' => 'component/navbar/navbar.dore',
@@ -204,12 +208,13 @@ class Data extends CI_Controller
         $this->render();
     }
 
-    function member(){
+    function member()
+    {
         $tabelMember = $this->getContentView('component/datatables/datatables.responsive', array(
             'dtTitle' => 'Daftar Member',
             'dtid' => 'dt-member',
             'head' => array(
-               '', 'Nama Tim','Perwakilan', 'No. HP', 'Email', 'Alamat', 'Tanggal Daftar', 'Username', 'Default Password'
+                '', 'Nama Tim', 'Perwakilan', 'No. HP', 'Email', 'Alamat', 'Tanggal Daftar', 'Username', 'Default Password'
             ),
             'skrip' => 'dtconfig/dt_member', //wajib
             'skrip_data' => array('id' => 'dt-member'),
@@ -269,8 +274,8 @@ class Data extends CI_Controller
                 'updateurl' => '',
                 'deleteurl' => 'ws/delete_member',
                 'buttons' => array(
-                    [ "type" => 'reset', "data" => 'data-dismiss="modal"', "text" => 'Batal', "id" => "batal", "class" => "btn btn btn-warning" ],
-                    [ "type" => 'submit', "text" => 'Simpan', "id" => "simpan", "class" => "btn btn btn-primary" ]
+                    ["type" => 'reset', "data" => 'data-dismiss="modal"', "text" => 'Batal', "id" => "batal", "class" => "btn btn btn-warning"],
+                    ["type" => 'submit', "text" => 'Simpan', "id" => "simpan", "class" => "btn btn btn-primary"]
                 )
             ),
             'data_panel' => array(
@@ -292,7 +297,7 @@ class Data extends CI_Controller
             )
         ), true);
         $data = [
-            'resource' => array('main', 'dore','datatables', 'form'),
+            'resource' => array('main', 'dore', 'datatables', 'form'),
             'contentHtml' => array($tabelMember),
             'content' => array(),
             'navbar' => 'component/navbar/navbar.dore',
@@ -313,12 +318,13 @@ class Data extends CI_Controller
         $this->render();
     }
 
-    function booking(){
+    function booking()
+    {
         $tabelBooking = $this->getContentView('component/datatables/datatables.responsive', array(
             'dtTitle' => 'Data bookingan',
             'dtid' => 'dt-booking',
             'head' => array(
-               '', 'Lapangan', 'Jadwal', 'Nama Tim','Perwakilan', 'Tanggal Booking', 'Member', 'Tarif', 'Diskon', 'Tagihan', 'Status', 'Bukti Bayar'
+                '', 'Lapangan', 'Jadwal', 'Nama Tim', 'Perwakilan', 'Tanggal Booking', 'Member', 'Tarif', 'Diskon', 'Tagihan', 'Status', 'Bukti Bayar'
             ),
             'skrip' => 'dtconfig/dt_booking', //wajib
             'skrip_data' => array('id' => 'dt-booking'),
@@ -372,13 +378,13 @@ class Data extends CI_Controller
                         "label" => 'Jadwal', "placeholder" => '', 'attr' => 'data-rule-required=true',
                         "type" => 'select', "name" => 'jadwal', "id" => 'jadwal', 'option' => array()
                     ],
-                    
+
                 ),
-                    'posturl' => 'ws/booking',
-                    'updateurl' => '',
-                    'buttons' => array(
-                        [ "type" => 'reset', "data" => 'data-dismiss="modal"', "text" => 'Batal', "id" => "batal", "class" => "btn btn btn-warning" ],
-                        [ "type" => 'submit', "text" => 'Simpan', "id" => "simpan", "class" => "btn btn btn-primary" ]
+                'posturl' => 'ws/booking',
+                'updateurl' => '',
+                'buttons' => array(
+                    ["type" => 'reset', "data" => 'data-dismiss="modal"', "text" => 'Batal', "id" => "batal", "class" => "btn btn btn-warning"],
+                    ["type" => 'submit', "text" => 'Simpan', "id" => "simpan", "class" => "btn btn btn-primary"]
                 )
             ),
             'data_panel' => array(
@@ -403,7 +409,7 @@ class Data extends CI_Controller
             )
         ), true);
         $data = [
-            'resource' => array('main', 'dore','datatables', 'form'),
+            'resource' => array('main', 'dore', 'datatables', 'form'),
             'contentHtml' => array('<h5> Keterangan: </h5> <ul style="list-style:none"><li class="row-batalkan"> Strip merah disamping masing masing data menandakan untuk segera merubah status data tersebut menjadi batal</li><li class="row-selesai mt-2"> Strip hijau disamping masing masing data menandakan untuk segera merubah status data tersebut menjadi selesai</li><li class="row-editable mt-2"> Strip kuning disamping masing masing data menandakan data bisa di edit</li></ul>', $tabelBooking),
             'content' => array(),
             'navbar' => 'component/navbar/navbar.dore',
