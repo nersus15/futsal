@@ -68,9 +68,6 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 								<a href="<?= base_url()?>">Home</a>
 							</li>
 							<li>
-								<a href="project-1.html">Price</a>
-							</li>
-							<li>
 								<?php if(!is_login()): ?>
 									<a id="#login" href="<?= base_url("auth/login") ?>">Login</a>
 								<?php elseif(is_login('admin') || is_login('pimpinan')): ?>
@@ -101,9 +98,6 @@ $manifest = json_decode(file_get_contents(DOCS_PATH . "manifest.json"));
 			<ul class="panel-menu">
 				<li class="current">
 					<a href="<?= base_url() ?>">Home</a>
-				</li>
-				<li>
-					<a href="project-1.html">Price</a>
 				</li>
 				<li>
 				<?php if(!is_login()): ?>

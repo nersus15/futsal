@@ -31,7 +31,7 @@ class Admin extends CI_Controller
             'form' => array(
                 'id' => 'form-admin',
                 'path' => '',
-                'nama' => 'Form Tambah Admin',
+                'nama' => 'Form Admin',
                 'skrip' => 'forms/form_admin',
                 'formGenerate' => array(
                     [
@@ -98,7 +98,7 @@ class Admin extends CI_Controller
             'navbar' => 'component/navbar/navbar.dore',
             'sidebar' => 'component/sidebar/sidebar.dore',
             'pageName' => 'Data Admin',
-            'sidebarConf' => config_sidebar('comp', 'pimpinan', 1),
+            'sidebarConf' => config_sidebar('comp', 'pimpinan', 2),
             'navbarConf' => array(
                 'adaUserMenu' => true,
                 'adaNotif' => false,

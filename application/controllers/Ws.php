@@ -432,6 +432,11 @@ class Ws extends CI_Controller{
         $post['username'] = str_replace(' ', '_', $post['username']);
         if(httpmethod('update')){
             try {
+                if(isset($post['password']) && empty($post['password'])){
+                    unset($post['password']);
+                }elseif(isset($post['password']) && !empty($post['password'])){
+                    $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
+                }
                 $this->db->where('id', $id)->update('user', $post);
                 response("Berhasil Update Admin");
             } catch (\Throwable $th) {
